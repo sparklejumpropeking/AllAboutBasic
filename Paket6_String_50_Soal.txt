@@ -1,0 +1,1717 @@
+﻿======================================================================
+PAKET 6 — STRING (50 SOAL CERITA)
+======================================================================
+
+Materi: tipe string, getline, length, akses karakter per indeks, toupper/tolower, isalpha/isdigit, penggabungan (+), substr, find, replace, erase, insert, compare, stoi dan to_string, array of string, serta pengolahan teks (sandi, validasi, kompresi). Ada juga soal game bergaya Quest IV yang memakai kata sebagai input.
+
+Catatan: kalau memakai getline setelah cin >>, panggil cin.ignore() dulu supaya enter yang tertinggal tidak terbaca.
+
+Cara latihan: baca soal dan contoh tampilan, ketik sendiri dulu, baru cocokkan dengan jawaban.
+
+----------------------------------------------------------------------
+Soal 1. Papan Nama Penginapan
+----------------------------------------------------------------------
+
+Resepsionis memasukkan nama lengkap tamu (boleh ada spasi) dengan getline. Tampilkan sapaan dan berapa karakter panjang nama tersebut.
+
+[CONTOH TAMPILAN]
+Nama lengkap tamu: Siti Nurhaliza Putri
+Selamat datang, Siti Nurhaliza Putri!
+Panjang nama: 20 karakter
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string namaTamuInap;
+    cout << "Nama lengkap tamu: ";
+    getline(cin, namaTamuInap);
+    cout << "Selamat datang, " << namaTamuInap << "!" << endl;
+    cout << "Panjang nama: " << namaTamuInap.length() << " karakter" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 2. Undangan Pernikahan Desa
+----------------------------------------------------------------------
+
+Gabungkan nama mempelai pria dan wanita dengan operator + menjadi satu kalimat undangan.
+
+[CONTOH TAMPILAN]
+Nama mempelai pria: Bagas
+Nama mempelai wanita: Ayu
+Pernikahan Bagas & Ayu - Sabtu, pukul 10.00
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string mempelaiPria, mempelaiWanita;
+    cout << "Nama mempelai pria: ";
+    cin >> mempelaiPria;
+    cout << "Nama mempelai wanita: ";
+    cin >> mempelaiWanita;
+    string kalimatUndangan = "Pernikahan " + mempelaiPria + " & " + mempelaiWanita + " - Sabtu, pukul 10.00";
+    cout << kalimatUndangan << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 3. Huruf Awal dan Akhir Mantra
+----------------------------------------------------------------------
+
+Penyihir hanya membaca huruf pertama dan terakhir dari sebuah mantra. Tampilkan keduanya, dan cek apakah sama (abaikan besar kecil).
+
+[CONTOH TAMPILAN]
+Mantra: Abrakadabra
+Huruf pertama: A
+Huruf terakhir: a
+Mantra berputar sempurna!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string mantraPenyihir;
+    cout << "Mantra: ";
+    cin >> mantraPenyihir;
+    char hurufAwalMantra = mantraPenyihir[0];
+    char hurufAkhirMantra = mantraPenyihir[mantraPenyihir.length() - 1];
+    cout << "Huruf pertama: " << hurufAwalMantra << endl;
+    cout << "Huruf terakhir: " << hurufAkhirMantra << endl;
+    if (tolower(hurufAwalMantra) == tolower(hurufAkhirMantra)) cout << "Mantra berputar sempurna!" << endl;
+    else cout << "Mantra tidak berputar." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 4. Burung Hantu Penghitung Huruf
+----------------------------------------------------------------------
+
+Burung hantu menghitung berapa kali sebuah huruf muncul dalam kalimat (abaikan besar kecil).
+
+[CONTOH TAMPILAN]
+Kalimat: Malam ini bulan purnama bersinar
+Huruf yang dihitung: a
+Huruf 'a' muncul 6 kali
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string kalimatMalam;
+    char hurufDicariHantu;
+    int temuanHuruf = 0;
+    cout << "Kalimat: ";
+    getline(cin, kalimatMalam);
+    cout << "Huruf yang dihitung: ";
+    cin >> hurufDicariHantu;
+    for (int idx = 0; idx < (int)kalimatMalam.length(); idx++)
+        if (tolower(kalimatMalam[idx]) == tolower(hurufDicariHantu)) temuanHuruf++;
+    cout << "Huruf '" << hurufDicariHantu << "' muncul " << temuanHuruf << " kali" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 5. Analisis Isi Telegram
+----------------------------------------------------------------------
+
+Hitung jumlah huruf vokal, konsonan, angka, spasi, dan karakter lain dalam isi telegram.
+
+[CONTOH TAMPILAN]
+Isi telegram: Kirim 25 karung beras, segera!
+Vokal: 9, Konsonan: 13, Angka: 2, Spasi: 4, Lainnya: 2
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string isiTelegram;
+    int vokalTele = 0, konsonanTele = 0, angkaTele = 0, spasiTele = 0, lainTele = 0;
+    cout << "Isi telegram: ";
+    getline(cin, isiTelegram);
+    for (int i = 0; i < (int)isiTelegram.length(); i++) {
+        char hurufTele = tolower(isiTelegram[i]);
+        if (isalpha(hurufTele)) {
+            if (hurufTele == 'a' || hurufTele == 'i' || hurufTele == 'u' || hurufTele == 'e' || hurufTele == 'o') vokalTele++;
+            else konsonanTele++;
+        } else if (isdigit(hurufTele)) angkaTele++;
+        else if (hurufTele == ' ') spasiTele++;
+        else lainTele++;
+    }
+    cout << "Vokal: " << vokalTele << ", Konsonan: " << konsonanTele << ", Angka: " << angkaTele
+         << ", Spasi: " << spasiTele << ", Lainnya: " << lainTele << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 6. Pengumuman Lewat Toa Masjid
+----------------------------------------------------------------------
+
+Supaya terdengar lantang, ubah seluruh huruf pengumuman menjadi huruf kapital.
+
+[CONTOH TAMPILAN]
+Isi pengumuman: kerja bakti hari minggu jam 7 pagi
+Lewat toa: KERJA BAKTI HARI MINGGU JAM 7 PAGI
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string pengumumanToa;
+    cout << "Isi pengumuman: ";
+    getline(cin, pengumumanToa);
+    for (int i = 0; i < (int)pengumumanToa.length(); i++) pengumumanToa[i] = toupper(pengumumanToa[i]);
+    cout << "Lewat toa: " << pengumumanToa << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 7. Judul Buku Rapi
+----------------------------------------------------------------------
+
+Ubah judul buku menjadi Title Case: huruf pertama tiap kata kapital, sisanya huruf kecil.
+
+[CONTOH TAMPILAN]
+Judul buku: laSKar pELangi di TANAH belitung
+Judul rapi: Laskar Pelangi Di Tanah Belitung
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string judulBuku;
+    cout << "Judul buku: ";
+    getline(cin, judulBuku);
+    bool awalKataJudul = true;
+    for (int i = 0; i < (int)judulBuku.length(); i++) {
+        if (judulBuku[i] == ' ') {
+            awalKataJudul = true;
+        } else if (awalKataJudul) {
+            judulBuku[i] = toupper(judulBuku[i]);
+            awalKataJudul = false;
+        } else {
+            judulBuku[i] = tolower(judulBuku[i]);
+        }
+    }
+    cout << "Judul rapi: " << judulBuku << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 8. Surat Cermin Leonardo
+----------------------------------------------------------------------
+
+Seniman menulis surat secara terbalik. Balik seluruh karakter kalimat dengan menukar karakter ujung ke ujung.
+
+[CONTOH TAMPILAN]
+Isi surat: Rahasia lukisan ada di bawah
+Surat terbalik: hawab id ada nasikul aisahaR
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string suratSeniman;
+    cout << "Isi surat: ";
+    getline(cin, suratSeniman);
+    for (int kiri = 0, kanan = suratSeniman.length() - 1; kiri < kanan; kiri++, kanan--) {
+        char simpanHuruf = suratSeniman[kiri];
+        suratSeniman[kiri] = suratSeniman[kanan];
+        suratSeniman[kanan] = simpanHuruf;
+    }
+    cout << "Surat terbalik: " << suratSeniman << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 9. Kalimat Palindrom Sang Pujangga
+----------------------------------------------------------------------
+
+Cek apakah sebuah kalimat palindrom dengan mengabaikan spasi, tanda baca, dan besar kecil huruf.
+
+[CONTOH TAMPILAN]
+Kalimat: Kasur ini rusak
+Huruf yang dicek: kasurinirusak
+Kalimat palindrom!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string syairPujangga, hurufBersih = "";
+    cout << "Kalimat: ";
+    getline(cin, syairPujangga);
+    for (int i = 0; i < (int)syairPujangga.length(); i++)
+        if (isalpha(syairPujangga[i])) hurufBersih += (char)tolower(syairPujangga[i]);
+    bool palindromSyair = true;
+    for (int i = 0, j = hurufBersih.length() - 1; i < j; i++, j--)
+        if (hurufBersih[i] != hurufBersih[j]) { palindromSyair = false; break; }
+    cout << "Huruf yang dicek: " << hurufBersih << endl;
+    if (palindromSyair) cout << "Kalimat palindrom!" << endl;
+    else cout << "Bukan kalimat palindrom." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 10. Juru Hitung Kata Pidato
+----------------------------------------------------------------------
+
+Hitung jumlah kata dalam naskah pidato. Kata dipisahkan satu atau lebih spasi.
+
+[CONTOH TAMPILAN]
+Naskah pidato:   Rakyat   kerajaan yang  saya cintai  
+Jumlah kata: 5
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string naskahPidato;
+    int jumlahKataPidato = 0;
+    cout << "Naskah pidato: ";
+    getline(cin, naskahPidato);
+    for (int i = 0; i < (int)naskahPidato.length(); i++) {
+        bool awalKata = naskahPidato[i] != ' ' && (i == 0 || naskahPidato[i - 1] == ' ');
+        if (awalKata) jumlahKataPidato++;
+    }
+    cout << "Jumlah kata: " << jumlahKataPidato << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 11. Kata Terpanjang dalam Dongeng
+----------------------------------------------------------------------
+
+Temukan kata terpanjang dalam sebuah kalimat dongeng. Jika ada yang sama panjang, ambil yang pertama.
+
+[CONTOH TAMPILAN]
+Kalimat dongeng: Si kancil cerdik menipu buaya sungai
+Kata terpanjang: kancil (6 huruf)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string kalimatDongeng, kataSekarang = "", kataJuara = "";
+    cout << "Kalimat dongeng: ";
+    getline(cin, kalimatDongeng);
+    kalimatDongeng += " ";
+    for (int i = 0; i < (int)kalimatDongeng.length(); i++) {
+        if (kalimatDongeng[i] != ' ') {
+            kataSekarang += kalimatDongeng[i];
+        } else {
+            if (kataSekarang.length() > kataJuara.length()) kataJuara = kataSekarang;
+            kataSekarang = "";
+        }
+    }
+    cout << "Kata terpanjang: " << kataJuara << " (" << kataJuara.length() << " huruf)" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 12. Mata-Mata Pencari Kata Sandi
+----------------------------------------------------------------------
+
+Cari semua posisi kemunculan kata sandi dalam pesan memakai find. Posisi ditampilkan mulai dari 1.
+
+[CONTOH TAMPILAN]
+Pesan: kode merah, ulangi kode merah sekarang
+Kata yang dicari: merah
+Ditemukan di posisi: 6 25
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string pesanIntel, sandiDicari;
+    cout << "Pesan: ";
+    getline(cin, pesanIntel);
+    cout << "Kata yang dicari: ";
+    getline(cin, sandiDicari);
+    size_t posisiSandi = pesanIntel.find(sandiDicari);
+    if (posisiSandi == string::npos) {
+        cout << "Kata tidak ditemukan." << endl;
+        return 0;
+    }
+    cout << "Ditemukan di posisi:";
+    while (posisiSandi != string::npos) {
+        cout << " " << posisiSandi + 1;
+        posisiSandi = pesanIntel.find(sandiDicari, posisiSandi + 1);
+    }
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 13. Revisi Naskah Drama
+----------------------------------------------------------------------
+
+Sutradara mengganti nama tokoh di naskah. Ganti semua kemunculan kata lama dengan kata baru memakai find dan replace.
+
+[CONTOH TAMPILAN]
+Naskah: Bawang Merah memanggil Bawang Putih, lalu Bawang Putih menjawab
+Kata lama: Putih
+Kata baru: Emas
+Hasil revisi: Bawang Merah memanggil Bawang Emas, lalu Bawang Emas menjawab
+Diganti 2 kali
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string naskahDrama, tokohLama, tokohBaru;
+    cout << "Naskah: ";
+    getline(cin, naskahDrama);
+    cout << "Kata lama: ";
+    getline(cin, tokohLama);
+    cout << "Kata baru: ";
+    getline(cin, tokohBaru);
+    int jumlahGanti = 0;
+    size_t posGanti = naskahDrama.find(tokohLama);
+    while (posGanti != string::npos) {
+        naskahDrama.replace(posGanti, tokohLama.length(), tokohBaru);
+        jumlahGanti++;
+        posGanti = naskahDrama.find(tokohLama, posGanti + tokohBaru.length());
+    }
+    cout << "Hasil revisi: " << naskahDrama << endl;
+    cout << "Diganti " << jumlahGanti << " kali" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 14. Mesin Ketik Rusak Spasi Ganda
+----------------------------------------------------------------------
+
+Mesin ketik rusak membuat spasi berlebihan. Rapikan kalimat: hapus spasi di awal dan akhir, dan ubah spasi beruntun menjadi satu spasi.
+
+[CONTOH TAMPILAN]
+Ketikan:    Hari    ini   cerah   sekali   
+Rapi: [Hari ini cerah sekali]
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string ketikanRusak, ketikanRapi = "";
+    cout << "Ketikan: ";
+    getline(cin, ketikanRusak);
+    for (int i = 0; i < (int)ketikanRusak.length(); i++) {
+        if (ketikanRusak[i] != ' ') {
+            ketikanRapi += ketikanRusak[i];
+        } else if (ketikanRapi.length() > 0 && ketikanRapi[ketikanRapi.length() - 1] != ' ') {
+            ketikanRapi += ' ';
+        }
+    }
+    if (ketikanRapi.length() > 0 && ketikanRapi[ketikanRapi.length() - 1] == ' ') ketikanRapi.erase(ketikanRapi.length() - 1);
+    cout << "Rapi: [" << ketikanRapi << "]" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 15. Sandi Tanpa Vokal Para Ninja
+----------------------------------------------------------------------
+
+Ninja menyingkat pesan dengan membuang semua huruf vokal. Gunakan erase saat menemukan vokal.
+
+[CONTOH TAMPILAN]
+Pesan: Serang benteng saat fajar
+Sandi ninja: Srng bntng st fjr
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string pesanNinja;
+    cout << "Pesan: ";
+    getline(cin, pesanNinja);
+    int posNinja = 0;
+    while (posNinja < (int)pesanNinja.length()) {
+        char cekNinja = tolower(pesanNinja[posNinja]);
+        if (cekNinja == 'a' || cekNinja == 'i' || cekNinja == 'u' || cekNinja == 'e' || cekNinja == 'o') pesanNinja.erase(posNinja, 1);
+        else posNinja++;
+    }
+    cout << "Sandi ninja: " << pesanNinja << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 16. Kurir Rahasia Dua Arah (Caesar)
+----------------------------------------------------------------------
+
+Buat program yang bisa menyandikan (E) dan membuka sandi (D) dengan geseran k. Membuka sandi = menggeser sebanyak 26 − k.
+
+[CONTOH TAMPILAN]
+Mode (E=sandikan, D=buka): D
+Kunci geser: 3
+Teks: Shuwhpxdq Udkdvld
+Hasil: Pertemuan Rahasia
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    char modeKurir;
+    int geserKurir;
+    string teksKurir;
+    cout << "Mode (E=sandikan, D=buka): ";
+    cin >> modeKurir;
+    cout << "Kunci geser: ";
+    cin >> geserKurir;
+    cin.ignore();
+    cout << "Teks: ";
+    getline(cin, teksKurir);
+    geserKurir %= 26;
+    if (modeKurir == 'D' || modeKurir == 'd') geserKurir = 26 - geserKurir;
+    for (int i = 0; i < (int)teksKurir.length(); i++) {
+        if (teksKurir[i] >= 'a' && teksKurir[i] <= 'z') teksKurir[i] = (teksKurir[i] - 'a' + geserKurir) % 26 + 'a';
+        else if (teksKurir[i] >= 'A' && teksKurir[i] <= 'Z') teksKurir[i] = (teksKurir[i] - 'A' + geserKurir) % 26 + 'A';
+    }
+    cout << "Hasil: " << teksKurir << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 17. Sandi Cermin Atbash
+----------------------------------------------------------------------
+
+Sandi Atbash membalik alfabet: A↔Z, B↔Y, C↔X, dan seterusnya. Menyandikan dua kali akan kembali ke teks asli.
+
+[CONTOH TAMPILAN]
+Pesan: Pasukan Siap
+Sandi Atbash: Kzhfpzm Hrzk
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string pesanAtbash;
+    cout << "Pesan: ";
+    getline(cin, pesanAtbash);
+    for (int i = 0; i < (int)pesanAtbash.length(); i++) {
+        if (pesanAtbash[i] >= 'a' && pesanAtbash[i] <= 'z') pesanAtbash[i] = 'z' - (pesanAtbash[i] - 'a');
+        else if (pesanAtbash[i] >= 'A' && pesanAtbash[i] <= 'Z') pesanAtbash[i] = 'Z' - (pesanAtbash[i] - 'A');
+    }
+    cout << "Sandi Atbash: " << pesanAtbash << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 18. Membedah Nomor Induk Santri
+----------------------------------------------------------------------
+
+Nomor induk santri berformat TTTTPPUUU (4 digit tahun masuk, 2 digit kode asrama, 3 digit nomor urut). Pecah dengan substr.
+
+[CONTOH TAMPILAN]
+Nomor induk (9 digit): 202407015
+Tahun masuk : 2024
+Kode asrama : 07
+Nomor urut  : 015
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string nomorIndukSantri;
+    cout << "Nomor induk (9 digit): ";
+    cin >> nomorIndukSantri;
+    if (nomorIndukSantri.length() != 9) {
+        cout << "Format nomor induk salah!" << endl;
+        return 0;
+    }
+    cout << "Tahun masuk : " << nomorIndukSantri.substr(0, 4) << endl;
+    cout << "Kode asrama : " << nomorIndukSantri.substr(4, 2) << endl;
+    cout << "Nomor urut  : " << nomorIndukSantri.substr(6, 3) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 19. Petugas Pos Pemeriksa Email
+----------------------------------------------------------------------
+
+Email dianggap sah jika: tepat satu '@', ada karakter sebelum '@', dan ada titik setelah '@' yang tidak berada di akhir. Jika sah, tampilkan nama pengguna dan domainnya.
+
+[CONTOH TAMPILAN]
+Alamat email: kurir.desa@posindo.id
+Email sah.
+Pengguna: kurir.desa
+Domain  : posindo.id
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string alamatSurel;
+    cout << "Alamat email: ";
+    cin >> alamatSurel;
+    int jumlahAt = 0;
+    for (int i = 0; i < (int)alamatSurel.length(); i++) if (alamatSurel[i] == '@') jumlahAt++;
+    size_t posAt = alamatSurel.find('@');
+    size_t posTitik = (posAt == string::npos) ? string::npos : alamatSurel.find('.', posAt);
+    if (jumlahAt == 1 && posAt > 0 && posTitik != string::npos && posTitik != alamatSurel.length() - 1 && posTitik > posAt + 1) {
+        cout << "Email sah." << endl;
+        cout << "Pengguna: " << alamatSurel.substr(0, posAt) << endl;
+        cout << "Domain  : " << alamatSurel.substr(posAt + 1) << endl;
+    } else {
+        cout << "Email tidak sah!" << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 20. Penjaga Brankas Kata Sandi
+----------------------------------------------------------------------
+
+Kata sandi kuat jika panjang minimal 8, punya huruf besar, huruf kecil, dan angka. Tampilkan syarat apa saja yang belum terpenuhi.
+
+[CONTOH TAMPILAN]
+Kata sandi: kerajaan99
+- Butuh huruf besar
+Kata sandi lemah!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string sandiBrankas;
+    bool adaBesar = false, adaKecil = false, adaAngka = false;
+    cout << "Kata sandi: ";
+    cin >> sandiBrankas;
+    for (int i = 0; i < (int)sandiBrankas.length(); i++) {
+        if (isupper(sandiBrankas[i])) adaBesar = true;
+        else if (islower(sandiBrankas[i])) adaKecil = true;
+        else if (isdigit(sandiBrankas[i])) adaAngka = true;
+    }
+    bool sandiKuat = true;
+    if (sandiBrankas.length() < 8) { cout << "- Minimal 8 karakter" << endl; sandiKuat = false; }
+    if (!adaBesar) { cout << "- Butuh huruf besar" << endl; sandiKuat = false; }
+    if (!adaKecil) { cout << "- Butuh huruf kecil" << endl; sandiKuat = false; }
+    if (!adaAngka) { cout << "- Butuh angka" << endl; sandiKuat = false; }
+    if (sandiKuat) cout << "Kata sandi kuat, brankas terkunci aman!" << endl;
+    else cout << "Kata sandi lemah!" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 21. Sensor Nomor HP di Papan Pengumuman
+----------------------------------------------------------------------
+
+Nomor HP yang ditempel di papan umum harus disamarkan: tampilkan 4 digit pertama dan 3 digit terakhir saja, sisanya diganti *.
+
+[CONTOH TAMPILAN]
+Nomor HP: 081234567890
+Ditampilkan: 0812*890
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string nomorPonsel;
+    cout << "Nomor HP: ";
+    cin >> nomorPonsel;
+    if (nomorPonsel.length() <= 7) {
+        cout << "Nomor terlalu pendek untuk disamarkan." << endl;
+        return 0;
+    }
+    string nomorSamaran = nomorPonsel;
+    for (int i = 4; i < (int)nomorPonsel.length() - 3; i++) nomorSamaran[i] = '*';
+    cout << "Ditampilkan: " << nomorSamaran << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 22. Teka-Teki Anagram Pustakawan
+----------------------------------------------------------------------
+
+Dua kata disebut anagram jika tersusun dari huruf yang sama dengan jumlah yang sama (contoh: "kasur" dan "rusak"). Cek memakai array penghitung 26 huruf.
+
+[CONTOH TAMPILAN]
+Kata pertama: Kasur
+Kata kedua: rusak
+Kasur dan rusak adalah anagram!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string kataPertama, kataKedua;
+    int hitungHuruf[26] = {0};
+    cout << "Kata pertama: ";
+    cin >> kataPertama;
+    cout << "Kata kedua: ";
+    cin >> kataKedua;
+    for (int i = 0; i < (int)kataPertama.length(); i++) if (isalpha(kataPertama[i])) hitungHuruf[tolower(kataPertama[i]) - 'a']++;
+    for (int i = 0; i < (int)kataKedua.length(); i++) if (isalpha(kataKedua[i])) hitungHuruf[tolower(kataKedua[i]) - 'a']--;
+    bool anagram = true;
+    for (int h = 0; h < 26; h++) if (hitungHuruf[h] != 0) { anagram = false; break; }
+    if (anagram) cout << kataPertama << " dan " << kataKedua << " adalah anagram!" << endl;
+    else cout << "Bukan anagram." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 23. Statistik Huruf Prasasti Kuno
+----------------------------------------------------------------------
+
+Hitung frekuensi tiap huruf (a–z) dalam teks prasasti dan tampilkan hanya huruf yang muncul.
+
+[CONTOH TAMPILAN]
+Teks prasasti: Gajah Mada
+a: 4
+d: 1
+g: 1
+h: 1
+j: 1
+m: 1
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string teksPrasasti;
+    int frekuensiHuruf[26] = {0};
+    cout << "Teks prasasti: ";
+    getline(cin, teksPrasasti);
+    for (int i = 0; i < (int)teksPrasasti.length(); i++)
+        if (isalpha(teksPrasasti[i])) frekuensiHuruf[tolower(teksPrasasti[i]) - 'a']++;
+    for (int h = 0; h < 26; h++)
+        if (frekuensiHuruf[h] > 0) cout << char('a' + h) << ": " << frekuensiHuruf[h] << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 24. Pemadat Pesan Telegraf (Run-Length Encoding)
+----------------------------------------------------------------------
+
+Telegraf mahal per huruf, jadi huruf yang berulang berturut-turut dipadatkan: "aaabbc" menjadi "a3b2c1".
+
+[CONTOH TAMPILAN]
+Pesan: wwwwaaadexxxxxx
+Pesan padat: w4a3d1e1x6
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string pesanPanjang, pesanPadat = "";
+    cout << "Pesan: ";
+    cin >> pesanPanjang;
+    int idxPesan = 0;
+    while (idxPesan < (int)pesanPanjang.length()) {
+        char hurufUlang = pesanPanjang[idxPesan];
+        int jumlahUlang = 0;
+        while (idxPesan < (int)pesanPanjang.length() && pesanPanjang[idxPesan] == hurufUlang) {
+            jumlahUlang++;
+            idxPesan++;
+        }
+        pesanPadat += hurufUlang + to_string(jumlahUlang);
+    }
+    cout << "Pesan padat: " << pesanPadat << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 25. Pembuka Pesan Telegraf Padat
+----------------------------------------------------------------------
+
+Kebalikan soal sebelumnya: buka pesan padat "a3b2c1" menjadi "aaabbc". Angka bisa lebih dari satu digit.
+
+[CONTOH TAMPILAN]
+Pesan padat: k3a12z2
+Pesan asli: kkkaaaaaaaaaaaazz
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string pesanTerkompres, pesanTerbuka = "";
+    cout << "Pesan padat: ";
+    cin >> pesanTerkompres;
+    int idxKompres = 0;
+    while (idxKompres < (int)pesanTerkompres.length()) {
+        char hurufKompres = pesanTerkompres[idxKompres++];
+        int ulangKompres = 0;
+        while (idxKompres < (int)pesanTerkompres.length() && isdigit(pesanTerkompres[idxKompres])) {
+            ulangKompres = ulangKompres * 10 + (pesanTerkompres[idxKompres] - '0');
+            idxKompres++;
+        }
+        pesanTerbuka += string(ulangKompres, hurufKompres);
+    }
+    cout << "Pesan asli: " << pesanTerbuka << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 26. Stempel Inisial Raja
+----------------------------------------------------------------------
+
+Buat stempel berisi inisial nama raja: huruf pertama tiap kata, kapital, tanpa titik.
+
+[CONTOH TAMPILAN]
+Nama raja: sri baginda maharaja diraja
+Stempel: SBMD
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string gelarRaja, stempelRaja = "";
+    cout << "Nama raja: ";
+    getline(cin, gelarRaja);
+    for (int i = 0; i < (int)gelarRaja.length(); i++)
+        if (gelarRaja[i] != ' ' && (i == 0 || gelarRaja[i - 1] == ' ')) stempelRaja += (char)toupper(gelarRaja[i]);
+    cout << "Stempel: " << stempelRaja << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 27. Pembuat Username Warnet
+----------------------------------------------------------------------
+
+Username dibuat dari nama depan (huruf kecil semua) ditambah tiga huruf pertama nama belakang (huruf kecil) dan dua digit terakhir tahun lahir. Gunakan to_string dan substr.
+
+[CONTOH TAMPILAN]
+Nama depan: Dimas
+Nama belakang: Pratama
+Tahun lahir: 2006
+Username: dimaspra06
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string namaDepanUser, namaBelakangUser;
+    int tahunLahirUser;
+    cout << "Nama depan: ";
+    cin >> namaDepanUser;
+    cout << "Nama belakang: ";
+    cin >> namaBelakangUser;
+    cout << "Tahun lahir: ";
+    cin >> tahunLahirUser;
+    string usernameWarnet = namaDepanUser + namaBelakangUser.substr(0, 3);
+    for (int i = 0; i < (int)usernameWarnet.length(); i++) usernameWarnet[i] = tolower(usernameWarnet[i]);
+    string tahunTeks = to_string(tahunLahirUser);
+    usernameWarnet += tahunTeks.substr(tahunTeks.length() - 2);
+    cout << "Username: " << usernameWarnet << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 28. Kalkulator Kertas Struk
+----------------------------------------------------------------------
+
+Struk belanja berisi angka sebagai teks. Ubah teks angka menjadi int secara manual (tanpa stoi), lalu jumlahkan dua struk.
+
+[CONTOH TAMPILAN]
+Total struk 1: 45750
+Total struk 2: 128300
+Jumlah kedua struk: 174050
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string strukSatu, strukDua;
+    cout << "Total struk 1: ";
+    cin >> strukSatu;
+    cout << "Total struk 2: ";
+    cin >> strukDua;
+    long long nilaiStrukSatu = 0, nilaiStrukDua = 0;
+    for (int i = 0; i < (int)strukSatu.length(); i++) nilaiStrukSatu = nilaiStrukSatu * 10 + (strukSatu[i] - '0');
+    for (int i = 0; i < (int)strukDua.length(); i++) nilaiStrukDua = nilaiStrukDua * 10 + (strukDua[i] - '0');
+    cout << "Jumlah kedua struk: " << nilaiStrukSatu + nilaiStrukDua << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 29. Tiket Undian Bolak-Balik
+----------------------------------------------------------------------
+
+Panitia undian membalik nomor tiket memakai to_string, lalu mengubahnya kembali ke angka dengan stoi dan menjumlahkan nomor asli dengan nomor terbalik.
+
+[CONTOH TAMPILAN]
+Nomor tiket: 4721
+Nomor terbalik: 1274
+Jumlah asli + terbalik: 5995
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    int tiketUndian;
+    cout << "Nomor tiket: ";
+    cin >> tiketUndian;
+    string teksTiket = to_string(tiketUndian), tiketTerbalik = "";
+    for (int i = teksTiket.length() - 1; i >= 0; i--) tiketTerbalik += teksTiket[i];
+    int angkaTerbalik = stoi(tiketTerbalik);
+    cout << "Nomor terbalik: " << angkaTerbalik << endl;
+    cout << "Jumlah asli + terbalik: " << tiketUndian + angkaTerbalik << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 30. Juru Tulis Kuitansi Terbilang
+----------------------------------------------------------------------
+
+Kuitansi harus menuliskan angka dengan kata. Ubah angka 0–999 menjadi teks terbilang dalam bahasa Indonesia (perhatikan "sebelas", "seratus", "sepuluh").
+
+[CONTOH TAMPILAN]
+Angka (0-999): 517
+lima ratus tujuh belas
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+string kataSatuan[10] = {"", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan"};
+
+string terbilangPuluhan(int angkaPuluhan) {
+    if (angkaPuluhan < 10) return kataSatuan[angkaPuluhan];
+    if (angkaPuluhan == 10) return "sepuluh";
+    if (angkaPuluhan == 11) return "sebelas";
+    if (angkaPuluhan < 20) return kataSatuan[angkaPuluhan % 10] + " belas";
+    string hasilPuluhan = kataSatuan[angkaPuluhan / 10] + " puluh";
+    if (angkaPuluhan % 10 != 0) hasilPuluhan += " " + kataSatuan[angkaPuluhan % 10];
+    return hasilPuluhan;
+}
+
+int main() {
+    int angkaKuitansi;
+    cout << "Angka (0-999): ";
+    cin >> angkaKuitansi;
+    if (angkaKuitansi == 0) {
+        cout << "nol" << endl;
+        return 0;
+    }
+    string teksKuitansi = "";
+    int ratusanKuitansi = angkaKuitansi / 100, sisaKuitansi = angkaKuitansi % 100;
+    if (ratusanKuitansi == 1) teksKuitansi = "seratus";
+    else if (ratusanKuitansi > 1) teksKuitansi = kataSatuan[ratusanKuitansi] + " ratus";
+    if (sisaKuitansi > 0) {
+        if (teksKuitansi != "") teksKuitansi += " ";
+        teksKuitansi += terbilangPuluhan(sisaKuitansi);
+    }
+    cout << teksKuitansi << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 31. Label Harga dengan Titik Ribuan
+----------------------------------------------------------------------
+
+Ubah angka harga menjadi format rupiah dengan titik pemisah ribuan, contoh 1250000 menjadi Rp1.250.000. Sisipkan titik dengan insert dari belakang.
+
+[CONTOH TAMPILAN]
+Harga: 1250000
+Label: Rp1.250.000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    long long hargaLabel;
+    cout << "Harga: ";
+    cin >> hargaLabel;
+    string teksHarga = to_string(hargaLabel);
+    for (int posTitik = (int)teksHarga.length() - 3; posTitik > 0; posTitik -= 3) teksHarga.insert(posTitik, ".");
+    cout << "Label: Rp" << teksHarga << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 32. Lampu Sorot Biner Kapal
+----------------------------------------------------------------------
+
+Kapal mengirim kode biner sebagai teks ("101101"). Ubah menjadi angka desimal. Tolak jika ada karakter selain 0 dan 1.
+
+[CONTOH TAMPILAN]
+Kode biner: 1101101
+Nilai desimal: 109
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string sorotBiner;
+    cout << "Kode biner: ";
+    cin >> sorotBiner;
+    long long nilaiSorot = 0;
+    for (int i = 0; i < (int)sorotBiner.length(); i++) {
+        if (sorotBiner[i] != '0' && sorotBiner[i] != '1') {
+            cout << "Kode tidak sah!" << endl;
+            return 0;
+        }
+        nilaiSorot = nilaiSorot * 2 + (sorotBiner[i] - '0');
+    }
+    cout << "Nilai desimal: " << nilaiSorot << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 33. Bendahara Kerajaan Angka Raksasa
+----------------------------------------------------------------------
+
+Harta kerajaan terlalu besar untuk long long. Jumlahkan dua angka raksasa yang disimpan sebagai string, digit per digit dari belakang dengan simpanan (carry).
+
+[CONTOH TAMPILAN]
+Harta gudang 1: 98765432109876543210
+Harta gudang 2: 12345678901234567890
+Total harta: 111111111011111111100
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string hartaSatu, hartaDua, hartaTotal = "";
+    cout << "Harta gudang 1: ";
+    cin >> hartaSatu;
+    cout << "Harta gudang 2: ";
+    cin >> hartaDua;
+    int idxSatu = hartaSatu.length() - 1, idxDua = hartaDua.length() - 1, simpananDigit = 0;
+    while (idxSatu >= 0 || idxDua >= 0 || simpananDigit > 0) {
+        int digitJumlah = simpananDigit;
+        if (idxSatu >= 0) digitJumlah += hartaSatu[idxSatu--] - '0';
+        if (idxDua >= 0) digitJumlah += hartaDua[idxDua--] - '0';
+        hartaTotal = char('0' + digitJumlah % 10) + hartaTotal;
+        simpananDigit = digitJumlah / 10;
+    }
+    cout << "Total harta: " << hartaTotal << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 34. Urutan Kamus Dua Kata
+----------------------------------------------------------------------
+
+Tentukan kata mana yang lebih dulu muncul di kamus. Bandingkan setelah diubah ke huruf kecil, memakai operator < pada string (atau compare).
+
+[CONTOH TAMPILAN]
+Dua kata: Mangga manggis
+Mangga muncul lebih dulu di kamus
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+string kecilSemua(string kataKamus) {
+    for (int i = 0; i < (int)kataKamus.length(); i++) kataKamus[i] = tolower(kataKamus[i]);
+    return kataKamus;
+}
+
+int main() {
+    string kataKamusA, kataKamusB;
+    cout << "Dua kata: ";
+    cin >> kataKamusA >> kataKamusB;
+    int hasilBanding = kecilSemua(kataKamusA).compare(kecilSemua(kataKamusB));
+    if (hasilBanding < 0) cout << kataKamusA << " muncul lebih dulu di kamus" << endl;
+    else if (hasilBanding > 0) cout << kataKamusB << " muncul lebih dulu di kamus" << endl;
+    else cout << "Kedua kata sama" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 35. Buku Absen Kelas Silat (Array of String)
+----------------------------------------------------------------------
+
+Simpan nama-nama murid dalam array string. Tampilkan nama terpanjang dan semua nama yang diawali huruf tertentu.
+
+[CONTOH TAMPILAN]
+Jumlah murid: 5
+Nama-nama murid: Bima Arjuna Banyu Kirana Bayu
+Huruf awal yang dicari: B
+Nama terpanjang: Arjuna
+Nama berawalan B: Bima Banyu Bayu
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string absenSilat[50];
+    int jumlahAbsen;
+    char hurufAwalCari;
+    cout << "Jumlah murid: ";
+    cin >> jumlahAbsen;
+    cout << "Nama-nama murid: ";
+    for (int i = 0; i < jumlahAbsen; i++) cin >> absenSilat[i];
+    cout << "Huruf awal yang dicari: ";
+    cin >> hurufAwalCari;
+    int idxTerpanjang = 0;
+    for (int i = 1; i < jumlahAbsen; i++) if (absenSilat[i].length() > absenSilat[idxTerpanjang].length()) idxTerpanjang = i;
+    cout << "Nama terpanjang: " << absenSilat[idxTerpanjang] << endl;
+    cout << "Nama berawalan " << hurufAwalCari << ":";
+    for (int i = 0; i < jumlahAbsen; i++) if (absenSilat[i][0] == hurufAwalCari) cout << " " << absenSilat[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 36. Moderator Forum Desa
+----------------------------------------------------------------------
+
+Kata terlarang di forum desa diganti bintang sepanjang kata tersebut. Daftar kata terlarang disimpan dalam array string: "bodoh", "malas", "payah". Pencocokan tidak membedakan besar kecil.
+
+[CONTOH TAMPILAN]
+Komentar: Dasar BODOH dan malas, timmu payah
+Setelah disensor: Dasar * dan *, timmu *
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string kataTerlarang[3] = {"bodoh", "malas", "payah"};
+    string komentarWarga, komentarKecil;
+    cout << "Komentar: ";
+    getline(cin, komentarWarga);
+    komentarKecil = komentarWarga;
+    for (int i = 0; i < (int)komentarKecil.length(); i++) komentarKecil[i] = tolower(komentarKecil[i]);
+    for (int k = 0; k < 3; k++) {
+        size_t posSensor = komentarKecil.find(kataTerlarang[k]);
+        while (posSensor != string::npos) {
+            for (int s = 0; s < (int)kataTerlarang[k].length(); s++) komentarWarga[posSensor + s] = '*';
+            posSensor = komentarKecil.find(kataTerlarang[k], posSensor + 1);
+        }
+    }
+    cout << "Setelah disensor: " << komentarWarga << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 37. Bahasa G Anak Kampung
+----------------------------------------------------------------------
+
+Anak kampung bicara dengan "bahasa G": setiap huruf vokal diikuti huruf g dan vokal yang sama. Contoh "makan" menjadi "magakagan".
+
+[CONTOH TAMPILAN]
+Ucapan: aku mau main
+Bahasa G: agakugu magaugu magaigin
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string ucapanBiasa, ucapanBahasaG = "";
+    cout << "Ucapan: ";
+    getline(cin, ucapanBiasa);
+    for (int i = 0; i < (int)ucapanBiasa.length(); i++) {
+        char hurufUcap = ucapanBiasa[i];
+        ucapanBahasaG += hurufUcap;
+        if (hurufUcap == 'a' || hurufUcap == 'i' || hurufUcap == 'u' || hurufUcap == 'e' || hurufUcap == 'o') {
+            ucapanBahasaG += 'g';
+            ucapanBahasaG += hurufUcap;
+        }
+    }
+    cout << "Bahasa G: " << ucapanBahasaG << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 38. Penerjemah Bahasa Alay
+----------------------------------------------------------------------
+
+Ubah kalimat ke tulisan alay: a→4, i→1, e→3, o→0, s→5 (huruf besar maupun kecil). Gunakan switch.
+
+[CONTOH TAMPILAN]
+Kalimat: Selamat Pagi Semuanya
+Versi alay: 53l4m4t P4g1 53mu4ny4
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string kalimatNormal;
+    cout << "Kalimat: ";
+    getline(cin, kalimatNormal);
+    for (int i = 0; i < (int)kalimatNormal.length(); i++) {
+        switch (kalimatNormal[i]) {
+            case 'a': case 'A': kalimatNormal[i] = '4'; break;
+            case 'i': case 'I': kalimatNormal[i] = '1'; break;
+            case 'e': case 'E': kalimatNormal[i] = '3'; break;
+            case 'o': case 'O': kalimatNormal[i] = '0'; break;
+            case 's': case 'S': kalimatNormal[i] = '5'; break;
+        }
+    }
+    cout << "Versi alay: " << kalimatNormal << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 39. Burung Kakaktua Pengulang Kata
+----------------------------------------------------------------------
+
+Hitung berapa kali sebuah potongan kata (substring) muncul dalam kalimat, termasuk yang tumpang tindih (contoh "ana" muncul 2 kali di "banana").
+
+[CONTOH TAMPILAN]
+Kalimat: banana bandana
+Potongan kata: ana
+"ana" muncul 3 kali
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string ocehanKakaktua, potonganKata;
+    cout << "Kalimat: ";
+    getline(cin, ocehanKakaktua);
+    cout << "Potongan kata: ";
+    getline(cin, potonganKata);
+    int kaliMuncul = 0;
+    size_t posMuncul = ocehanKakaktua.find(potonganKata);
+    while (posMuncul != string::npos) {
+        kaliMuncul++;
+        posMuncul = ocehanKakaktua.find(potonganKata, posMuncul + 1);
+    }
+    cout << "\"" << potonganKata << "\" muncul " << kaliMuncul << " kali" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 40. Pemecah Kalimat Jadi Kata
+----------------------------------------------------------------------
+
+Pecah kalimat menjadi kata-kata dan simpan ke array string, lalu tampilkan setiap kata bernomor beserta panjangnya.
+
+[CONTOH TAMPILAN]
+Kalimat: Nenek moyangku seorang pelaut
+1. Nenek (5 huruf)
+2. moyangku (8 huruf)
+3. seorang (7 huruf)
+4. pelaut (6 huruf)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string kalimatUtuh, potonganKalimat[50], kataSementara = "";
+    int jumlahPotongan = 0;
+    cout << "Kalimat: ";
+    getline(cin, kalimatUtuh);
+    kalimatUtuh += " ";
+    for (int i = 0; i < (int)kalimatUtuh.length(); i++) {
+        if (kalimatUtuh[i] != ' ') kataSementara += kalimatUtuh[i];
+        else if (kataSementara != "") {
+            potonganKalimat[jumlahPotongan++] = kataSementara;
+            kataSementara = "";
+        }
+    }
+    for (int k = 0; k < jumlahPotongan; k++)
+        cout << k + 1 << ". " << potonganKalimat[k] << " (" << potonganKalimat[k].length() << " huruf)" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 41. Format Nama Daftar Hadir Resmi
+----------------------------------------------------------------------
+
+Daftar hadir resmi menulis nama dengan format "NAMA BELAKANG, Nama Depan". Ambil kata terakhir sebagai nama belakang (kapital), sisanya sebagai nama depan.
+
+[CONTOH TAMPILAN]
+Nama lengkap: Raden Ajeng Kartini
+Format: KARTINI, Raden Ajeng
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string namaResmi;
+    cout << "Nama lengkap: ";
+    getline(cin, namaResmi);
+    size_t spasiTerakhir = namaResmi.find_last_of(' ');
+    if (spasiTerakhir == string::npos) {
+        cout << "Format: " << namaResmi << endl;
+        return 0;
+    }
+    string namaBelakangResmi = namaResmi.substr(spasiTerakhir + 1);
+    string namaDepanResmi = namaResmi.substr(0, spasiTerakhir);
+    for (int i = 0; i < (int)namaBelakangResmi.length(); i++) namaBelakangResmi[i] = toupper(namaBelakangResmi[i]);
+    cout << "Format: " << namaBelakangResmi << ", " << namaDepanResmi << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 42. Penyaring Huruf Batu Tulis
+----------------------------------------------------------------------
+
+Batu tulis kuno penuh coretan angka dan simbol. Hapus semua karakter selain huruf dan spasi.
+
+[CONTOH TAMPILAN]
+Tulisan di batu: Ke#rajaan Ma@ja2pa!hit!!
+Setelah disaring: Kerajaan Majapahit
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string batuTulis, hurufTersaring = "";
+    cout << "Tulisan di batu: ";
+    getline(cin, batuTulis);
+    for (int i = 0; i < (int)batuTulis.length(); i++)
+        if (isalpha(batuTulis[i]) || batuTulis[i] == ' ') hurufTersaring += batuTulis[i];
+    cout << "Setelah disaring: " << hurufTersaring << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 43. Kata Tanpa Huruf Kembar (Isogram)
+----------------------------------------------------------------------
+
+Isogram adalah kata tanpa huruf yang berulang. Cek kata yang dimasukkan, dan jika bukan isogram tampilkan huruf pertama yang berulang.
+
+[CONTOH TAMPILAN]
+Kata: Pelangi
+Pelangi adalah isogram!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string kataUjiIsogram;
+    bool sudahMuncul[26] = {false};
+    cout << "Kata: ";
+    cin >> kataUjiIsogram;
+    for (int i = 0; i < (int)kataUjiIsogram.length(); i++) {
+        if (!isalpha(kataUjiIsogram[i])) continue;
+        int idxHuruf = tolower(kataUjiIsogram[i]) - 'a';
+        if (sudahMuncul[idxHuruf]) {
+            cout << "Bukan isogram, huruf '" << char('a' + idxHuruf) << "' berulang" << endl;
+            return 0;
+        }
+        sudahMuncul[idxHuruf] = true;
+    }
+    cout << kataUjiIsogram << " adalah isogram!" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 44. Kalimat Lengkap Guru Mengetik (Pangram)
+----------------------------------------------------------------------
+
+Pangram adalah kalimat yang memuat semua huruf a–z. Cek kalimat dan tampilkan huruf-huruf yang belum ada.
+
+[CONTOH TAMPILAN]
+Kalimat: Kucing nakal itu lompat ke atas meja
+Bukan pangram. Huruf yang belum ada: bdfhqrvwxyz
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string kalimatGuru;
+    bool hurufAda[26] = {false};
+    cout << "Kalimat: ";
+    getline(cin, kalimatGuru);
+    for (int i = 0; i < (int)kalimatGuru.length(); i++)
+        if (isalpha(kalimatGuru[i])) hurufAda[tolower(kalimatGuru[i]) - 'a'] = true;
+    string hurufHilang = "";
+    for (int h = 0; h < 26; h++) if (!hurufAda[h]) hurufHilang += char('a' + h);
+    if (hurufHilang == "") cout << "Kalimat ini pangram!" << endl;
+    else cout << "Bukan pangram. Huruf yang belum ada: " << hurufHilang << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 45. Tebak Kata Tiang Gantungan
+----------------------------------------------------------------------
+
+Kata rahasianya "pelangi". Pemain menebak satu huruf setiap giliran; huruf yang benar dibuka, salah mengurangi nyawa. Nyawa awal 5. Menang jika semua huruf terbuka.
+
+[CONTOH TAMPILAN]
+Kata: _______ | Nyawa: 5 | Tebak huruf: a
+Kata: ___a___ | Nyawa: 5 | Tebak huruf: e
+Kata: _e_a___ | Nyawa: 5 | Tebak huruf: z
+Huruf z tidak ada!
+Kata: _e_a___ | Nyawa: 4 | Tebak huruf: l
+Kata: _ela___ | Nyawa: 4 | Tebak huruf: i
+Kata: _ela__i | Nyawa: 4 | Tebak huruf: p
+Kata: pela__i | Nyawa: 4 | Tebak huruf: n
+Kata: pelan_i | Nyawa: 4 | Tebak huruf: g
+Selamat! Kata rahasianya pelangi
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string kataRahasiaGantung = "pelangi";
+    string tampilanGantung(kataRahasiaGantung.length(), '_');
+    int nyawaGantung = 5;
+    while (nyawaGantung > 0 && tampilanGantung != kataRahasiaGantung) {
+        char tebakanGantung;
+        cout << "Kata: " << tampilanGantung << " | Nyawa: " << nyawaGantung << " | Tebak huruf: ";
+        cin >> tebakanGantung;
+        bool hurufKena = false;
+        for (int i = 0; i < (int)kataRahasiaGantung.length(); i++) {
+            if (kataRahasiaGantung[i] == tebakanGantung && tampilanGantung[i] == '_') {
+                tampilanGantung[i] = tebakanGantung;
+                hurufKena = true;
+            }
+        }
+        if (!hurufKena) {
+            nyawaGantung--;
+            cout << "Huruf " << tebakanGantung << " tidak ada!" << endl;
+        }
+    }
+    if (tampilanGantung == kataRahasiaGantung) cout << "Selamat! Kata rahasianya " << kataRahasiaGantung << endl;
+    else cout << "Nyawa habis! Kata rahasianya " << kataRahasiaGantung << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 46. Penyair Vokal vs Monster Konsonan (pola game Quest IV)
+----------------------------------------------------------------------
+
+Penyair Vokal (HP 40) melawan Monster Konsonan (HP 50). Setiap giliran user memasukkan satu kata yang panjangnya harus di rentang tertentu: mulai 3–5 huruf, lalu rentang naik 2 tiap giliran. Jika jumlah vokal dalam kata ≥ jumlah konsonan, penyair menyerang dengan damage = vokal × 5. Jika tidak, monster menyerang dengan damage = jumlah konsonan.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan kata 3-5 huruf: aku
+Vokal: 2, Konsonan: 1
+Penyair melantunkan syair dengan 10 damage!
+HP Monster Konsonan: 40
+
+Giliran 2:
+Masukkan kata 5-7 huruf: sastra
+Vokal: 2, Konsonan: 4
+Monster Konsonan menggeram dengan 4 damage!
+HP Penyair Vokal: 36
+
+Giliran 3:
+Masukkan kata 7-9 huruf: kelapa
+Panjang kata tidak sesuai, ulangi!
+
+Giliran 3:
+Masukkan kata 7-9 huruf: keluarga
+Vokal: 4, Konsonan: 4
+Penyair melantunkan syair dengan 20 damage!
+HP Monster Konsonan: 20
+
+Giliran 4:
+Masukkan kata 9-11 huruf: keadaannya
+Vokal: 5, Konsonan: 5
+Penyair melantunkan syair dengan 25 damage!
+HP Monster Konsonan: 0
+
+Monster Konsonan bungkam! Penyair Vokal menang!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    int hpPenyair = 40, hpMonsterKonsonan = 50;
+    int giliranSyair = 1, panjangMin = 3, panjangMaks = 5;
+    while (hpPenyair > 0 && hpMonsterKonsonan > 0) {
+        string kataSyair;
+        cout << "\nGiliran " << giliranSyair << ":\n";
+        cout << "Masukkan kata " << panjangMin << "-" << panjangMaks << " huruf: ";
+        cin >> kataSyair;
+        if ((int)kataSyair.length() < panjangMin || (int)kataSyair.length() > panjangMaks) {
+            cout << "Panjang kata tidak sesuai, ulangi!\n";
+            continue;
+        }
+        int vokalSyair = 0, konsonanSyair = 0;
+        for (int i = 0; i < (int)kataSyair.length(); i++) {
+            char hurufSyair = tolower(kataSyair[i]);
+            if (!isalpha(hurufSyair)) continue;
+            if (hurufSyair == 'a' || hurufSyair == 'i' || hurufSyair == 'u' || hurufSyair == 'e' || hurufSyair == 'o') vokalSyair++;
+            else konsonanSyair++;
+        }
+        cout << "Vokal: " << vokalSyair << ", Konsonan: " << konsonanSyair << endl;
+        if (vokalSyair >= konsonanSyair) {
+            int bait = vokalSyair * 5;
+            hpMonsterKonsonan -= bait;
+            if (hpMonsterKonsonan < 0) hpMonsterKonsonan = 0;
+            cout << "Penyair melantunkan syair dengan " << bait << " damage!\n";
+            cout << "HP Monster Konsonan: " << hpMonsterKonsonan << endl;
+        } else {
+            hpPenyair -= konsonanSyair;
+            if (hpPenyair < 0) hpPenyair = 0;
+            cout << "Monster Konsonan menggeram dengan " << konsonanSyair << " damage!\n";
+            cout << "HP Penyair Vokal: " << hpPenyair << endl;
+        }
+        giliranSyair++;
+        panjangMin += 2;
+        panjangMaks += 2;
+    }
+    if (hpMonsterKonsonan == 0) cout << "\nMonster Konsonan bungkam! Penyair Vokal menang!\n";
+    else cout << "\nPenyair Vokal kehabisan kata... Monster Konsonan menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 47. Ksatria Palindrom vs Penyihir Acak (pola game Quest IV)
+----------------------------------------------------------------------
+
+Ksatria Palindrom (HP 30) melawan Penyihir Acak (HP 45). Setiap giliran user memasukkan kata dengan panjang minimal tertentu: mulai minimal 3 huruf dan bertambah 1 setiap giliran. Jika kata palindrom (abaikan besar kecil), ksatria menyerang dengan damage = panjang kata × 3. Jika bukan, penyihir menyerang dengan damage = panjang kata.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan kata minimal 3 huruf: ada
+ada palindrom! Ksatria menebas 9 damage!
+HP Penyihir Acak: 36
+
+Giliran 2:
+Masukkan kata minimal 4 huruf: kodok
+kodok palindrom! Ksatria menebas 15 damage!
+HP Penyihir Acak: 21
+
+Giliran 3:
+Masukkan kata minimal 5 huruf: makan
+makan bukan palindrom.. Penyihir mengutuk 5 damage!
+HP Ksatria Palindrom: 25
+
+Giliran 4:
+Masukkan kata minimal 6 huruf: katak
+Kata terlalu pendek, ulangi!
+
+Giliran 4:
+Masukkan kata minimal 6 huruf: kasurrusak
+kasurrusak palindrom! Ksatria menebas 30 damage!
+HP Penyihir Acak: 0
+
+Penyihir Acak lenyap! Ksatria Palindrom menang!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    int hpKsatriaPalindrom = 30, hpPenyihirAcak = 45;
+    int giliranKata = 1, minimalHuruf = 3;
+    while (hpKsatriaPalindrom > 0 && hpPenyihirAcak > 0) {
+        string kataPedang;
+        cout << "\nGiliran " << giliranKata << ":\n";
+        cout << "Masukkan kata minimal " << minimalHuruf << " huruf: ";
+        cin >> kataPedang;
+        if ((int)kataPedang.length() < minimalHuruf) {
+            cout << "Kata terlalu pendek, ulangi!\n";
+            continue;
+        }
+        bool kataCermin = true;
+        for (int i = 0, j = kataPedang.length() - 1; i < j; i++, j--)
+            if (tolower(kataPedang[i]) != tolower(kataPedang[j])) { kataCermin = false; break; }
+        int panjangPedang = kataPedang.length();
+        if (kataCermin) {
+            hpPenyihirAcak -= panjangPedang * 3;
+            if (hpPenyihirAcak < 0) hpPenyihirAcak = 0;
+            cout << kataPedang << " palindrom! Ksatria menebas " << panjangPedang * 3 << " damage!\n";
+            cout << "HP Penyihir Acak: " << hpPenyihirAcak << endl;
+        } else {
+            hpKsatriaPalindrom -= panjangPedang;
+            if (hpKsatriaPalindrom < 0) hpKsatriaPalindrom = 0;
+            cout << kataPedang << " bukan palindrom.. Penyihir mengutuk " << panjangPedang << " damage!\n";
+            cout << "HP Ksatria Palindrom: " << hpKsatriaPalindrom << endl;
+        }
+        giliranKata++;
+        minimalHuruf++;
+    }
+    if (hpPenyihirAcak == 0) cout << "\nPenyihir Acak lenyap! Ksatria Palindrom menang!\n";
+    else cout << "\nKsatria Palindrom kalah... Penyihir Acak menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 48. Arsiparis Pemilah Berkas
+----------------------------------------------------------------------
+
+Arsiparis memilah berkas berdasarkan ekstensi nama file (bagian setelah titik terakhir): docx/pdf/txt = dokumen, jpg/png = gambar, cpp/py = kode program, selain itu tidak dikenal.
+
+[CONTOH TAMPILAN]
+Nama berkas: laporan.final.revisi.pdf
+Ekstensi: pdf
+Masuk lemari DOKUMEN
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string namaBerkas;
+    cout << "Nama berkas: ";
+    cin >> namaBerkas;
+    size_t titikTerakhir = namaBerkas.find_last_of('.');
+    if (titikTerakhir == string::npos || titikTerakhir == namaBerkas.length() - 1) {
+        cout << "Berkas tanpa ekstensi!" << endl;
+        return 0;
+    }
+    string ekstensiBerkas = namaBerkas.substr(titikTerakhir + 1);
+    cout << "Ekstensi: " << ekstensiBerkas << endl;
+    if (ekstensiBerkas == "docx" || ekstensiBerkas == "pdf" || ekstensiBerkas == "txt") cout << "Masuk lemari DOKUMEN" << endl;
+    else if (ekstensiBerkas == "jpg" || ekstensiBerkas == "png") cout << "Masuk lemari GAMBAR" << endl;
+    else if (ekstensiBerkas == "cpp" || ekstensiBerkas == "py") cout << "Masuk lemari KODE PROGRAM" << endl;
+    else cout << "Jenis berkas tidak dikenal" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 49. Juri Lomba Mengarang
+----------------------------------------------------------------------
+
+Hitung jumlah kalimat dalam karangan (diakhiri ., ?, atau !) dan rata-rata jumlah kata per kalimat.
+
+[CONTOH TAMPILAN]
+Karangan: Aku suka hujan. Apakah kamu juga? Ayo bermain di luar!
+Jumlah kalimat: 3
+Jumlah kata: 10
+Rata-rata kata per kalimat: 3.33333
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string karanganMurid;
+    int jumlahKalimatKarangan = 0, jumlahKataKarangan = 0;
+    cout << "Karangan: ";
+    getline(cin, karanganMurid);
+    for (int i = 0; i < (int)karanganMurid.length(); i++) {
+        char c = karanganMurid[i];
+        if (c == '.' || c == '?' || c == '!') jumlahKalimatKarangan++;
+        if (c != ' ' && (i == 0 || karanganMurid[i - 1] == ' ')) jumlahKataKarangan++;
+    }
+    cout << "Jumlah kalimat: " << jumlahKalimatKarangan << endl;
+    cout << "Jumlah kata: " << jumlahKataKarangan << endl;
+    if (jumlahKalimatKarangan > 0) cout << "Rata-rata kata per kalimat: " << (double)jumlahKataKarangan / jumlahKalimatKarangan << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 50. Durasi Shift Satpam
+----------------------------------------------------------------------
+
+Jam masuk dan keluar shift ditulis sebagai teks "HH:MM". Pecah dengan substr dan stoi, lalu hitung durasi shift (shift malam bisa melewati tengah malam).
+
+[CONTOH TAMPILAN]
+Jam masuk (HH:MM): 22:15
+Jam pulang (HH:MM): 06:45
+Durasi shift: 8 jam 30 menit
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string jamMasukSatpam, jamPulangSatpam;
+    cout << "Jam masuk (HH:MM): ";
+    cin >> jamMasukSatpam;
+    cout << "Jam pulang (HH:MM): ";
+    cin >> jamPulangSatpam;
+    int menitMasuk = stoi(jamMasukSatpam.substr(0, 2)) * 60 + stoi(jamMasukSatpam.substr(3, 2));
+    int menitPulang = stoi(jamPulangSatpam.substr(0, 2)) * 60 + stoi(jamPulangSatpam.substr(3, 2));
+    int durasiShift = menitPulang - menitMasuk;
+    if (durasiShift < 0) durasiShift += 24 * 60;
+    cout << "Durasi shift: " << durasiShift / 60 << " jam " << durasiShift % 60 << " menit" << endl;
+    return 0;
+}

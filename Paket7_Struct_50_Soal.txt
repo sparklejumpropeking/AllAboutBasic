@@ -1,0 +1,2617 @@
+﻿======================================================================
+PAKET 7 — STRUCT (50 SOAL CERITA)
+======================================================================
+
+Materi: deklarasi struct, akses anggota dengan titik (.), inisialisasi struct, array of struct, struct bersarang (nested), struct berisi array, struct sebagai parameter fungsi (by value dan by reference), fungsi yang mengembalikan struct, serta pemodelan data nyata (rekening, inventaris, klasemen, antrean). Ada juga soal game bergaya Quest IV yang menyimpan data petarung dalam struct.
+
+Cara latihan: baca soal dan contoh tampilan, ketik sendiri dulu, baru cocokkan dengan jawaban.
+
+----------------------------------------------------------------------
+Soal 1. Katalog Buku Taman Bacaan
+----------------------------------------------------------------------
+
+Buat struct Buku berisi judul, penulis, tahun terbit, dan jumlah halaman. Isi dari input lalu tampilkan sebagai kartu katalog.
+
+[CONTOH TAMPILAN]
+Judul: Bumi Manusia
+Penulis: Pramoedya
+Tahun terbit dan jumlah halaman: 1980 535
++---------- KATALOG ----------+
+Judul   : Bumi Manusia
+Penulis : Pramoedya
+Terbit  : 1980
+Tebal   : 535 halaman
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Buku {
+    string judulBuku;
+    string penulisBuku;
+    int tahunTerbit;
+    int halamanBuku;
+};
+
+int main() {
+    Buku bukuTaman;
+    cout << "Judul: ";
+    getline(cin, bukuTaman.judulBuku);
+    cout << "Penulis: ";
+    getline(cin, bukuTaman.penulisBuku);
+    cout << "Tahun terbit dan jumlah halaman: ";
+    cin >> bukuTaman.tahunTerbit >> bukuTaman.halamanBuku;
+    cout << "+---------- KATALOG ----------+" << endl;
+    cout << "Judul   : " << bukuTaman.judulBuku << endl;
+    cout << "Penulis : " << bukuTaman.penulisBuku << endl;
+    cout << "Terbit  : " << bukuTaman.tahunTerbit << endl;
+    cout << "Tebal   : " << bukuTaman.halamanBuku << " halaman" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 2. Dua Menara Pengawas
+----------------------------------------------------------------------
+
+Buat struct Titik (x, y). Simpan posisi dua menara pengawas dan hitung jaraknya.
+
+[CONTOH TAMPILAN]
+Posisi menara utara (x y): 2 3
+Posisi menara selatan (x y): 10 9
+Jarak kedua menara: 10 km
+
+[JAWABAN]
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+struct Titik {
+    double x;
+    double y;
+};
+
+int main() {
+    Titik menaraUtara, menaraSelatan;
+    cout << "Posisi menara utara (x y): ";
+    cin >> menaraUtara.x >> menaraUtara.y;
+    cout << "Posisi menara selatan (x y): ";
+    cin >> menaraSelatan.x >> menaraSelatan.y;
+    double dx = menaraSelatan.x - menaraUtara.x, dy = menaraSelatan.y - menaraUtara.y;
+    cout << "Jarak kedua menara: " << sqrt(dx * dx + dy * dy) << " km" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 3. Kue Pecahan Nenek
+----------------------------------------------------------------------
+
+Buat struct Pecahan (pembilang, penyebut). Jumlahkan dua pecahan kue dan sederhanakan hasilnya memakai FPB.
+
+[CONTOH TAMPILAN]
+Bagian kue anak 1 (pembilang penyebut): 1 4
+Bagian kue anak 2 (pembilang penyebut): 2 6
+Total kue yang dimakan: 7/12
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Pecahan {
+    int pembilang;
+    int penyebut;
+};
+
+int fpbKue(int a, int b) {
+    while (b != 0) { int s = a % b; a = b; b = s; }
+    return a;
+}
+
+int main() {
+    Pecahan kueAnakSatu, kueAnakDua, totalKue;
+    cout << "Bagian kue anak 1 (pembilang penyebut): ";
+    cin >> kueAnakSatu.pembilang >> kueAnakSatu.penyebut;
+    cout << "Bagian kue anak 2 (pembilang penyebut): ";
+    cin >> kueAnakDua.pembilang >> kueAnakDua.penyebut;
+    totalKue.pembilang = kueAnakSatu.pembilang * kueAnakDua.penyebut + kueAnakDua.pembilang * kueAnakSatu.penyebut;
+    totalKue.penyebut = kueAnakSatu.penyebut * kueAnakDua.penyebut;
+    int pembagiKue = fpbKue(totalKue.pembilang, totalKue.penyebut);
+    totalKue.pembilang /= pembagiKue;
+    totalKue.penyebut /= pembagiKue;
+    cout << "Total kue yang dimakan: " << totalKue.pembilang << "/" << totalKue.penyebut << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 4. Durasi Dua Babak Wayang
+----------------------------------------------------------------------
+
+Buat struct Durasi (jam, menit). Jumlahkan durasi dua babak pertunjukan wayang, menit lebih dari 60 dikonversi ke jam.
+
+[CONTOH TAMPILAN]
+Babak 1 (jam menit): 2 45
+Babak 2 (jam menit): 3 30
+Total pertunjukan: 6 jam 15 menit
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Durasi {
+    int jam;
+    int menit;
+};
+
+int main() {
+    Durasi babakSatu, babakDua, totalWayang;
+    cout << "Babak 1 (jam menit): ";
+    cin >> babakSatu.jam >> babakSatu.menit;
+    cout << "Babak 2 (jam menit): ";
+    cin >> babakDua.jam >> babakDua.menit;
+    int menitGabungan = babakSatu.menit + babakDua.menit;
+    totalWayang.jam = babakSatu.jam + babakDua.jam + menitGabungan / 60;
+    totalWayang.menit = menitGabungan % 60;
+    cout << "Total pertunjukan: " << totalWayang.jam << " jam " << totalWayang.menit << " menit" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 5. Surat Keterangan Kelurahan
+----------------------------------------------------------------------
+
+Buat struct Tanggal (hari, bulan, tahun). Validasi tanggal, lalu tampilkan dengan nama bulan (contoh: 17 Agustus 1945). Simpan nama bulan dalam array string.
+
+[CONTOH TAMPILAN]
+Tanggal (hari bulan tahun): 17 8 1945
+Tanggal surat: 17 Agustus 1945
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Tanggal {
+    int hari;
+    int bulan;
+    int tahun;
+};
+
+int main() {
+    string namaBulanKelurahan[12] = {"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
+    int batasHari[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    Tanggal tanggalSurat;
+    cout << "Tanggal (hari bulan tahun): ";
+    cin >> tanggalSurat.hari >> tanggalSurat.bulan >> tanggalSurat.tahun;
+    if (tanggalSurat.bulan < 1 || tanggalSurat.bulan > 12) {
+        cout << "Bulan tidak valid!" << endl;
+        return 0;
+    }
+    int tahunS = tanggalSurat.tahun;
+    if ((tahunS % 4 == 0 && tahunS % 100 != 0) || tahunS % 400 == 0) batasHari[1] = 29;
+    if (tanggalSurat.hari < 1 || tanggalSurat.hari > batasHari[tanggalSurat.bulan - 1]) {
+        cout << "Hari tidak valid!" << endl;
+        return 0;
+    }
+    cout << "Tanggal surat: " << tanggalSurat.hari << " " << namaBulanKelurahan[tanggalSurat.bulan - 1] << " " << tanggalSurat.tahun << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 6. Lahan Petani di Fungsi
+----------------------------------------------------------------------
+
+Buat struct Lahan (panjang, lebar) dan dua fungsi yang menerima struct sebagai parameter: luasLahan dan kelilingLahan.
+
+[CONTOH TAMPILAN]
+Panjang dan lebar lahan (m): 25 14
+Luas lahan    : 350 m2
+Panjang pagar : 78 m
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Lahan {
+    double panjang;
+    double lebar;
+};
+
+double luasLahan(Lahan petakTani) { return petakTani.panjang * petakTani.lebar; }
+double kelilingLahan(Lahan petakTani) { return 2 * (petakTani.panjang + petakTani.lebar); }
+
+int main() {
+    Lahan sawahPakTani;
+    cout << "Panjang dan lebar lahan (m): ";
+    cin >> sawahPakTani.panjang >> sawahPakTani.lebar;
+    cout << "Luas lahan    : " << luasLahan(sawahPakTani) << " m2" << endl;
+    cout << "Panjang pagar : " << kelilingLahan(sawahPakTani) << " m" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 7. Rekap IPK Satu Angkatan
+----------------------------------------------------------------------
+
+Buat array of struct Mahasiswa (nama, NIM, IPK). Hitung rata-rata IPK angkatan dan tampilkan mahasiswa yang di bawah rata-rata.
+
+[CONTOH TAMPILAN]
+Jumlah mahasiswa: 4
+Mahasiswa 1 (nama nim ipk): Rina 2401 3.75
+Mahasiswa 2 (nama nim ipk): Dodi 2402 2.90
+Mahasiswa 3 (nama nim ipk): Wati 2403 3.40
+Mahasiswa 4 (nama nim ipk): Fajar 2404 3.10
+Rata-rata IPK angkatan: 3.2875
+Di bawah rata-rata:
+- Dodi (2.9)
+- Fajar (3.1)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Mahasiswa {
+    string nama;
+    string nim;
+    double ipk;
+};
+
+int main() {
+    Mahasiswa angkatanTI[50];
+    int jumlahMhs;
+    double totalIpkAngkatan = 0;
+    cout << "Jumlah mahasiswa: ";
+    cin >> jumlahMhs;
+    for (int i = 0; i < jumlahMhs; i++) {
+        cout << "Mahasiswa " << i + 1 << " (nama nim ipk): ";
+        cin >> angkatanTI[i].nama >> angkatanTI[i].nim >> angkatanTI[i].ipk;
+        totalIpkAngkatan += angkatanTI[i].ipk;
+    }
+    double rataIpkAngkatan = totalIpkAngkatan / jumlahMhs;
+    cout << "Rata-rata IPK angkatan: " << rataIpkAngkatan << endl;
+    cout << "Di bawah rata-rata:" << endl;
+    for (int i = 0; i < jumlahMhs; i++)
+        if (angkatanTI[i].ipk < rataIpkAngkatan) cout << "- " << angkatanTI[i].nama << " (" << angkatanTI[i].ipk << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 8. Etalase Toko Antik
+----------------------------------------------------------------------
+
+Buat array of struct Barang (nama, harga, stok). Tampilkan nilai total etalase (harga × stok) dan barang termahal.
+
+[CONTOH TAMPILAN]
+Jumlah jenis barang: 3
+Barang 1 (nama harga stok): Keris 2500000 2
+Barang 2 (nama harga stok): Gramofon 1800000 1
+Barang 3 (nama harga stok): Lampu_Minyak 350000 6
+Nilai total etalase: Rp8900000
+Barang termahal: Keris (Rp2500000)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Barang {
+    string namaAntik;
+    long long hargaAntik;
+    int stokAntik;
+};
+
+int main() {
+    Barang etalaseAntik[30];
+    int ragamAntik;
+    long long nilaiEtalase = 0;
+    cout << "Jumlah jenis barang: ";
+    cin >> ragamAntik;
+    for (int i = 0; i < ragamAntik; i++) {
+        cout << "Barang " << i + 1 << " (nama harga stok): ";
+        cin >> etalaseAntik[i].namaAntik >> etalaseAntik[i].hargaAntik >> etalaseAntik[i].stokAntik;
+    }
+    int idxTermahal = 0;
+    for (int i = 0; i < ragamAntik; i++) {
+        nilaiEtalase += etalaseAntik[i].hargaAntik * etalaseAntik[i].stokAntik;
+        if (etalaseAntik[i].hargaAntik > etalaseAntik[idxTermahal].hargaAntik) idxTermahal = i;
+    }
+    cout << "Nilai total etalase: Rp" << nilaiEtalase << endl;
+    cout << "Barang termahal: " << etalaseAntik[idxTermahal].namaAntik << " (Rp" << etalaseAntik[idxTermahal].hargaAntik << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 9. Rekening Koperasi Petani
+----------------------------------------------------------------------
+
+Buat struct Rekening (nama pemilik, saldo). Buat prosedur setor dan fungsi bool tarik yang menerima struct by reference sehingga saldonya benar-benar berubah.
+
+[CONTOH TAMPILAN]
+Nama pemilik: Pak_Darmo
+Saldo awal: 1000000
+Setor: 250000
+Saldo sekarang: Rp1250000
+Tarik: 1500000
+Gagal, saldo tidak cukup.
+Tarik: 400000
+Berhasil. Saldo: Rp850000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Rekening {
+    string pemilik;
+    long long saldo;
+};
+
+void setorTabungan(Rekening &rekTani, long long jumlahSetor) {
+    rekTani.saldo += jumlahSetor;
+}
+
+bool tarikTabungan(Rekening &rekTani, long long jumlahTarik) {
+    if (jumlahTarik > rekTani.saldo) return false;
+    rekTani.saldo -= jumlahTarik;
+    return true;
+}
+
+int main() {
+    Rekening rekeningKoperasi;
+    long long nominalSetor, tarikPertama, tarikKedua;
+    cout << "Nama pemilik: ";
+    cin >> rekeningKoperasi.pemilik;
+    cout << "Saldo awal: ";
+    cin >> rekeningKoperasi.saldo;
+    cout << "Setor: ";
+    cin >> nominalSetor;
+    setorTabungan(rekeningKoperasi, nominalSetor);
+    cout << "Saldo sekarang: Rp" << rekeningKoperasi.saldo << endl;
+    cout << "Tarik: ";
+    cin >> tarikPertama;
+    if (tarikTabungan(rekeningKoperasi, tarikPertama)) cout << "Berhasil. Saldo: Rp" << rekeningKoperasi.saldo << endl;
+    else cout << "Gagal, saldo tidak cukup." << endl;
+    cout << "Tarik: ";
+    cin >> tarikKedua;
+    if (tarikTabungan(rekeningKoperasi, tarikKedua)) cout << "Berhasil. Saldo: Rp" << rekeningKoperasi.saldo << endl;
+    else cout << "Gagal, saldo tidak cukup." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 10. Pembagian Beras Bantuan (Fungsi Mengembalikan Struct)
+----------------------------------------------------------------------
+
+Buat struct HasilBagi (bagian, sisa) dan fungsi yang mengembalikan struct tersebut saat membagi karung beras ke sejumlah keluarga.
+
+[CONTOH TAMPILAN]
+Jumlah karung dan keluarga: 125 9
+Tiap keluarga dapat 13 karung
+Sisa di gudang: 8 karung
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct HasilBagi {
+    int bagian;
+    int sisa;
+};
+
+HasilBagi bagiBeras(int totalKarung, int jumlahKeluarga) {
+    HasilBagi hasilBeras;
+    hasilBeras.bagian = totalKarung / jumlahKeluarga;
+    hasilBeras.sisa = totalKarung % jumlahKeluarga;
+    return hasilBeras;
+}
+
+int main() {
+    int karungBantuan, keluargaPenerimaBantuan;
+    cout << "Jumlah karung dan keluarga: ";
+    cin >> karungBantuan >> keluargaPenerimaBantuan;
+    HasilBagi pembagianBeras = bagiBeras(karungBantuan, keluargaPenerimaBantuan);
+    cout << "Tiap keluarga dapat " << pembagianBeras.bagian << " karung" << endl;
+    cout << "Sisa di gudang: " << pembagianBeras.sisa << " karung" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 11. Data Pegawai Kecamatan (Struct Bersarang)
+----------------------------------------------------------------------
+
+Buat struct Alamat (jalan, kota) dan struct TanggalLahir (hari, bulan, tahun), lalu struct Pegawai yang berisi nama, alamat, dan tanggal lahir.
+
+[CONTOH TAMPILAN]
+Nama: Sutrisno
+Jalan dan kota: Jl._Melati_5 Klaten
+Tanggal lahir (hari bulan tahun): 12 3 1985
+== Data Pegawai ==
+Nama   : Sutrisno
+Alamat : Jl._Melati_5, Klaten
+Lahir  : 12-3-1985
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Alamat {
+    string jalan;
+    string kota;
+};
+
+struct TanggalLahir {
+    int hari, bulan, tahun;
+};
+
+struct Pegawai {
+    string nama;
+    Alamat domisili;
+    TanggalLahir lahir;
+};
+
+int main() {
+    Pegawai pegawaiCamat;
+    cout << "Nama: ";
+    cin >> pegawaiCamat.nama;
+    cout << "Jalan dan kota: ";
+    cin >> pegawaiCamat.domisili.jalan >> pegawaiCamat.domisili.kota;
+    cout << "Tanggal lahir (hari bulan tahun): ";
+    cin >> pegawaiCamat.lahir.hari >> pegawaiCamat.lahir.bulan >> pegawaiCamat.lahir.tahun;
+    cout << "== Data Pegawai ==" << endl;
+    cout << "Nama   : " << pegawaiCamat.nama << endl;
+    cout << "Alamat : " << pegawaiCamat.domisili.jalan << ", " << pegawaiCamat.domisili.kota << endl;
+    cout << "Lahir  : " << pegawaiCamat.lahir.hari << "-" << pegawaiCamat.lahir.bulan << "-" << pegawaiCamat.lahir.tahun << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 12. Rapor Santri dengan Array dalam Struct
+----------------------------------------------------------------------
+
+Buat struct Santri berisi nama dan array nilai[3] (Fiqih, Tajwid, Hadits). Hitung rata-rata dan nilai tertinggi tiap santri.
+
+[CONTOH TAMPILAN]
+Jumlah santri: 2
+Santri 1 (nama fiqih tajwid hadits): Hasan 85 90 78
+Santri 2 (nama fiqih tajwid hadits): Husain 92 70 88
+Hasan: rata-rata 84.3333, tertinggi 90
+Husain: rata-rata 83.3333, tertinggi 92
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Santri {
+    string nama;
+    int nilai[3];
+};
+
+int main() {
+    Santri pondok[20];
+    int jumlahSantri;
+    cout << "Jumlah santri: ";
+    cin >> jumlahSantri;
+    for (int s = 0; s < jumlahSantri; s++) {
+        cout << "Santri " << s + 1 << " (nama fiqih tajwid hadits): ";
+        cin >> pondok[s].nama;
+        for (int m = 0; m < 3; m++) cin >> pondok[s].nilai[m];
+    }
+    for (int s = 0; s < jumlahSantri; s++) {
+        int totalSantri = 0, nilaiPuncak = pondok[s].nilai[0];
+        for (int m = 0; m < 3; m++) {
+            totalSantri += pondok[s].nilai[m];
+            if (pondok[s].nilai[m] > nilaiPuncak) nilaiPuncak = pondok[s].nilai[m];
+        }
+        cout << pondok[s].nama << ": rata-rata " << totalSantri / 3.0 << ", tertinggi " << nilaiPuncak << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 13. Jangkauan Menara Sinyal
+----------------------------------------------------------------------
+
+Buat struct Titik dan struct Menara (pusat bertipe Titik, jangkauan radius). Cek apakah rumah warga berada dalam jangkauan sinyal.
+
+[CONTOH TAMPILAN]
+Posisi menara (x y) dan jangkauan: 0 0 5
+Posisi rumah (x y): 3 4
+Rumah mendapat sinyal!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Titik {
+    double x, y;
+};
+
+struct Menara {
+    Titik pusat;
+    double radius;
+};
+
+int main() {
+    Menara menaraSinyal;
+    Titik rumahWarga;
+    cout << "Posisi menara (x y) dan jangkauan: ";
+    cin >> menaraSinyal.pusat.x >> menaraSinyal.pusat.y >> menaraSinyal.radius;
+    cout << "Posisi rumah (x y): ";
+    cin >> rumahWarga.x >> rumahWarga.y;
+    double selisihXR = rumahWarga.x - menaraSinyal.pusat.x;
+    double selisihYR = rumahWarga.y - menaraSinyal.pusat.y;
+    if (selisihXR * selisihXR + selisihYR * selisihYR <= menaraSinyal.radius * menaraSinyal.radius)
+        cout << "Rumah mendapat sinyal!" << endl;
+    else
+        cout << "Rumah di luar jangkauan sinyal." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 14. Kalkulator Bilangan Kompleks Insinyur
+----------------------------------------------------------------------
+
+Buat struct Kompleks (real, imajiner) dan fungsi tambah serta kali yang mengembalikan struct. Rumus kali: (a+bi)(c+di) = (ac−bd) + (ad+bc)i.
+
+[CONTOH TAMPILAN]
+Bilangan 1 (real imajiner): 3 2
+Bilangan 2 (real imajiner): 1 4
+Jumlah : 4 + 6i
+Kali   : -5 + 14i
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Kompleks {
+    double real, imaj;
+};
+
+Kompleks tambahKompleks(Kompleks p, Kompleks q) {
+    Kompleks hasilTambah = {p.real + q.real, p.imaj + q.imaj};
+    return hasilTambah;
+}
+
+Kompleks kaliKompleks(Kompleks p, Kompleks q) {
+    Kompleks hasilKali = {p.real * q.real - p.imaj * q.imaj, p.real * q.imaj + p.imaj * q.real};
+    return hasilKali;
+}
+
+void cetakKompleks(Kompleks k) {
+    cout << k.real << (k.imaj < 0 ? " - " : " + ") << (k.imaj < 0 ? -k.imaj : k.imaj) << "i" << endl;
+}
+
+int main() {
+    Kompleks arusSatu, arusDua;
+    cout << "Bilangan 1 (real imajiner): ";
+    cin >> arusSatu.real >> arusSatu.imaj;
+    cout << "Bilangan 2 (real imajiner): ";
+    cin >> arusDua.real >> arusDua.imaj;
+    cout << "Jumlah : ";
+    cetakKompleks(tambahKompleks(arusSatu, arusDua));
+    cout << "Kali   : ";
+    cetakKompleks(kaliKompleks(arusSatu, arusDua));
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 15. Jam Weker Penjaga Mercusuar
+----------------------------------------------------------------------
+
+Buat struct Jam (jam, menit, detik) dan prosedur tambahDetik yang menambah sejumlah detik ke jam (by reference) dengan perpindahan otomatis ke menit, jam, dan hari berikutnya. Tampilkan dalam format HH:MM:SS.
+
+[CONTOH TAMPILAN]
+Jam sekarang (jam menit detik): 23 58 30
+Tambah berapa detik: 150
+Jam menjadi: 00:01:00
+
+[JAWABAN]
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+struct Jam {
+    int jam, menit, detik;
+};
+
+void tambahDetik(Jam &wekerMercu, int detikTambah) {
+    int totalDetikWeker = wekerMercu.jam * 3600 + wekerMercu.menit * 60 + wekerMercu.detik + detikTambah;
+    totalDetikWeker %= 24 * 3600;
+    wekerMercu.jam = totalDetikWeker / 3600;
+    wekerMercu.menit = totalDetikWeker % 3600 / 60;
+    wekerMercu.detik = totalDetikWeker % 60;
+}
+
+void tampilJam(Jam wekerMercu) {
+    cout << setfill('0') << setw(2) << wekerMercu.jam << ":" << setw(2) << wekerMercu.menit << ":" << setw(2) << wekerMercu.detik << endl;
+}
+
+int main() {
+    Jam wekerPenjaga;
+    int detikDitambah;
+    cout << "Jam sekarang (jam menit detik): ";
+    cin >> wekerPenjaga.jam >> wekerPenjaga.menit >> wekerPenjaga.detik;
+    cout << "Tambah berapa detik: ";
+    cin >> detikDitambah;
+    tambahDetik(wekerPenjaga, detikDitambah);
+    cout << "Jam menjadi: ";
+    tampilJam(wekerPenjaga);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 16. Gudang Perlengkapan Pramuka
+----------------------------------------------------------------------
+
+Simpan daftar barang (nama, stok) dalam array of struct. Lalu proses transaksi: nama barang dan perubahan stok (positif = masuk, negatif = keluar). Stok tidak boleh minus. Ketik "selesai" untuk berhenti.
+
+[CONTOH TAMPILAN]
+Jumlah jenis barang: 3
+Barang 1 (nama stok): Tenda 5
+Barang 2 (nama stok): Tali 20
+Barang 3 (nama stok): Senter 8
+Transaksi (nama perubahan) atau selesai: Tali -6
+Stok Tali sekarang 14
+Transaksi (nama perubahan) atau selesai: Tenda -7
+Stok Tenda tidak cukup!
+Transaksi (nama perubahan) atau selesai: Kompas 3
+Barang tidak terdaftar!
+Transaksi (nama perubahan) atau selesai: Senter 4
+Stok Senter sekarang 12
+Transaksi (nama perubahan) atau selesai: selesai
+== Stok Akhir ==
+Tenda: 5
+Tali: 14
+Senter: 12
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Perlengkapan {
+    string nama;
+    int stok;
+};
+
+int main() {
+    Perlengkapan gudangPramuka[30];
+    int jenisPerlengkapan;
+    cout << "Jumlah jenis barang: ";
+    cin >> jenisPerlengkapan;
+    for (int i = 0; i < jenisPerlengkapan; i++) {
+        cout << "Barang " << i + 1 << " (nama stok): ";
+        cin >> gudangPramuka[i].nama >> gudangPramuka[i].stok;
+    }
+    string namaTransaksi;
+    int perubahanStok;
+    cout << "Transaksi (nama perubahan) atau selesai: ";
+    cin >> namaTransaksi;
+    while (namaTransaksi != "selesai") {
+        cin >> perubahanStok;
+        int posBarang = -1;
+        for (int i = 0; i < jenisPerlengkapan; i++) if (gudangPramuka[i].nama == namaTransaksi) { posBarang = i; break; }
+        if (posBarang == -1) cout << "Barang tidak terdaftar!" << endl;
+        else if (gudangPramuka[posBarang].stok + perubahanStok < 0) cout << "Stok " << namaTransaksi << " tidak cukup!" << endl;
+        else {
+            gudangPramuka[posBarang].stok += perubahanStok;
+            cout << "Stok " << namaTransaksi << " sekarang " << gudangPramuka[posBarang].stok << endl;
+        }
+        cout << "Transaksi (nama perubahan) atau selesai: ";
+        cin >> namaTransaksi;
+    }
+    cout << "== Stok Akhir ==" << endl;
+    for (int i = 0; i < jenisPerlengkapan; i++) cout << gudangPramuka[i].nama << ": " << gudangPramuka[i].stok << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 17. Raja Gol Liga Kampung
+----------------------------------------------------------------------
+
+Buat struct Pemain (nama, klub, gol). Simpan data beberapa pemain, cari pencetak gol terbanyak, dan hitung total gol per klub yang diminta.
+
+[CONTOH TAMPILAN]
+Jumlah pemain: 4
+Pemain 1 (nama klub gol): Ucok Garuda 7
+Pemain 2 (nama klub gol): Bambang Rajawali 9
+Pemain 3 (nama klub gol): Joko Garuda 5
+Pemain 4 (nama klub gol): Tono Rajawali 2
+Klub yang dicek: Garuda
+Raja gol: Bambang (Rajawali) dengan 9 gol
+Total gol Garuda: 12
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Pemain {
+    string nama;
+    string klub;
+    int gol;
+};
+
+int main() {
+    Pemain ligaKampung[30];
+    int jumlahPemainLiga;
+    string klubDicek;
+    cout << "Jumlah pemain: ";
+    cin >> jumlahPemainLiga;
+    for (int i = 0; i < jumlahPemainLiga; i++) {
+        cout << "Pemain " << i + 1 << " (nama klub gol): ";
+        cin >> ligaKampung[i].nama >> ligaKampung[i].klub >> ligaKampung[i].gol;
+    }
+    cout << "Klub yang dicek: ";
+    cin >> klubDicek;
+    int idxRajaGol = 0, golKlub = 0;
+    for (int i = 0; i < jumlahPemainLiga; i++) {
+        if (ligaKampung[i].gol > ligaKampung[idxRajaGol].gol) idxRajaGol = i;
+        if (ligaKampung[i].klub == klubDicek) golKlub += ligaKampung[i].gol;
+    }
+    cout << "Raja gol: " << ligaKampung[idxRajaGol].nama << " (" << ligaKampung[idxRajaGol].klub << ") dengan " << ligaKampung[idxRajaGol].gol << " gol" << endl;
+    cout << "Total gol " << klubDicek << ": " << golKlub << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 18. Pemeriksaan Gizi Posyandu
+----------------------------------------------------------------------
+
+Buat struct Pasien (nama, berat, tinggi dalam cm). Untuk setiap pasien hitung IMT dan kategorinya memakai fungsi yang menerima struct.
+
+[CONTOH TAMPILAN]
+Jumlah pasien: 3
+Pasien 1 (nama berat tinggiCm): Andi 70 175
+Pasien 2 (nama berat tinggiCm): Budi 95 170
+Pasien 3 (nama berat tinggiCm): Cici 45 165
+Andi: IMT 22.8571 (normal)
+Budi: IMT 32.872 (obesitas)
+Cici: IMT 16.5289 (kurus)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Pasien {
+    string nama;
+    double berat;
+    double tinggiCm;
+};
+
+double imtPasien(Pasien p) {
+    double tinggiMeter = p.tinggiCm / 100;
+    return p.berat / (tinggiMeter * tinggiMeter);
+}
+
+string kategoriGizi(double nilaiImt) {
+    if (nilaiImt < 18.5) return "kurus";
+    if (nilaiImt < 25) return "normal";
+    if (nilaiImt < 30) return "gemuk";
+    return "obesitas";
+}
+
+int main() {
+    Pasien antreanPosyandu[30];
+    int jumlahPasien;
+    cout << "Jumlah pasien: ";
+    cin >> jumlahPasien;
+    for (int i = 0; i < jumlahPasien; i++) {
+        cout << "Pasien " << i + 1 << " (nama berat tinggiCm): ";
+        cin >> antreanPosyandu[i].nama >> antreanPosyandu[i].berat >> antreanPosyandu[i].tinggiCm;
+    }
+    for (int i = 0; i < jumlahPasien; i++) {
+        double imtHasil = imtPasien(antreanPosyandu[i]);
+        cout << antreanPosyandu[i].nama << ": IMT " << imtHasil << " (" << kategoriGizi(imtHasil) << ")" << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 19. Loket Parkir Stasiun
+----------------------------------------------------------------------
+
+Buat struct Kendaraan (plat, jenis M/C, jam masuk, jam keluar). Tarif motor Rp2000/jam, mobil Rp5000/jam, minimal dihitung 1 jam. Tampilkan biaya tiap kendaraan dan pendapatan total.
+
+[CONTOH TAMPILAN]
+Jumlah kendaraan: 3
+Kendaraan 1 (plat jenis masuk keluar): B1234XY M 7 12
+Kendaraan 2 (plat jenis masuk keluar): D5678AB C 8 8
+Kendaraan 3 (plat jenis masuk keluar): F9012CD C 9 15
+B1234XY: Rp10000
+D5678AB: Rp5000
+F9012CD: Rp30000
+Pendapatan total: Rp45000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Kendaraan {
+    string plat;
+    char jenis;
+    int jamMasuk;
+    int jamKeluar;
+};
+
+int biayaParkirStasiun(Kendaraan k) {
+    int lamaParkirSt = k.jamKeluar - k.jamMasuk;
+    if (lamaParkirSt < 1) lamaParkirSt = 1;
+    return lamaParkirSt * (k.jenis == 'M' ? 2000 : 5000);
+}
+
+int main() {
+    Kendaraan catatanParkir[50];
+    int kendaraanHariIni, pendapatanStasiun = 0;
+    cout << "Jumlah kendaraan: ";
+    cin >> kendaraanHariIni;
+    for (int i = 0; i < kendaraanHariIni; i++) {
+        cout << "Kendaraan " << i + 1 << " (plat jenis masuk keluar): ";
+        cin >> catatanParkir[i].plat >> catatanParkir[i].jenis >> catatanParkir[i].jamMasuk >> catatanParkir[i].jamKeluar;
+    }
+    for (int i = 0; i < kendaraanHariIni; i++) {
+        int biayaSatu = biayaParkirStasiun(catatanParkir[i]);
+        pendapatanStasiun += biayaSatu;
+        cout << catatanParkir[i].plat << ": Rp" << biayaSatu << endl;
+    }
+    cout << "Pendapatan total: Rp" << pendapatanStasiun << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 20. Rekomendasi Film Layar Tancap
+----------------------------------------------------------------------
+
+Buat struct Film (judul, tahun, rating). Tampilkan film dengan rating minimal tertentu dan hitung rata-rata rating semua film.
+
+[CONTOH TAMPILAN]
+Jumlah film: 4
+Film 1 (judul tahun rating): Kabut_Senja 2019 8.1
+Film 2 (judul tahun rating): Hantu_Pasar 2021 6.5
+Film 3 (judul tahun rating): Laut_Biru 2015 7.8
+Film 4 (judul tahun rating): Tawa_Desa 2023 5.9
+Rating minimal: 7.5
+Rekomendasi:
+- Kabut_Senja (2019) 8.1
+- Laut_Biru (2015) 7.8
+Rata-rata rating: 7.075
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Film {
+    string judul;
+    int tahun;
+    double rating;
+};
+
+int main() {
+    Film daftarFilm[30];
+    int jumlahFilm;
+    double ratingMinimal, totalRating = 0;
+    cout << "Jumlah film: ";
+    cin >> jumlahFilm;
+    for (int i = 0; i < jumlahFilm; i++) {
+        cout << "Film " << i + 1 << " (judul tahun rating): ";
+        cin >> daftarFilm[i].judul >> daftarFilm[i].tahun >> daftarFilm[i].rating;
+        totalRating += daftarFilm[i].rating;
+    }
+    cout << "Rating minimal: ";
+    cin >> ratingMinimal;
+    cout << "Rekomendasi:" << endl;
+    for (int i = 0; i < jumlahFilm; i++)
+        if (daftarFilm[i].rating >= ratingMinimal) cout << "- " << daftarFilm[i].judul << " (" << daftarFilm[i].tahun << ") " << daftarFilm[i].rating << endl;
+    cout << "Rata-rata rating: " << totalRating / jumlahFilm << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 21. Nilai Akhir Kuliah Berbobot
+----------------------------------------------------------------------
+
+Buat struct NilaiKuliah (tugas, uts, uas). Nilai akhir = 30% tugas + 30% UTS + 40% UAS. Buat fungsi nilaiAkhir dan fungsi hurufMutu.
+
+[CONTOH TAMPILAN]
+Nama, tugas, UTS, UAS: Lestari 85 72 80
+Lestari: nilai akhir 79.1, huruf B
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct NilaiKuliah {
+    string nama;
+    double tugas, uts, uas;
+};
+
+double nilaiAkhir(NilaiKuliah nk) {
+    return 0.3 * nk.tugas + 0.3 * nk.uts + 0.4 * nk.uas;
+}
+
+char hurufMutu(double akhir) {
+    if (akhir >= 80) return 'A';
+    if (akhir >= 70) return 'B';
+    if (akhir >= 60) return 'C';
+    if (akhir >= 50) return 'D';
+    return 'E';
+}
+
+int main() {
+    NilaiKuliah mahasiswaKelas;
+    cout << "Nama, tugas, UTS, UAS: ";
+    cin >> mahasiswaKelas.nama >> mahasiswaKelas.tugas >> mahasiswaKelas.uts >> mahasiswaKelas.uas;
+    double akhirKuliah = nilaiAkhir(mahasiswaKelas);
+    cout << mahasiswaKelas.nama << ": nilai akhir " << akhirKuliah << ", huruf " << hurufMutu(akhirKuliah) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 22. Pesanan Rumah Makan Padang
+----------------------------------------------------------------------
+
+Buat struct Menu (nama, harga) dan isi array menu secara langsung. Pelanggan memesan dengan nomor menu dan jumlah (0 0 untuk selesai). Simpan pesanan sebagai array of struct Pesanan, lalu cetak struk.
+
+[CONTOH TAMPILAN]
+1. Rendang Rp18000
+2. Ayam Pop Rp15000
+3. Gulai Tunjang Rp20000
+4. Es Teh Rp4000
+Pesan (nomor jumlah), 0 0 selesai: 1 2
+Pesan (nomor jumlah), 0 0 selesai: 3 1
+Pesan (nomor jumlah), 0 0 selesai: 4 3
+Pesan (nomor jumlah), 0 0 selesai: 0 0
+===== STRUK =====
+Rendang x2 = Rp36000
+Gulai Tunjang x1 = Rp20000
+Es Teh x3 = Rp12000
+TOTAL: Rp68000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Menu {
+    string nama;
+    int harga;
+};
+
+struct Pesanan {
+    int nomorMenu;
+    int jumlah;
+};
+
+int main() {
+    Menu menuPadang[4] = {{"Rendang", 18000}, {"Ayam Pop", 15000}, {"Gulai Tunjang", 20000}, {"Es Teh", 4000}};
+    Pesanan catatanPesanan[20];
+    int banyakPesanan = 0, nomorPilih, jumlahPilih;
+    for (int i = 0; i < 4; i++) cout << i + 1 << ". " << menuPadang[i].nama << " Rp" << menuPadang[i].harga << endl;
+    cout << "Pesan (nomor jumlah), 0 0 selesai: ";
+    cin >> nomorPilih >> jumlahPilih;
+    while (nomorPilih != 0) {
+        if (nomorPilih >= 1 && nomorPilih <= 4) {
+            catatanPesanan[banyakPesanan].nomorMenu = nomorPilih - 1;
+            catatanPesanan[banyakPesanan].jumlah = jumlahPilih;
+            banyakPesanan++;
+        } else cout << "Menu tidak ada!" << endl;
+        cout << "Pesan (nomor jumlah), 0 0 selesai: ";
+        cin >> nomorPilih >> jumlahPilih;
+    }
+    int totalPadang = 0;
+    cout << "===== STRUK =====" << endl;
+    for (int i = 0; i < banyakPesanan; i++) {
+        Menu m = menuPadang[catatanPesanan[i].nomorMenu];
+        int sub = m.harga * catatanPesanan[i].jumlah;
+        totalPadang += sub;
+        cout << m.nama << " x" << catatanPesanan[i].jumlah << " = Rp" << sub << endl;
+    }
+    cout << "TOTAL: Rp" << totalPadang << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 23. Buku Telepon Desa
+----------------------------------------------------------------------
+
+Buat struct Kontak (nama, nomor). Simpan beberapa kontak, lalu cari nomor berdasarkan nama.
+
+[CONTOH TAMPILAN]
+Jumlah kontak: 3
+Kontak 1 (nama nomor): PakRT 08123456
+Kontak 2 (nama nomor): Bidan 08567890
+Kontak 3 (nama nomor): Pemadam 113
+Cari nama: Bidan
+Nomor Bidan: 08567890
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Kontak {
+    string nama;
+    string nomor;
+};
+
+int main() {
+    Kontak bukuTelepon[50];
+    int jumlahKontak;
+    string namaDicariTelp;
+    cout << "Jumlah kontak: ";
+    cin >> jumlahKontak;
+    for (int i = 0; i < jumlahKontak; i++) {
+        cout << "Kontak " << i + 1 << " (nama nomor): ";
+        cin >> bukuTelepon[i].nama >> bukuTelepon[i].nomor;
+    }
+    cout << "Cari nama: ";
+    cin >> namaDicariTelp;
+    bool ketemuKontak = false;
+    for (int i = 0; i < jumlahKontak; i++) {
+        if (bukuTelepon[i].nama == namaDicariTelp) {
+            cout << "Nomor " << namaDicariTelp << ": " << bukuTelepon[i].nomor << endl;
+            ketemuKontak = true;
+            break;
+        }
+    }
+    if (!ketemuKontak) cout << "Kontak tidak ditemukan." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 24. Jadwal Penerbangan Antar Pulau
+----------------------------------------------------------------------
+
+Buat struct Waktu (jam, menit) dan struct Penerbangan (kode, berangkat, tiba). Hitung durasi tiap penerbangan (bisa melewati tengah malam) dan cari yang terlama.
+
+[CONTOH TAMPILAN]
+Jumlah penerbangan: 3
+Penerbangan 1 (kode jamB menitB jamT menitT): GA101 6 30 8 15
+Penerbangan 2 (kode jamB menitB jamT menitT): JT202 22 40 1 10
+Penerbangan 3 (kode jamB menitB jamT menitT): ID303 13 0 14 5
+GA101: 1 jam 45 menit
+JT202: 2 jam 30 menit
+ID303: 1 jam 5 menit
+Penerbangan terlama: JT202
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Waktu {
+    int jam, menit;
+};
+
+struct Penerbangan {
+    string kode;
+    Waktu berangkat;
+    Waktu tiba;
+};
+
+int durasiTerbang(Penerbangan pb) {
+    int selisihTerbang = (pb.tiba.jam * 60 + pb.tiba.menit) - (pb.berangkat.jam * 60 + pb.berangkat.menit);
+    if (selisihTerbang < 0) selisihTerbang += 24 * 60;
+    return selisihTerbang;
+}
+
+int main() {
+    Penerbangan jadwalBandara[20];
+    int jumlahJadwal;
+    cout << "Jumlah penerbangan: ";
+    cin >> jumlahJadwal;
+    for (int i = 0; i < jumlahJadwal; i++) {
+        cout << "Penerbangan " << i + 1 << " (kode jamB menitB jamT menitT): ";
+        cin >> jadwalBandara[i].kode >> jadwalBandara[i].berangkat.jam >> jadwalBandara[i].berangkat.menit >> jadwalBandara[i].tiba.jam >> jadwalBandara[i].tiba.menit;
+    }
+    int idxTerlama = 0;
+    for (int i = 0; i < jumlahJadwal; i++) {
+        int d = durasiTerbang(jadwalBandara[i]);
+        cout << jadwalBandara[i].kode << ": " << d / 60 << " jam " << d % 60 << " menit" << endl;
+        if (d > durasiTerbang(jadwalBandara[idxTerlama])) idxTerlama = i;
+    }
+    cout << "Penerbangan terlama: " << jadwalBandara[idxTerlama].kode << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 25. Dua Lapak Pasar Bertumpuk
+----------------------------------------------------------------------
+
+Buat struct Kotak dengan dua titik: pojok kiri bawah dan pojok kanan atas. Cek apakah dua lapak pasar saling tumpang tindih, dan jika ya hitung luas daerah yang bertumpuk.
+
+[CONTOH TAMPILAN]
+Lapak 1 (x1 y1 x2 y2): 0 0 6 4
+Lapak 2 (x1 y1 x2 y2): 3 2 9 7
+Lapak bertumpuk seluas 6 m2
+
+[JAWABAN]
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Titik {
+    int x, y;
+};
+
+struct Kotak {
+    Titik kiriBawah;
+    Titik kananAtas;
+};
+
+int main() {
+    Kotak lapakSatu, lapakDua;
+    cout << "Lapak 1 (x1 y1 x2 y2): ";
+    cin >> lapakSatu.kiriBawah.x >> lapakSatu.kiriBawah.y >> lapakSatu.kananAtas.x >> lapakSatu.kananAtas.y;
+    cout << "Lapak 2 (x1 y1 x2 y2): ";
+    cin >> lapakDua.kiriBawah.x >> lapakDua.kiriBawah.y >> lapakDua.kananAtas.x >> lapakDua.kananAtas.y;
+    int kiriIrisan = max(lapakSatu.kiriBawah.x, lapakDua.kiriBawah.x);
+    int bawahIrisan = max(lapakSatu.kiriBawah.y, lapakDua.kiriBawah.y);
+    int kananIrisan = min(lapakSatu.kananAtas.x, lapakDua.kananAtas.x);
+    int atasIrisan = min(lapakSatu.kananAtas.y, lapakDua.kananAtas.y);
+    if (kiriIrisan < kananIrisan && bawahIrisan < atasIrisan)
+        cout << "Lapak bertumpuk seluas " << (kananIrisan - kiriIrisan) * (atasIrisan - bawahIrisan) << " m2" << endl;
+    else
+        cout << "Lapak tidak bertumpuk." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 26. Navigasi Perahu dengan Vektor
+----------------------------------------------------------------------
+
+Buat struct Vektor (x, y) dan fungsi: tambahVektor, panjangVektor, dan perkalian titik (dot product). Gunakan untuk arah dayung dan arus sungai.
+
+[CONTOH TAMPILAN]
+Arah dayung (x y): 3 4
+Arus sungai (x y): 1 -2
+Gerak perahu: (4, 2)
+Kecepatan dayung: 5
+Hasil kali titik: -5
+
+[JAWABAN]
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+struct Vektor {
+    double x, y;
+};
+
+Vektor tambahVektor(Vektor a, Vektor b) {
+    Vektor hasilV = {a.x + b.x, a.y + b.y};
+    return hasilV;
+}
+
+double panjangVektor(Vektor v) { return sqrt(v.x * v.x + v.y * v.y); }
+double titikVektor(Vektor a, Vektor b) { return a.x * b.x + a.y * b.y; }
+
+int main() {
+    Vektor arahDayung, arusSungai;
+    cout << "Arah dayung (x y): ";
+    cin >> arahDayung.x >> arahDayung.y;
+    cout << "Arus sungai (x y): ";
+    cin >> arusSungai.x >> arusSungai.y;
+    Vektor gerakPerahu = tambahVektor(arahDayung, arusSungai);
+    cout << "Gerak perahu: (" << gerakPerahu.x << ", " << gerakPerahu.y << ")" << endl;
+    cout << "Kecepatan dayung: " << panjangVektor(arahDayung) << endl;
+    cout << "Hasil kali titik: " << titikVektor(arahDayung, arusSungai) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 27. Dompet Pelancong Banyak Mata Uang
+----------------------------------------------------------------------
+
+Buat struct Uang (kode mata uang, jumlah, kurs ke rupiah). Pelancong punya beberapa mata uang di dompetnya; hitung total kekayaan dalam rupiah.
+
+[CONTOH TAMPILAN]
+Jumlah jenis mata uang: 3
+Uang 1 (kode jumlah kurs): USD 50 16000
+Uang 2 (kode jumlah kurs): SGD 20 12000
+Uang 3 (kode jumlah kurs): JPY 3000 105
+50 USD = Rp800000
+20 SGD = Rp240000
+3000 JPY = Rp315000
+Total dalam rupiah: Rp1355000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Uang {
+    string kode;
+    double jumlah;
+    double kursRupiah;
+};
+
+int main() {
+    Uang dompetPelancong[10];
+    int ragamUang;
+    double totalRupiahDompet = 0;
+    cout << "Jumlah jenis mata uang: ";
+    cin >> ragamUang;
+    for (int i = 0; i < ragamUang; i++) {
+        cout << "Uang " << i + 1 << " (kode jumlah kurs): ";
+        cin >> dompetPelancong[i].kode >> dompetPelancong[i].jumlah >> dompetPelancong[i].kursRupiah;
+    }
+    for (int i = 0; i < ragamUang; i++) {
+        double setaraRupiah = dompetPelancong[i].jumlah * dompetPelancong[i].kursRupiah;
+        totalRupiahDompet += setaraRupiah;
+        cout << dompetPelancong[i].jumlah << " " << dompetPelancong[i].kode << " = Rp" << (long long)setaraRupiah << endl;
+    }
+    cout << "Total dalam rupiah: Rp" << (long long)totalRupiahDompet << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 28. Slip Gaji Pabrik Tekstil
+----------------------------------------------------------------------
+
+Buat struct Karyawan (nama, gaji pokok, jam lembur, jumlah absen). Gaji bersih = gaji pokok + lembur × Rp30.000 − absen × Rp100.000. Cetak slip gaji lewat prosedur yang menerima struct.
+
+[CONTOH TAMPILAN]
+Nama, gaji pokok, jam lembur, absen: Sumarni 4000000 12 2
+===== SLIP GAJI =====
+Nama         : Sumarni
+Gaji pokok   : Rp4000000
+Lembur       : Rp360000
+Potongan     : Rp200000
+Gaji bersih  : Rp4160000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Karyawan {
+    string nama;
+    long long gajiPokok;
+    int jamLembur;
+    int absen;
+};
+
+void cetakSlip(Karyawan kry) {
+    long long uangLemburKry = kry.jamLembur * 30000LL;
+    long long potonganAbsen = kry.absen * 100000LL;
+    cout << "===== SLIP GAJI =====" << endl;
+    cout << "Nama         : " << kry.nama << endl;
+    cout << "Gaji pokok   : Rp" << kry.gajiPokok << endl;
+    cout << "Lembur       : Rp" << uangLemburKry << endl;
+    cout << "Potongan     : Rp" << potonganAbsen << endl;
+    cout << "Gaji bersih  : Rp" << kry.gajiPokok + uangLemburKry - potonganAbsen << endl;
+}
+
+int main() {
+    Karyawan buruhTekstil;
+    cout << "Nama, gaji pokok, jam lembur, absen: ";
+    cin >> buruhTekstil.nama >> buruhTekstil.gajiPokok >> buruhTekstil.jamLembur >> buruhTekstil.absen;
+    cetakSlip(buruhTekstil);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 29. Rata-rata Nilai per Kelas
+----------------------------------------------------------------------
+
+Buat struct Siswa (nama, kelas berupa huruf A/B/C, nilai). Dari data campur, hitung rata-rata nilai untuk masing-masing kelas.
+
+[CONTOH TAMPILAN]
+Jumlah siswa: 6
+Siswa 1 (nama kelas nilai): Ani A 80
+Siswa 2 (nama kelas nilai): Beni B 70
+Siswa 3 (nama kelas nilai): Caca A 90
+Siswa 4 (nama kelas nilai): Dedi C 65
+Siswa 5 (nama kelas nilai): Euis B 85
+Siswa 6 (nama kelas nilai): Fani C 75
+Kelas A: 85
+Kelas B: 77.5
+Kelas C: 70
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Siswa {
+    string nama;
+    char kelas;
+    int nilai;
+};
+
+int main() {
+    Siswa dataSekolah[50];
+    int jumlahSiswaSekolah, totalPerKelas[3] = {0}, siswaPerKelas[3] = {0};
+    cout << "Jumlah siswa: ";
+    cin >> jumlahSiswaSekolah;
+    for (int i = 0; i < jumlahSiswaSekolah; i++) {
+        cout << "Siswa " << i + 1 << " (nama kelas nilai): ";
+        cin >> dataSekolah[i].nama >> dataSekolah[i].kelas >> dataSekolah[i].nilai;
+        int idxKelas = dataSekolah[i].kelas - 'A';
+        if (idxKelas >= 0 && idxKelas < 3) {
+            totalPerKelas[idxKelas] += dataSekolah[i].nilai;
+            siswaPerKelas[idxKelas]++;
+        }
+    }
+    for (int k = 0; k < 3; k++) {
+        cout << "Kelas " << char('A' + k) << ": ";
+        if (siswaPerKelas[k] == 0) cout << "tidak ada siswa" << endl;
+        else cout << (double)totalPerKelas[k] / siswaPerKelas[k] << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 30. Klasemen Turnamen Futsal RT
+----------------------------------------------------------------------
+
+Buat struct Tim (nama, main, menang, seri, kalah, poin). Masukkan hasil pertandingan (indeks tim A, skor A, indeks tim B, skor B). Menang 3 poin, seri 1 poin. Tampilkan klasemen akhir.
+
+[CONTOH TAMPILAN]
+Jumlah tim: 3
+Nama tim: Elang Macan Banteng
+Jumlah pertandingan: 3
+Laga 1 (timA golA timB golB): 1 2 2 1
+Laga 2 (timA golA timB golB): 2 3 3 3
+Laga 3 (timA golA timB golB): 1 0 3 2
+Tim	M	Mn	S	K	Poin
+Elang	2	1	0	1	3
+Macan	2	0	1	1	1
+Banteng	2	1	1	0	4
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Tim {
+    string nama;
+    int main, menang, seri, kalah, poin;
+};
+
+int main() {
+    Tim klasemenRT[10];
+    int jumlahTim, jumlahLaga;
+    cout << "Jumlah tim: ";
+    cin >> jumlahTim;
+    cout << "Nama tim: ";
+    for (int t = 0; t < jumlahTim; t++) {
+        cin >> klasemenRT[t].nama;
+        klasemenRT[t].main = klasemenRT[t].menang = klasemenRT[t].seri = klasemenRT[t].kalah = klasemenRT[t].poin = 0;
+    }
+    cout << "Jumlah pertandingan: ";
+    cin >> jumlahLaga;
+    for (int l = 0; l < jumlahLaga; l++) {
+        int timA, golA, timB, golB;
+        cout << "Laga " << l + 1 << " (timA golA timB golB): ";
+        cin >> timA >> golA >> timB >> golB;
+        timA--; timB--;
+        klasemenRT[timA].main++;
+        klasemenRT[timB].main++;
+        if (golA > golB) { klasemenRT[timA].menang++; klasemenRT[timA].poin += 3; klasemenRT[timB].kalah++; }
+        else if (golA < golB) { klasemenRT[timB].menang++; klasemenRT[timB].poin += 3; klasemenRT[timA].kalah++; }
+        else { klasemenRT[timA].seri++; klasemenRT[timB].seri++; klasemenRT[timA].poin++; klasemenRT[timB].poin++; }
+    }
+    cout << "Tim\tM\tMn\tS\tK\tPoin" << endl;
+    for (int t = 0; t < jumlahTim; t++)
+        cout << klasemenRT[t].nama << "\t" << klasemenRT[t].main << "\t" << klasemenRT[t].menang << "\t" << klasemenRT[t].seri << "\t" << klasemenRT[t].kalah << "\t" << klasemenRT[t].poin << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 31. Perpustakaan Keliling
+----------------------------------------------------------------------
+
+Buat struct BukuPinjam (kode, judul, dipinjam bertipe bool). Proses perintah P kode (pinjam) dan K kode (kembali). Buku yang sedang dipinjam tidak bisa dipinjam lagi. Perintah S untuk selesai dan tampilkan status semua buku.
+
+[CONTOH TAMPILAN]
+Jumlah buku: 3
+Buku 1 (kode judul): B01 Atlas
+Buku 2 (kode judul): B02 Kamus
+Buku 3 (kode judul): B03 Ensiklopedia
+Perintah (P/K kode, S selesai): P B02
+Kamus berhasil dipinjam.
+Perintah (P/K kode, S selesai): P B02
+Kamus sedang dipinjam orang lain.
+Perintah (P/K kode, S selesai): K B03
+Ensiklopedia memang tidak sedang dipinjam.
+Perintah (P/K kode, S selesai): P B01
+Atlas berhasil dipinjam.
+Perintah (P/K kode, S selesai): S
+B01 Atlas: dipinjam
+B02 Kamus: dipinjam
+B03 Ensiklopedia: tersedia
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct BukuPinjam {
+    string kode;
+    string judul;
+    bool dipinjam;
+};
+
+int main() {
+    BukuPinjam mobilPustaka[20];
+    int koleksiBuku;
+    cout << "Jumlah buku: ";
+    cin >> koleksiBuku;
+    for (int i = 0; i < koleksiBuku; i++) {
+        cout << "Buku " << i + 1 << " (kode judul): ";
+        cin >> mobilPustaka[i].kode >> mobilPustaka[i].judul;
+        mobilPustaka[i].dipinjam = false;
+    }
+    char perintahPustaka;
+    string kodePerintah;
+    cout << "Perintah (P/K kode, S selesai): ";
+    cin >> perintahPustaka;
+    while (perintahPustaka != 'S') {
+        cin >> kodePerintah;
+        int posBuku = -1;
+        for (int i = 0; i < koleksiBuku; i++) if (mobilPustaka[i].kode == kodePerintah) posBuku = i;
+        if (posBuku == -1) cout << "Kode buku tidak ada." << endl;
+        else if (perintahPustaka == 'P') {
+            if (mobilPustaka[posBuku].dipinjam) cout << mobilPustaka[posBuku].judul << " sedang dipinjam orang lain." << endl;
+            else { mobilPustaka[posBuku].dipinjam = true; cout << mobilPustaka[posBuku].judul << " berhasil dipinjam." << endl; }
+        } else if (perintahPustaka == 'K') {
+            if (!mobilPustaka[posBuku].dipinjam) cout << mobilPustaka[posBuku].judul << " memang tidak sedang dipinjam." << endl;
+            else { mobilPustaka[posBuku].dipinjam = false; cout << mobilPustaka[posBuku].judul << " sudah dikembalikan." << endl; }
+        }
+        cout << "Perintah (P/K kode, S selesai): ";
+        cin >> perintahPustaka;
+    }
+    for (int i = 0; i < koleksiBuku; i++)
+        cout << mobilPustaka[i].kode << " " << mobilPustaka[i].judul << ": " << (mobilPustaka[i].dipinjam ? "dipinjam" : "tersedia") << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 32. Resepsionis Losmen Melati
+----------------------------------------------------------------------
+
+Buat struct Kamar (nomor, terisi, nama tamu). Losmen punya 4 kamar (101–104). Perintah: I nama (check-in ke kamar kosong pertama), O nomor (check-out), L (lihat semua kamar), X (keluar).
+
+[CONTOH TAMPILAN]
+Perintah (I nama / O nomor / L / X): I Joko
+Joko menempati kamar 101
+Perintah (I nama / O nomor / L / X): I Sri
+Sri menempati kamar 102
+Perintah (I nama / O nomor / L / X): O 101
+Joko check-out dari kamar 101
+Perintah (I nama / O nomor / L / X): I Bambang
+Bambang menempati kamar 101
+Perintah (I nama / O nomor / L / X): L
+Kamar 101: Bambang
+Kamar 102: Sri
+Kamar 103: -
+Kamar 104: -
+Perintah (I nama / O nomor / L / X): X
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Kamar {
+    int nomor;
+    bool terisi;
+    string tamu;
+};
+
+int main() {
+    Kamar losmenMelati[4];
+    for (int i = 0; i < 4; i++) {
+        losmenMelati[i].nomor = 101 + i;
+        losmenMelati[i].terisi = false;
+        losmenMelati[i].tamu = "-";
+    }
+    char perintahLosmen;
+    cout << "Perintah (I nama / O nomor / L / X): ";
+    cin >> perintahLosmen;
+    while (perintahLosmen != 'X') {
+        if (perintahLosmen == 'I') {
+            string tamuBaru;
+            cin >> tamuBaru;
+            int kamarKosong = -1;
+            for (int i = 0; i < 4; i++) if (!losmenMelati[i].terisi) { kamarKosong = i; break; }
+            if (kamarKosong == -1) cout << "Losmen penuh!" << endl;
+            else {
+                losmenMelati[kamarKosong].terisi = true;
+                losmenMelati[kamarKosong].tamu = tamuBaru;
+                cout << tamuBaru << " menempati kamar " << losmenMelati[kamarKosong].nomor << endl;
+            }
+        } else if (perintahLosmen == 'O') {
+            int nomorKeluar;
+            cin >> nomorKeluar;
+            int idxKeluar = nomorKeluar - 101;
+            if (idxKeluar < 0 || idxKeluar > 3 || !losmenMelati[idxKeluar].terisi) cout << "Kamar itu kosong." << endl;
+            else {
+                cout << losmenMelati[idxKeluar].tamu << " check-out dari kamar " << nomorKeluar << endl;
+                losmenMelati[idxKeluar].terisi = false;
+                losmenMelati[idxKeluar].tamu = "-";
+            }
+        } else if (perintahLosmen == 'L') {
+            for (int i = 0; i < 4; i++) cout << "Kamar " << losmenMelati[i].nomor << ": " << losmenMelati[i].tamu << endl;
+        }
+        cout << "Perintah (I nama / O nomor / L / X): ";
+        cin >> perintahLosmen;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 33. Buku Tabungan dengan Riwayat
+----------------------------------------------------------------------
+
+Buat struct Tabungan berisi nama, saldo, serta array riwayat transaksi (nominal bertanda: + setor, − tarik) dan jumlah transaksinya. Masukkan transaksi sampai 0, lalu cetak mutasi rekening.
+
+[CONTOH TAMPILAN]
+Nama dan saldo awal: Wahyu 500000
+Transaksi (+setor / -tarik, 0 selesai): 200000
+Transaksi (+setor / -tarik, 0 selesai): -100000
+Transaksi (+setor / -tarik, 0 selesai): -900000
+Ditolak, saldo tidak cukup.
+Transaksi (+setor / -tarik, 0 selesai): 50000
+Transaksi (+setor / -tarik, 0 selesai): 0
+== Mutasi Wahyu ==
+1. Setor 200000
+2. Tarik 100000
+3. Setor 50000
+Saldo akhir: Rp650000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Tabungan {
+    string nama;
+    long long saldo;
+    long long riwayat[50];
+    int banyakRiwayat;
+};
+
+int main() {
+    Tabungan bukuTabungan;
+    bukuTabungan.banyakRiwayat = 0;
+    cout << "Nama dan saldo awal: ";
+    cin >> bukuTabungan.nama >> bukuTabungan.saldo;
+    long long transaksiBaru;
+    cout << "Transaksi (+setor / -tarik, 0 selesai): ";
+    cin >> transaksiBaru;
+    while (transaksiBaru != 0) {
+        if (bukuTabungan.saldo + transaksiBaru < 0) cout << "Ditolak, saldo tidak cukup." << endl;
+        else {
+            bukuTabungan.saldo += transaksiBaru;
+            bukuTabungan.riwayat[bukuTabungan.banyakRiwayat++] = transaksiBaru;
+        }
+        cout << "Transaksi (+setor / -tarik, 0 selesai): ";
+        cin >> transaksiBaru;
+    }
+    cout << "== Mutasi " << bukuTabungan.nama << " ==" << endl;
+    for (int i = 0; i < bukuTabungan.banyakRiwayat; i++)
+        cout << i + 1 << ". " << (bukuTabungan.riwayat[i] > 0 ? "Setor " : "Tarik ") << (bukuTabungan.riwayat[i] > 0 ? bukuTabungan.riwayat[i] : -bukuTabungan.riwayat[i]) << endl;
+    cout << "Saldo akhir: Rp" << bukuTabungan.saldo << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 34. Antrean Puskesmas dalam Struct
+----------------------------------------------------------------------
+
+Buat struct Antrean yang berisi array nomor pasien, indeks depan, dan indeks belakang. Buat prosedur masuk dan fungsi layani yang menerima struct by reference.
+
+[CONTOH TAMPILAN]
+Perintah (1 nomor=datang, 2=layani, 0=tutup): 1 11
+Pasien 11 mengantre
+Perintah (1 nomor=datang, 2=layani, 0=tutup): 1 12
+Pasien 12 mengantre
+Perintah (1 nomor=datang, 2=layani, 0=tutup): 2
+Memanggil pasien 11
+Perintah (1 nomor=datang, 2=layani, 0=tutup): 1 13
+Pasien 13 mengantre
+Perintah (1 nomor=datang, 2=layani, 0=tutup): 2
+Memanggil pasien 12
+Perintah (1 nomor=datang, 2=layani, 0=tutup): 2
+Memanggil pasien 13
+Perintah (1 nomor=datang, 2=layani, 0=tutup): 2
+Tidak ada pasien
+Perintah (1 nomor=datang, 2=layani, 0=tutup): 0
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Antrean {
+    int nomor[100];
+    int depan;
+    int belakang;
+};
+
+void masukAntrean(Antrean &aq, int nomorPasien) {
+    aq.nomor[aq.belakang++] = nomorPasien;
+}
+
+int layaniAntrean(Antrean &aq) {
+    if (aq.depan == aq.belakang) return -1;
+    return aq.nomor[aq.depan++];
+}
+
+int main() {
+    Antrean antreanPuskesmas;
+    antreanPuskesmas.depan = 0;
+    antreanPuskesmas.belakang = 0;
+    int perintahPuskesmas, nomorDatang;
+    cout << "Perintah (1 nomor=datang, 2=layani, 0=tutup): ";
+    cin >> perintahPuskesmas;
+    while (perintahPuskesmas != 0) {
+        if (perintahPuskesmas == 1) {
+            cin >> nomorDatang;
+            masukAntrean(antreanPuskesmas, nomorDatang);
+            cout << "Pasien " << nomorDatang << " mengantre" << endl;
+        } else if (perintahPuskesmas == 2) {
+            int dilayani = layaniAntrean(antreanPuskesmas);
+            if (dilayani == -1) cout << "Tidak ada pasien" << endl;
+            else cout << "Memanggil pasien " << dilayani << endl;
+        }
+        cout << "Perintah (1 nomor=datang, 2=layani, 0=tutup): ";
+        cin >> perintahPuskesmas;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 35. Tumpukan Berkas Meja Lurah (Stack dalam Struct)
+----------------------------------------------------------------------
+
+Buat struct Tumpukan berisi array judul berkas (string) dan posisi puncak. Berkas baru ditaruh di atas; lurah selalu mengambil yang paling atas. Perintah: T judul (taruh), A (ambil), 0 (pulang).
+
+[CONTOH TAMPILAN]
+Perintah: T Izin_Usaha
+Izin_Usaha ditaruh di atas tumpukan
+Perintah: T KTP_Baru
+KTP_Baru ditaruh di atas tumpukan
+Perintah: T Surat_Pindah
+Surat_Pindah ditaruh di atas tumpukan
+Perintah: A
+Lurah memproses Surat_Pindah
+Perintah: A
+Lurah memproses KTP_Baru
+Perintah: T Akta_Lahir
+Akta_Lahir ditaruh di atas tumpukan
+Perintah: A
+Lurah memproses Akta_Lahir
+Perintah: 0
+Sisa berkas di meja: 1
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Tumpukan {
+    string berkas[30];
+    int puncak;
+};
+
+void taruhBerkas(Tumpukan &tp, string judulBerkas) {
+    tp.berkas[tp.puncak++] = judulBerkas;
+}
+
+string ambilBerkas(Tumpukan &tp) {
+    if (tp.puncak == 0) return "";
+    return tp.berkas[--tp.puncak];
+}
+
+int main() {
+    Tumpukan mejaLurah;
+    mejaLurah.puncak = 0;
+    string perintahLurah;
+    cout << "Perintah: ";
+    cin >> perintahLurah;
+    while (perintahLurah != "0") {
+        if (perintahLurah == "T") {
+            string judulMasuk;
+            cin >> judulMasuk;
+            taruhBerkas(mejaLurah, judulMasuk);
+            cout << judulMasuk << " ditaruh di atas tumpukan" << endl;
+        } else if (perintahLurah == "A") {
+            string diproses = ambilBerkas(mejaLurah);
+            if (diproses == "") cout << "Meja kosong!" << endl;
+            else cout << "Lurah memproses " << diproses << endl;
+        }
+        cout << "Perintah: ";
+        cin >> perintahLurah;
+    }
+    cout << "Sisa berkas di meja: " << mejaLurah.puncak << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 36. Resep Kue Lebaran Berskala
+----------------------------------------------------------------------
+
+Buat struct Bahan (nama, takaran, satuan) dan struct Resep (nama kue, porsi asal, array bahan, jumlah bahan). Ubah takaran semua bahan sesuai porsi yang diinginkan.
+
+[CONTOH TAMPILAN]
+Resep Nastar untuk berapa porsi asal: 12
+Ingin membuat berapa porsi: 30
+Bahan untuk 30 porsi:
+- Tepung: 625 gram
+- Mentega: 375 gram
+- Kuning telur: 5 butir
+- Selai nanas: 500 gram
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Bahan {
+    string nama;
+    double takaran;
+    string satuan;
+};
+
+struct Resep {
+    string namaKue;
+    int porsiAsal;
+    Bahan daftarBahan[10];
+    int jumlahBahan;
+};
+
+int main() {
+    Resep nastar = {"Nastar", 0, {{"Tepung", 250, "gram"}, {"Mentega", 150, "gram"}, {"Kuning telur", 2, "butir"}, {"Selai nanas", 200, "gram"}}, 4};
+    int porsiDiinginkan;
+    cout << "Resep " << nastar.namaKue << " untuk berapa porsi asal: ";
+    cin >> nastar.porsiAsal;
+    cout << "Ingin membuat berapa porsi: ";
+    cin >> porsiDiinginkan;
+    double faktorSkala = (double)porsiDiinginkan / nastar.porsiAsal;
+    cout << "Bahan untuk " << porsiDiinginkan << " porsi:" << endl;
+    for (int i = 0; i < nastar.jumlahBahan; i++)
+        cout << "- " << nastar.daftarBahan[i].nama << ": " << nastar.daftarBahan[i].takaran * faktorSkala << " " << nastar.daftarBahan[i].satuan << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 37. Harga Promo Toko Elektronik
+----------------------------------------------------------------------
+
+Buat struct Produk (nama, harga, persen diskon). Buat fungsi hargaPromo yang menerima struct dan mengembalikan harga setelah diskon. Tampilkan produk dengan potongan rupiah terbesar.
+
+[CONTOH TAMPILAN]
+Jumlah produk: 3
+Produk 1 (nama harga diskon%): Kipas 350000 10
+Produk 2 (nama harga diskon%): Kulkas 4200000 15
+Produk 3 (nama harga diskon%): Setrika 280000 25
+Kipas: Rp350000 -> Rp315000
+Kulkas: Rp4200000 -> Rp3570000
+Setrika: Rp280000 -> Rp210000
+Potongan terbesar: Kulkas (hemat Rp630000)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Produk {
+    string nama;
+    long long harga;
+    int diskonPersen;
+};
+
+long long hargaPromo(Produk pr) {
+    return pr.harga - pr.harga * pr.diskonPersen / 100;
+}
+
+int main() {
+    Produk tokoElektronik[20];
+    int jumlahProduk;
+    cout << "Jumlah produk: ";
+    cin >> jumlahProduk;
+    for (int i = 0; i < jumlahProduk; i++) {
+        cout << "Produk " << i + 1 << " (nama harga diskon%): ";
+        cin >> tokoElektronik[i].nama >> tokoElektronik[i].harga >> tokoElektronik[i].diskonPersen;
+    }
+    int idxHemat = 0;
+    for (int i = 0; i < jumlahProduk; i++) {
+        cout << tokoElektronik[i].nama << ": Rp" << tokoElektronik[i].harga << " -> Rp" << hargaPromo(tokoElektronik[i]) << endl;
+        if (tokoElektronik[i].harga - hargaPromo(tokoElektronik[i]) > tokoElektronik[idxHemat].harga - hargaPromo(tokoElektronik[idxHemat])) idxHemat = i;
+    }
+    cout << "Potongan terbesar: " << tokoElektronik[idxHemat].nama << " (hemat Rp" << tokoElektronik[idxHemat].harga - hargaPromo(tokoElektronik[idxHemat]) << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 38. Robot Penyapu Taman
+----------------------------------------------------------------------
+
+Buat struct Robot (x, y, arah hadap). Robot menerima string perintah: U (maju ke utara), S (selatan), T (timur), B (barat). Tampilkan posisi akhir dan berapa langkah ia bergerak.
+
+[CONTOH TAMPILAN]
+Perintah robot: UUTTTSBU
+Posisi akhir robot: (2, 2)
+Arah terakhir: U, total langkah: 8
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Robot {
+    int x, y;
+    char arahTerakhir;
+};
+
+int main() {
+    Robot penyapuTaman = {0, 0, '-'};
+    string rangkaianPerintah;
+    cout << "Perintah robot: ";
+    cin >> rangkaianPerintah;
+    int langkahRobot = 0;
+    for (int i = 0; i < (int)rangkaianPerintah.length(); i++) {
+        char p = rangkaianPerintah[i];
+        if (p == 'U') penyapuTaman.y++;
+        else if (p == 'S') penyapuTaman.y--;
+        else if (p == 'T') penyapuTaman.x++;
+        else if (p == 'B') penyapuTaman.x--;
+        else continue;
+        penyapuTaman.arahTerakhir = p;
+        langkahRobot++;
+    }
+    cout << "Posisi akhir robot: (" << penyapuTaman.x << ", " << penyapuTaman.y << ")" << endl;
+    cout << "Arah terakhir: " << penyapuTaman.arahTerakhir << ", total langkah: " << langkahRobot << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 39. Catatan Stasiun Cuaca Mingguan
+----------------------------------------------------------------------
+
+Buat struct Cuaca (hari, suhu, curah hujan). Simpan 7 hari data dan tampilkan hari terpanas, hari terdingin, rata-rata suhu, dan total curah hujan.
+
+[CONTOH TAMPILAN]
+Data hari ke-1 (hari suhu hujan): Sen 31 0
+Data hari ke-2 (hari suhu hujan): Sel 29 12
+Data hari ke-3 (hari suhu hujan): Rab 27 30
+Data hari ke-4 (hari suhu hujan): Kam 33 0
+Data hari ke-5 (hari suhu hujan): Jum 30 5
+Data hari ke-6 (hari suhu hujan): Sab 26 45
+Data hari ke-7 (hari suhu hujan): Min 28 8
+Terpanas : Kam (33 C)
+Terdingin: Sab (26 C)
+Rata-rata suhu: 29.1429 C
+Total hujan: 100 mm
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Cuaca {
+    string hari;
+    double suhu;
+    double hujan;
+};
+
+int main() {
+    Cuaca mingguIni[7];
+    double totalSuhuMinggu = 0, totalHujanMinggu = 0;
+    for (int i = 0; i < 7; i++) {
+        cout << "Data hari ke-" << i + 1 << " (hari suhu hujan): ";
+        cin >> mingguIni[i].hari >> mingguIni[i].suhu >> mingguIni[i].hujan;
+        totalSuhuMinggu += mingguIni[i].suhu;
+        totalHujanMinggu += mingguIni[i].hujan;
+    }
+    int idxPanas = 0, idxDingin = 0;
+    for (int i = 1; i < 7; i++) {
+        if (mingguIni[i].suhu > mingguIni[idxPanas].suhu) idxPanas = i;
+        if (mingguIni[i].suhu < mingguIni[idxDingin].suhu) idxDingin = i;
+    }
+    cout << "Terpanas : " << mingguIni[idxPanas].hari << " (" << mingguIni[idxPanas].suhu << " C)" << endl;
+    cout << "Terdingin: " << mingguIni[idxDingin].hari << " (" << mingguIni[idxDingin].suhu << " C)" << endl;
+    cout << "Rata-rata suhu: " << totalSuhuMinggu / 7 << " C" << endl;
+    cout << "Total hujan: " << totalHujanMinggu << " mm" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 40. Kalkulator Umur Kantor Catatan Sipil
+----------------------------------------------------------------------
+
+Buat struct Tanggal. Dari tanggal lahir dan tanggal hari ini, hitung umur dalam tahun penuh (belum ulang tahun berarti dikurangi satu).
+
+[CONTOH TAMPILAN]
+Tanggal lahir (h b t): 25 12 2005
+Tanggal hari ini (h b t): 9 10 2026
+Umur: 20 tahun
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Tanggal {
+    int hari, bulan, tahun;
+};
+
+int hitungUmur(Tanggal lahirWarga, Tanggal hariIni) {
+    int umurWarga = hariIni.tahun - lahirWarga.tahun;
+    if (hariIni.bulan < lahirWarga.bulan || (hariIni.bulan == lahirWarga.bulan && hariIni.hari < lahirWarga.hari)) umurWarga--;
+    return umurWarga;
+}
+
+int main() {
+    Tanggal tglLahirWarga, tglSekarang;
+    cout << "Tanggal lahir (h b t): ";
+    cin >> tglLahirWarga.hari >> tglLahirWarga.bulan >> tglLahirWarga.tahun;
+    cout << "Tanggal hari ini (h b t): ";
+    cin >> tglSekarang.hari >> tglSekarang.bulan >> tglSekarang.tahun;
+    cout << "Umur: " << hitungUmur(tglLahirWarga, tglSekarang) << " tahun" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 41. Regu Panjat Tebing
+----------------------------------------------------------------------
+
+Buat struct Pemanjat (nama, tinggi badan, berat) dan struct Regu (nama regu, array anggota, jumlah anggota). Hitung rata-rata tinggi dan total berat regu (beban tali).
+
+[CONTOH TAMPILAN]
+Nama regu dan jumlah anggota: Cakrawala 3
+Anggota 1 (nama tinggi berat): Rudi 170 65
+Anggota 2 (nama tinggi berat): Sari 160 52
+Anggota 3 (nama tinggi berat): Tegar 178 70
+Regu Cakrawala
+Rata-rata tinggi: 169.333 cm
+Beban tali total: 187 kg
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Pemanjat {
+    string nama;
+    int tinggi;
+    int berat;
+};
+
+struct Regu {
+    string namaRegu;
+    Pemanjat anggota[10];
+    int jumlahAnggota;
+};
+
+int main() {
+    Regu reguTebing;
+    cout << "Nama regu dan jumlah anggota: ";
+    cin >> reguTebing.namaRegu >> reguTebing.jumlahAnggota;
+    int totalTinggiRegu = 0, totalBeratRegu = 0;
+    for (int i = 0; i < reguTebing.jumlahAnggota; i++) {
+        cout << "Anggota " << i + 1 << " (nama tinggi berat): ";
+        cin >> reguTebing.anggota[i].nama >> reguTebing.anggota[i].tinggi >> reguTebing.anggota[i].berat;
+        totalTinggiRegu += reguTebing.anggota[i].tinggi;
+        totalBeratRegu += reguTebing.anggota[i].berat;
+    }
+    cout << "Regu " << reguTebing.namaRegu << endl;
+    cout << "Rata-rata tinggi: " << (double)totalTinggiRegu / reguTebing.jumlahAnggota << " cm" << endl;
+    cout << "Beban tali total: " << totalBeratRegu << " kg" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 42. Rental Mobil Wisata
+----------------------------------------------------------------------
+
+Buat struct Sewa (penyewa, jenis mobil: 1 city car, 2 MPV, 3 minibus, lama hari, pakai sopir Y/T). Tarif per hari: 300rb, 450rb, 800rb; sopir +150rb per hari; sewa ≥ 5 hari diskon 10%.
+
+[CONTOH TAMPILAN]
+Penyewa, jenis (1-3), lama hari, sopir (Y/T): Hendra 2 6 Y
+Biaya sewa Hendra: Rp3240000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Sewa {
+    string penyewa;
+    int jenisMobil;
+    int lamaHari;
+    char pakaiSopir;
+};
+
+long long biayaSewa(Sewa s) {
+    long long tarifMobil[3] = {300000, 450000, 800000};
+    long long totalSewa = tarifMobil[s.jenisMobil - 1] * s.lamaHari;
+    if (s.pakaiSopir == 'Y') totalSewa += 150000LL * s.lamaHari;
+    if (s.lamaHari >= 5) totalSewa -= totalSewa / 10;
+    return totalSewa;
+}
+
+int main() {
+    Sewa pesananRental;
+    cout << "Penyewa, jenis (1-3), lama hari, sopir (Y/T): ";
+    cin >> pesananRental.penyewa >> pesananRental.jenisMobil >> pesananRental.lamaHari >> pesananRental.pakaiSopir;
+    if (pesananRental.jenisMobil < 1 || pesananRental.jenisMobil > 3) {
+        cout << "Jenis mobil tidak ada!" << endl;
+        return 0;
+    }
+    cout << "Biaya sewa " << pesananRental.penyewa << ": Rp" << biayaSewa(pesananRental) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 43. Mesin Koreksi Ujian Pilihan Ganda
+----------------------------------------------------------------------
+
+Buat struct Peserta (nama, jawaban berupa string). Bandingkan jawaban tiap peserta dengan kunci jawaban; benar +4, salah −1, kosong (ditulis -) 0.
+
+[CONTOH TAMPILAN]
+Kunci jawaban: ABCDA
+Jumlah peserta: 3
+Peserta 1 (nama jawaban): Gilang ABCDB
+Peserta 2 (nama jawaban): Hana ABC-A
+Peserta 3 (nama jawaban): Indra DCBAA
+Gilang: 15
+Hana: 16
+Indra: 0
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Peserta {
+    string nama;
+    string jawaban;
+    int skor;
+};
+
+int main() {
+    string kunciUjian;
+    Peserta pesertaUjian[30];
+    int jumlahPesertaUjian;
+    cout << "Kunci jawaban: ";
+    cin >> kunciUjian;
+    cout << "Jumlah peserta: ";
+    cin >> jumlahPesertaUjian;
+    for (int p = 0; p < jumlahPesertaUjian; p++) {
+        cout << "Peserta " << p + 1 << " (nama jawaban): ";
+        cin >> pesertaUjian[p].nama >> pesertaUjian[p].jawaban;
+        pesertaUjian[p].skor = 0;
+        for (int s = 0; s < (int)kunciUjian.length() && s < (int)pesertaUjian[p].jawaban.length(); s++) {
+            if (pesertaUjian[p].jawaban[s] == '-') continue;
+            if (pesertaUjian[p].jawaban[s] == kunciUjian[s]) pesertaUjian[p].skor += 4;
+            else pesertaUjian[p].skor -= 1;
+        }
+    }
+    for (int p = 0; p < jumlahPesertaUjian; p++) cout << pesertaUjian[p].nama << ": " << pesertaUjian[p].skor << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 44. Kartu Tertinggi di Meja Remi
+----------------------------------------------------------------------
+
+Buat struct Kartu (nilai 2–14, jenis: S=sekop, H=hati, W=wajik, K=keriting). Kartu tertinggi ditentukan oleh nilai; jika nilai sama, urutan jenis S > H > W > K.
+
+[CONTOH TAMPILAN]
+Jumlah kartu: 4
+Kartu 1 (nilai jenis): 12 W
+Kartu 2 (nilai jenis): 14 K
+Kartu 3 (nilai jenis): 14 H
+Kartu 4 (nilai jenis): 9 S
+Kartu tertinggi: kartu ke-3 (14 H)
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Kartu {
+    int nilai;
+    char jenis;
+};
+
+int kekuatanJenis(char j) {
+    if (j == 'S') return 4;
+    if (j == 'H') return 3;
+    if (j == 'W') return 2;
+    return 1;
+}
+
+bool lebihTinggi(Kartu a, Kartu b) {
+    if (a.nilai != b.nilai) return a.nilai > b.nilai;
+    return kekuatanJenis(a.jenis) > kekuatanJenis(b.jenis);
+}
+
+int main() {
+    Kartu mejaRemi[10];
+    int kartuDiMeja;
+    cout << "Jumlah kartu: ";
+    cin >> kartuDiMeja;
+    for (int i = 0; i < kartuDiMeja; i++) {
+        cout << "Kartu " << i + 1 << " (nilai jenis): ";
+        cin >> mejaRemi[i].nilai >> mejaRemi[i].jenis;
+    }
+    int idxRaja = 0;
+    for (int i = 1; i < kartuDiMeja; i++) if (lebihTinggi(mejaRemi[i], mejaRemi[idxRaja])) idxRaja = i;
+    cout << "Kartu tertinggi: kartu ke-" << idxRaja + 1 << " (" << mejaRemi[idxRaja].nilai << " " << mejaRemi[idxRaja].jenis << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 45. Paladin Kelipatan Empat vs Orc Rakus (pola game Quest IV)
+----------------------------------------------------------------------
+
+Buat struct Petarung (nama, hp, serangan, pertahanan). Paladin: HP 50, serangan 14, pertahanan 3. Orc: HP 70, serangan 10, pertahanan 4. Rentang input mulai 1–10 dan naik 10 tiap giliran. Jika angka kelipatan 4, paladin menyerang dengan damage = serangan paladin + angka % 5 − pertahanan orc. Jika bukan, orc menyerang dengan damage = serangan orc − pertahanan paladin + angka % 3. Buat fungsi serangStruct yang menerima dua struct by reference.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan angka 1-10: 8
+8 kelipatan 4!
+Paladin menyerang Orc Rakus dengan 13 damage!
+HP Orc Rakus: 57
+
+Giliran 2:
+Masukkan angka 11-20: 12
+12 kelipatan 4!
+Paladin menyerang Orc Rakus dengan 12 damage!
+HP Orc Rakus: 45
+
+Giliran 3:
+Masukkan angka 21-30: 23
+23 bukan kelipatan 4..
+Orc Rakus menyerang Paladin dengan 9 damage!
+HP Paladin: 41
+
+Giliran 4:
+Masukkan angka 31-40: 36
+36 kelipatan 4!
+Paladin menyerang Orc Rakus dengan 11 damage!
+HP Orc Rakus: 34
+
+Giliran 5:
+Masukkan angka 41-50: 44
+44 kelipatan 4!
+Paladin menyerang Orc Rakus dengan 14 damage!
+HP Orc Rakus: 20
+
+Giliran 6:
+Masukkan angka 51-60: 52
+52 kelipatan 4!
+Paladin menyerang Orc Rakus dengan 12 damage!
+HP Orc Rakus: 8
+
+Giliran 7:
+Masukkan angka 61-70: 65
+65 bukan kelipatan 4..
+Orc Rakus menyerang Paladin dengan 9 damage!
+HP Paladin: 32
+
+Giliran 8:
+Masukkan angka 71-80: 72
+72 kelipatan 4!
+Paladin menyerang Orc Rakus dengan 12 damage!
+HP Orc Rakus: 0
+
+Orc Rakus tumbang! Paladin menang!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Petarung {
+    string nama;
+    int hp;
+    int serangan;
+    int pertahanan;
+};
+
+void serangStruct(Petarung &penyerang, Petarung &bertahan, int bonusSerang) {
+    int dmg = penyerang.serangan + bonusSerang - bertahan.pertahanan;
+    if (dmg < 1) dmg = 1;
+    bertahan.hp -= dmg;
+    if (bertahan.hp < 0) bertahan.hp = 0;
+    cout << penyerang.nama << " menyerang " << bertahan.nama << " dengan " << dmg << " damage!\n";
+    cout << "HP " << bertahan.nama << ": " << bertahan.hp << endl;
+}
+
+int main() {
+    Petarung paladin = {"Paladin", 50, 14, 3};
+    Petarung orcRakus = {"Orc Rakus", 70, 10, 4};
+    int babakPaladin = 1, rentangBawahP = 1, rentangAtasP = 10;
+    while (paladin.hp > 0 && orcRakus.hp > 0) {
+        int angkaRelik;
+        cout << "\nGiliran " << babakPaladin << ":\n";
+        cout << "Masukkan angka " << rentangBawahP << "-" << rentangAtasP << ": ";
+        cin >> angkaRelik;
+        if (angkaRelik < rentangBawahP || angkaRelik > rentangAtasP) {
+            cout << "Di luar rentang, ulangi!\n";
+            continue;
+        }
+        if (angkaRelik % 4 == 0) {
+            cout << angkaRelik << " kelipatan 4!\n";
+            serangStruct(paladin, orcRakus, angkaRelik % 5);
+        } else {
+            cout << angkaRelik << " bukan kelipatan 4..\n";
+            serangStruct(orcRakus, paladin, angkaRelik % 3);
+        }
+        babakPaladin++;
+        rentangBawahP += 10;
+        rentangAtasP += 10;
+    }
+    if (orcRakus.hp == 0) cout << "\nOrc Rakus tumbang! Paladin menang!\n";
+    else cout << "\nPaladin gugur... Orc Rakus menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 46. Tabib Kuadrat vs Lintah Raksasa (pola game Quest IV)
+----------------------------------------------------------------------
+
+Buat struct Pahlawan (nama, hp, hpMaks, serangan). Tabib: HP 40 (maks 40), serangan 12. Lintah: HP 60. Rentang input mulai 1–10 dan naik 10 tiap giliran. Angka prima: tabib menyerang 12 damage. Angka kuadrat sempurna: tabib menyembuhkan diri 10 HP (tidak melebihi hpMaks). Selain itu: lintah menghisap darah sebesar angka % 10 + 1.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan angka 1-10: 4
+Kuadrat sempurna! Tabib menyembuhkan diri. HP Tabib: 40
+
+Giliran 2:
+Masukkan angka 11-20: 13
+Prima! Tabib menyerang 12 damage. HP Lintah: 48
+
+Giliran 3:
+Masukkan angka 21-30: 25
+Kuadrat sempurna! Tabib menyembuhkan diri. HP Tabib: 40
+
+Giliran 4:
+Masukkan angka 31-40: 31
+Prima! Tabib menyerang 12 damage. HP Lintah: 36
+
+Giliran 5:
+Masukkan angka 41-50: 42
+Lintah menghisap 3 darah. HP Tabib: 37
+
+Giliran 6:
+Masukkan angka 51-60: 53
+Prima! Tabib menyerang 12 damage. HP Lintah: 24
+
+Giliran 7:
+Masukkan angka 61-70: 67
+Prima! Tabib menyerang 12 damage. HP Lintah: 12
+
+Giliran 8:
+Masukkan angka 71-80: 71
+Prima! Tabib menyerang 12 damage. HP Lintah: 0
+
+Lintah Raksasa kering! Tabib Kuadrat menang!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Pahlawan {
+    string nama;
+    int hp;
+    int hpMaks;
+    int serangan;
+};
+
+bool primaRawat(int n) {
+    if (n < 2) return false;
+    for (int d = 2; d * d <= n; d++) if (n % d == 0) return false;
+    return true;
+}
+
+bool kuadratRawat(int n) {
+    for (int a = 1; a * a <= n; a++) if (a * a == n) return true;
+    return false;
+}
+
+int main() {
+    Pahlawan tabib = {"Tabib Kuadrat", 40, 40, 12};
+    int hpLintah = 60;
+    int giliranRawat = 1, ujungBawahR = 1, ujungAtasR = 10;
+    while (tabib.hp > 0 && hpLintah > 0) {
+        int angkaRamuan;
+        cout << "\nGiliran " << giliranRawat << ":\n";
+        cout << "Masukkan angka " << ujungBawahR << "-" << ujungAtasR << ": ";
+        cin >> angkaRamuan;
+        if (angkaRamuan < ujungBawahR || angkaRamuan > ujungAtasR) {
+            cout << "Di luar rentang, ulangi!\n";
+            continue;
+        }
+        if (primaRawat(angkaRamuan)) {
+            hpLintah -= tabib.serangan;
+            if (hpLintah < 0) hpLintah = 0;
+            cout << "Prima! Tabib menyerang " << tabib.serangan << " damage. HP Lintah: " << hpLintah << endl;
+        } else if (kuadratRawat(angkaRamuan)) {
+            tabib.hp += 10;
+            if (tabib.hp > tabib.hpMaks) tabib.hp = tabib.hpMaks;
+            cout << "Kuadrat sempurna! Tabib menyembuhkan diri. HP Tabib: " << tabib.hp << endl;
+        } else {
+            int hisapan = angkaRamuan % 10 + 1;
+            tabib.hp -= hisapan;
+            if (tabib.hp < 0) tabib.hp = 0;
+            cout << "Lintah menghisap " << hisapan << " darah. HP Tabib: " << tabib.hp << endl;
+        }
+        giliranRawat++;
+        ujungBawahR += 10;
+        ujungAtasR += 10;
+    }
+    if (hpLintah == 0) cout << "\nLintah Raksasa kering! Tabib Kuadrat menang!\n";
+    else cout << "\nTabib Kuadrat pingsan... Lintah Raksasa menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 47. Duo Pendekar vs Raja Siluman (pola game Quest IV)
+----------------------------------------------------------------------
+
+Simpan dua pendekar dalam array of struct Petarung: Pendekar Ganjil (HP 30, serangan 9) dan Pendekar Genap (HP 30, serangan 11). Raja Siluman: HP 80, serangan 8. Kedua pendekar bergiliran maju (giliran ganjil = Pendekar Ganjil, giliran genap = Pendekar Genap). Rentang input mulai 1–10 dan naik 10. Jika paritas angka cocok dengan pendekar yang maju (ganjil untuk Pendekar Ganjil, genap untuk Pendekar Genap), pendekar menyerang dengan serangannya + angka % 5. Jika tidak cocok, Raja Siluman menyerang pendekar itu dengan damage 8. Pendekar yang tumbang dilewati.
+
+[CONTOH TAMPILAN]
+Giliran 1 (Pendekar Ganjil maju):
+Masukkan angka 1-10: 7
+Pendekar Ganjil menyerang 11 damage! HP Raja Siluman: 69
+
+Giliran 2 (Pendekar Genap maju):
+Masukkan angka 11-20: 14
+Pendekar Genap menyerang 15 damage! HP Raja Siluman: 54
+
+Giliran 3 (Pendekar Ganjil maju):
+Masukkan angka 21-30: 22
+Raja Siluman mencakar Pendekar Ganjil 8 damage! HP: 22
+
+Giliran 4 (Pendekar Genap maju):
+Masukkan angka 31-40: 35
+Raja Siluman mencakar Pendekar Genap 8 damage! HP: 22
+
+Giliran 5 (Pendekar Ganjil maju):
+Masukkan angka 41-50: 41
+Pendekar Ganjil menyerang 10 damage! HP Raja Siluman: 44
+
+Giliran 6 (Pendekar Genap maju):
+Masukkan angka 51-60: 56
+Pendekar Genap menyerang 12 damage! HP Raja Siluman: 32
+
+Giliran 7 (Pendekar Ganjil maju):
+Masukkan angka 61-70: 63
+Pendekar Ganjil menyerang 12 damage! HP Raja Siluman: 20
+
+Giliran 8 (Pendekar Genap maju):
+Masukkan angka 71-80: 78
+Pendekar Genap menyerang 14 damage! HP Raja Siluman: 6
+
+Giliran 9 (Pendekar Ganjil maju):
+Masukkan angka 81-90: 85
+Pendekar Ganjil menyerang 9 damage! HP Raja Siluman: 0
+
+Raja Siluman musnah! Duo Pendekar menang!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Petarung {
+    string nama;
+    int hp;
+    int serangan;
+};
+
+int main() {
+    Petarung duoPendekar[2] = {{"Pendekar Ganjil", 30, 9}, {"Pendekar Genap", 30, 11}};
+    Petarung rajaSiluman = {"Raja Siluman", 80, 8};
+    int giliranSiluman = 1, sisiBawah = 1, sisiAtas = 10;
+    while (rajaSiluman.hp > 0 && (duoPendekar[0].hp > 0 || duoPendekar[1].hp > 0)) {
+        int idxMaju = (giliranSiluman % 2 == 1) ? 0 : 1;
+        if (duoPendekar[idxMaju].hp == 0) idxMaju = 1 - idxMaju;
+        int angkaJurusSiluman;
+        cout << "\nGiliran " << giliranSiluman << " (" << duoPendekar[idxMaju].nama << " maju):\n";
+        cout << "Masukkan angka " << sisiBawah << "-" << sisiAtas << ": ";
+        cin >> angkaJurusSiluman;
+        if (angkaJurusSiluman < sisiBawah || angkaJurusSiluman > sisiAtas) {
+            cout << "Di luar rentang, ulangi!\n";
+            continue;
+        }
+        bool cocokParitas = (idxMaju == 0) ? (angkaJurusSiluman % 2 == 1) : (angkaJurusSiluman % 2 == 0);
+        if (cocokParitas) {
+            int jurusPendekar = duoPendekar[idxMaju].serangan + angkaJurusSiluman % 5;
+            rajaSiluman.hp -= jurusPendekar;
+            if (rajaSiluman.hp < 0) rajaSiluman.hp = 0;
+            cout << duoPendekar[idxMaju].nama << " menyerang " << jurusPendekar << " damage! HP Raja Siluman: " << rajaSiluman.hp << endl;
+        } else {
+            duoPendekar[idxMaju].hp -= rajaSiluman.serangan;
+            if (duoPendekar[idxMaju].hp < 0) duoPendekar[idxMaju].hp = 0;
+            cout << "Raja Siluman mencakar " << duoPendekar[idxMaju].nama << " " << rajaSiluman.serangan << " damage! HP: " << duoPendekar[idxMaju].hp << endl;
+        }
+        giliranSiluman++;
+        sisiBawah += 10;
+        sisiAtas += 10;
+    }
+    if (rajaSiluman.hp == 0) cout << "\nRaja Siluman musnah! Duo Pendekar menang!\n";
+    else cout << "\nKedua pendekar tumbang... Raja Siluman menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 48. Pecahan Campuran Tukang Kayu
+----------------------------------------------------------------------
+
+Buat struct Pecahan dan fungsi sederhanakan yang mengembalikan struct. Tampilkan pecahan dalam bentuk paling sederhana, dan jika pembilang lebih besar dari penyebut, tampilkan juga sebagai pecahan campuran.
+
+[CONTOH TAMPILAN]
+Pecahan (pembilang penyebut): 42 8
+Bentuk sederhana: 21/4
+Pecahan campuran: 5 1/4
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct Pecahan {
+    int atas;
+    int bawah;
+};
+
+Pecahan sederhanakan(Pecahan pc) {
+    int a = pc.atas, b = pc.bawah;
+    while (b != 0) { int s = a % b; a = b; b = s; }
+    Pecahan hasilSederhana = {pc.atas / a, pc.bawah / a};
+    return hasilSederhana;
+}
+
+int main() {
+    Pecahan ukuranPapan;
+    cout << "Pecahan (pembilang penyebut): ";
+    cin >> ukuranPapan.atas >> ukuranPapan.bawah;
+    Pecahan papanRapi = sederhanakan(ukuranPapan);
+    cout << "Bentuk sederhana: " << papanRapi.atas << "/" << papanRapi.bawah << endl;
+    if (papanRapi.atas >= papanRapi.bawah) {
+        int bulat = papanRapi.atas / papanRapi.bawah, sisaPecahan = papanRapi.atas % papanRapi.bawah;
+        cout << "Pecahan campuran: " << bulat;
+        if (sisaPecahan != 0) cout << " " << sisaPecahan << "/" << papanRapi.bawah;
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 49. Kasir Toko Bangunan
+----------------------------------------------------------------------
+
+Buat struct BarangBangunan (kode, nama, harga). Isi daftar barang langsung di program. Pembeli memasukkan kode dan jumlah (kode X untuk selesai). Simpan item belanja sebagai struct ItemBelanja, lalu cetak struk lengkap dengan total.
+
+[CONTOH TAMPILAN]
+Kode barang (X selesai): SM 3
+Kode barang (X selesai): PS 10
+Kode barang (X selesai): XX 1
+Kode XX tidak ada!
+Kode barang (X selesai): CT 2
+Kode barang (X selesai): X
+===== STRUK TOKO BANGUNAN =====
+Semen 40kg x3 = Rp186000
+Pasir per karung x10 = Rp180000
+Cat tembok 5kg x2 = Rp270000
+TOTAL: Rp636000
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct BarangBangunan {
+    string kode;
+    string nama;
+    long long harga;
+};
+
+struct ItemBelanja {
+    int idxBarang;
+    int jumlah;
+};
+
+int main() {
+    BarangBangunan katalogBangunan[4] = {{"SM", "Semen 40kg", 62000}, {"PS", "Pasir per karung", 18000}, {"CT", "Cat tembok 5kg", 135000}, {"PK", "Paku 1kg", 25000}};
+    ItemBelanja keranjangBangunan[20];
+    int isiKeranjang = 0;
+    string kodeBeli;
+    cout << "Kode barang (X selesai): ";
+    cin >> kodeBeli;
+    while (kodeBeli != "X") {
+        int jumlahBeli;
+        cin >> jumlahBeli;
+        int idxKetemu = -1;
+        for (int i = 0; i < 4; i++) if (katalogBangunan[i].kode == kodeBeli) idxKetemu = i;
+        if (idxKetemu == -1) cout << "Kode " << kodeBeli << " tidak ada!" << endl;
+        else {
+            keranjangBangunan[isiKeranjang].idxBarang = idxKetemu;
+            keranjangBangunan[isiKeranjang].jumlah = jumlahBeli;
+            isiKeranjang++;
+        }
+        cout << "Kode barang (X selesai): ";
+        cin >> kodeBeli;
+    }
+    long long totalBangunan = 0;
+    cout << "===== STRUK TOKO BANGUNAN =====" << endl;
+    for (int i = 0; i < isiKeranjang; i++) {
+        BarangBangunan b = katalogBangunan[keranjangBangunan[i].idxBarang];
+        long long sub = b.harga * keranjangBangunan[i].jumlah;
+        totalBangunan += sub;
+        cout << b.nama << " x" << keranjangBangunan[i].jumlah << " = Rp" << sub << endl;
+    }
+    cout << "TOTAL: Rp" << totalBangunan << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 50. Agenda Balai Desa
+----------------------------------------------------------------------
+
+Buat struct Acara (nama acara, tanggal bertipe struct Tanggal, jam mulai). Simpan beberapa acara lalu tampilkan semua acara pada tanggal yang dicari.
+
+[CONTOH TAMPILAN]
+Jumlah acara: 4
+Acara 1 (nama h b t jam): Rapat_RT 12 10 2026 19
+Acara 2 (nama h b t jam): Posyandu 15 10 2026 8
+Acara 3 (nama h b t jam): Senam_Lansia 12 10 2026 6
+Acara 4 (nama h b t jam): Pengajian 20 10 2026 20
+Cari tanggal (h b t): 12 10 2026
+- Rapat_RT pukul 19.00
+- Senam_Lansia pukul 6.00
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Tanggal {
+    int hari, bulan, tahun;
+};
+
+struct Acara {
+    string nama;
+    Tanggal tanggal;
+    int jamMulai;
+};
+
+bool tanggalSama(Tanggal a, Tanggal b) {
+    return a.hari == b.hari && a.bulan == b.bulan && a.tahun == b.tahun;
+}
+
+int main() {
+    Acara agendaBalai[30];
+    int jumlahAcara;
+    Tanggal tanggalCari;
+    cout << "Jumlah acara: ";
+    cin >> jumlahAcara;
+    for (int i = 0; i < jumlahAcara; i++) {
+        cout << "Acara " << i + 1 << " (nama h b t jam): ";
+        cin >> agendaBalai[i].nama >> agendaBalai[i].tanggal.hari >> agendaBalai[i].tanggal.bulan >> agendaBalai[i].tanggal.tahun >> agendaBalai[i].jamMulai;
+    }
+    cout << "Cari tanggal (h b t): ";
+    cin >> tanggalCari.hari >> tanggalCari.bulan >> tanggalCari.tahun;
+    int acaraKetemu = 0;
+    for (int i = 0; i < jumlahAcara; i++) {
+        if (tanggalSama(agendaBalai[i].tanggal, tanggalCari)) {
+            cout << "- " << agendaBalai[i].nama << " pukul " << agendaBalai[i].jamMulai << ".00" << endl;
+            acaraKetemu++;
+        }
+    }
+    if (acaraKetemu == 0) cout << "Tidak ada acara di tanggal itu." << endl;
+    return 0;
+}

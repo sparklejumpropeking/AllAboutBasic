@@ -1,0 +1,1786 @@
+\xEF\xBB\xBF======================================================================
+PAKET 3 — LOOPING: FOR, WHILE, DO-WHILE (50 SOAL CERITA)
+======================================================================
+
+Materi: for, while, do-while, perulangan bersarang (nested loop), break, continue, sentinel, akumulator, dan pola bintang/angka. Ada juga beberapa soal game bergaya Quest IV yang memadukan looping dengan selection.
+
+Cara latihan: baca soal dan contoh tampilan, ketik sendiri dulu, baru cocokkan dengan jawaban.
+
+----------------------------------------------------------------------
+Soal 1. Hitung Mundur Roket Kampung
+----------------------------------------------------------------------
+
+Anak-anak kampung meluncurkan roket botol. Tampilkan hitung mundur dari n sampai 1, lalu tulis "MELUNCUR!".
+
+[CONTOH TAMPILAN]
+Hitung mundur dari: 5
+5... 4... 3... 2... 1... MELUNCUR!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int detikRoket;
+    cout << "Hitung mundur dari: ";
+    cin >> detikRoket;
+    for (int sisaDetik = detikRoket; sisaDetik >= 1; sisaDetik--) cout << sisaDetik << "... ";
+    cout << "MELUNCUR!" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 2. Tabel Perkalian Guru Ngaji
+----------------------------------------------------------------------
+
+Guru ngaji mengajarkan perkalian. Tampilkan tabel perkalian angka n dari 1 sampai 10.
+
+[CONTOH TAMPILAN]
+Tabel perkalian angka: 7
+7 x 1 = 7
+7 x 2 = 14
+7 x 3 = 21
+7 x 4 = 28
+7 x 5 = 35
+7 x 6 = 42
+7 x 7 = 49
+7 x 8 = 56
+7 x 9 = 63
+7 x 10 = 70
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int angkaHafalan;
+    cout << "Tabel perkalian angka: ";
+    cin >> angkaHafalan;
+    for (int pengali = 1; pengali <= 10; pengali++)
+        cout << angkaHafalan << " x " << pengali << " = " << angkaHafalan * pengali << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 3. Tumpukan Koin Bertingkat
+----------------------------------------------------------------------
+
+Tumpukan ke-1 berisi 1 koin, ke-2 berisi 2 koin, dan seterusnya sampai tumpukan ke-n. Hitung total koin dan rata-rata koin per tumpukan.
+
+[CONTOH TAMPILAN]
+Jumlah tumpukan: 10
+Total koin: 55
+Rata-rata per tumpukan: 5.5
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int tumpukanTerakhir;
+    long long totalKepingKoin = 0;
+    cout << "Jumlah tumpukan: ";
+    cin >> tumpukanTerakhir;
+    for (int tumpukanKe = 1; tumpukanKe <= tumpukanTerakhir; tumpukanKe++) totalKepingKoin += tumpukanKe;
+    cout << "Total koin: " << totalKepingKoin << endl;
+    cout << "Rata-rata per tumpukan: " << (double)totalKepingKoin / tumpukanTerakhir << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 4. Rumah Bernomor Genap
+----------------------------------------------------------------------
+
+Tukang pos hanya mengantar ke rumah bernomor genap dari 1 sampai n. Tampilkan nomor rumahnya dan berapa rumah yang didatangi. Gunakan continue untuk melewati nomor ganjil.
+
+[CONTOH TAMPILAN]
+Nomor rumah terakhir: 15
+Rumah yang didatangi: 2 4 6 8 10 12 14
+Total rumah: 7
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int nomorUjungJalan, rumahDidatangi = 0;
+    cout << "Nomor rumah terakhir: ";
+    cin >> nomorUjungJalan;
+    cout << "Rumah yang didatangi:";
+    for (int nomorRumah = 1; nomorRumah <= nomorUjungJalan; nomorRumah++) {
+        if (nomorRumah % 2 != 0) continue;
+        cout << " " << nomorRumah;
+        rumahDidatangi++;
+    }
+    cout << endl << "Total rumah: " << rumahDidatangi << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 5. Anak Tangga Ganjil Candi
+----------------------------------------------------------------------
+
+Candi punya n anak tangga dengan tinggi 1, 3, 5, 7, ... (bilangan ganjil). Tampilkan tinggi tiap anak tangga dan jumlah totalnya.
+
+[CONTOH TAMPILAN]
+Banyak anak tangga: 6
+Tinggi tiap anak tangga: 1 3 5 7 9 11
+Total tinggi: 36
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int banyakAnakTangga, tinggiTotalCandi = 0;
+    cout << "Banyak anak tangga: ";
+    cin >> banyakAnakTangga;
+    cout << "Tinggi tiap anak tangga:";
+    for (int urutTangga = 1; urutTangga <= banyakAnakTangga; urutTangga++) {
+        int tinggiTangga = 2 * urutTangga - 1;
+        cout << " " << tinggiTangga;
+        tinggiTotalCandi += tinggiTangga;
+    }
+    cout << endl << "Total tinggi: " << tinggiTotalCandi << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 6. Gaji Naik Tiap Tahun (Deret Aritmetika)
+----------------------------------------------------------------------
+
+Gaji tahun pertama a, lalu naik tetap sebesar b setiap tahun. Tampilkan gaji tiap tahun selama n tahun dan total pendapatan.
+
+[CONTOH TAMPILAN]
+Gaji awal, kenaikan per tahun, lama bekerja: 3000000 250000 5
+Tahun 1: Rp3000000
+Tahun 2: Rp3250000
+Tahun 3: Rp3500000
+Tahun 4: Rp3750000
+Tahun 5: Rp4000000
+Total pendapatan: Rp17500000
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long gajiAwalTahun, kenaikanTetap, akumulasiPendapatan = 0;
+    int lamaBekerja;
+    cout << "Gaji awal, kenaikan per tahun, lama bekerja: ";
+    cin >> gajiAwalTahun >> kenaikanTetap >> lamaBekerja;
+    long long gajiBerjalan = gajiAwalTahun;
+    for (int tahunKerja = 1; tahunKerja <= lamaBekerja; tahunKerja++) {
+        cout << "Tahun " << tahunKerja << ": Rp" << gajiBerjalan << endl;
+        akumulasiPendapatan += gajiBerjalan;
+        gajiBerjalan += kenaikanTetap;
+    }
+    cout << "Total pendapatan: Rp" << akumulasiPendapatan << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 7. Rumor Menyebar di Pasar (Deret Geometri)
+----------------------------------------------------------------------
+
+Satu orang tahu gosip, lalu setiap jam setiap orang memberi tahu r orang baru. Tampilkan jumlah orang baru yang tahu tiap jam selama n jam dan totalnya.
+
+[CONTOH TAMPILAN]
+Orang awal, rasio penyebaran, lama (jam): 1 3 6
+Jam 1: 1 orang
+Jam 2: 3 orang
+Jam 3: 9 orang
+Jam 4: 27 orang
+Jam 5: 81 orang
+Jam 6: 243 orang
+Total yang tahu gosip: 364 orang
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long penggosipAwal, pengaliGosip, totalTahuGosip = 0;
+    int jamGosip;
+    cout << "Orang awal, rasio penyebaran, lama (jam): ";
+    cin >> penggosipAwal >> pengaliGosip >> jamGosip;
+    long long gelombangGosip = penggosipAwal;
+    for (int jamKe = 1; jamKe <= jamGosip; jamKe++) {
+        cout << "Jam " << jamKe << ": " << gelombangGosip << " orang" << endl;
+        totalTahuGosip += gelombangGosip;
+        gelombangGosip *= pengaliGosip;
+    }
+    cout << "Total yang tahu gosip: " << totalTahuGosip << " orang" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 8. Suku Ke-n Kelinci Fibonacci
+----------------------------------------------------------------------
+
+Tampilkan hanya populasi pada bulan ke-n dari deret Fibonacci 1, 1, 2, 3, 5, ... memakai while.
+
+[CONTOH TAMPILAN]
+Bulan ke-: 20
+Populasi kelinci bulan ke-20: 6765
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int bulanDicari, bulanSekarang = 1;
+    long long populasiLalu = 0, populasiKini = 1;
+    cout << "Bulan ke-: ";
+    cin >> bulanDicari;
+    while (bulanSekarang < bulanDicari) {
+        long long populasiDepan = populasiLalu + populasiKini;
+        populasiLalu = populasiKini;
+        populasiKini = populasiDepan;
+        bulanSekarang++;
+    }
+    cout << "Populasi kelinci bulan ke-" << bulanDicari << ": " << populasiKini << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 9. Detektor Batu Prima
+----------------------------------------------------------------------
+
+Cek apakah nomor batu termasuk bilangan prima dengan mencoba pembagi dari 2 sampai akar bilangan. Gunakan break saat menemukan pembagi.
+
+[CONTOH TAMPILAN]
+Nomor batu: 91
+91 habis dibagi 7
+91 bukan bilangan prima
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int nomorBatuCek;
+    bool batuPrima = true;
+    cout << "Nomor batu: ";
+    cin >> nomorBatuCek;
+    if (nomorBatuCek < 2) batuPrima = false;
+    for (int calonPembagi = 2; calonPembagi * calonPembagi <= nomorBatuCek; calonPembagi++) {
+        if (nomorBatuCek % calonPembagi == 0) {
+            cout << nomorBatuCek << " habis dibagi " << calonPembagi << endl;
+            batuPrima = false;
+            break;
+        }
+    }
+    if (batuPrima) cout << nomorBatuCek << " adalah bilangan prima" << endl;
+    else cout << nomorBatuCek << " bukan bilangan prima" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 10. Daftar Bintang Prima di Langit
+----------------------------------------------------------------------
+
+Tampilkan semua bilangan prima dari 2 sampai n dan berapa banyaknya (nested loop).
+
+[CONTOH TAMPILAN]
+Batas pencarian: 50
+Bintang prima: 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47
+Jumlah bintang prima: 15
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int batasLangit, hitungBintangPrima = 0;
+    cout << "Batas pencarian: ";
+    cin >> batasLangit;
+    cout << "Bintang prima:";
+    for (int kandidatBintang = 2; kandidatBintang <= batasLangit; kandidatBintang++) {
+        bool bersinar = true;
+        for (int pembagiBintang = 2; pembagiBintang * pembagiBintang <= kandidatBintang; pembagiBintang++) {
+            if (kandidatBintang % pembagiBintang == 0) { bersinar = false; break; }
+        }
+        if (bersinar) {
+            cout << " " << kandidatBintang;
+            hitungBintangPrima++;
+        }
+    }
+    cout << endl << "Jumlah bintang prima: " << hitungBintangPrima << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 11. Angka Sempurna Sang Filsuf
+----------------------------------------------------------------------
+
+Angka sempurna adalah angka yang sama dengan jumlah faktor-faktornya selain dirinya sendiri (contoh 28 = 1+2+4+7+14). Tampilkan faktor-faktornya dan tentukan apakah sempurna.
+
+[CONTOH TAMPILAN]
+Angka yang diuji: 28
+Faktor: 1 2 4 7 14
+Jumlah faktor: 28
+28 adalah angka sempurna!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int angkaFilsuf, jumlahFaktorFilsuf = 0;
+    cout << "Angka yang diuji: ";
+    cin >> angkaFilsuf;
+    cout << "Faktor:";
+    for (int faktorUji = 1; faktorUji < angkaFilsuf; faktorUji++) {
+        if (angkaFilsuf % faktorUji == 0) {
+            cout << " " << faktorUji;
+            jumlahFaktorFilsuf += faktorUji;
+        }
+    }
+    cout << endl << "Jumlah faktor: " << jumlahFaktorFilsuf << endl;
+    if (jumlahFaktorFilsuf == angkaFilsuf && angkaFilsuf > 0) cout << angkaFilsuf << " adalah angka sempurna!" << endl;
+    else cout << angkaFilsuf << " bukan angka sempurna." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 12. Pembalik Nomor Kamar Hotel Hantu
+----------------------------------------------------------------------
+
+Di hotel hantu, nomor kamar dibaca terbalik. Balik angka berapa pun panjangnya dengan while.
+
+[CONTOH TAMPILAN]
+Nomor kamar: 58301
+Nomor kamar versi hantu: 10385
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long kamarAsli, kamarHantu = 0;
+    cout << "Nomor kamar: ";
+    cin >> kamarAsli;
+    long long sisaNomor = kamarAsli;
+    while (sisaNomor > 0) {
+        kamarHantu = kamarHantu * 10 + sisaNomor % 10;
+        sisaNomor /= 10;
+    }
+    cout << "Nomor kamar versi hantu: " << kamarHantu << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 13. Tanggal Palindrom Kerajaan
+----------------------------------------------------------------------
+
+Raja menyukai angka yang sama jika dibaca dari depan maupun belakang. Cek apakah angka yang dimasukkan palindrom.
+
+[CONTOH TAMPILAN]
+Angka tanggal: 20200202
+20200202 palindrom, Raja senang!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long angkaRaja, cerminRaja = 0;
+    cout << "Angka tanggal: ";
+    cin >> angkaRaja;
+    long long potonganRaja = angkaRaja;
+    while (potonganRaja > 0) {
+        cerminRaja = cerminRaja * 10 + potonganRaja % 10;
+        potonganRaja /= 10;
+    }
+    if (cerminRaja == angkaRaja) cout << angkaRaja << " palindrom, Raja senang!" << endl;
+    else cout << angkaRaja << " bukan palindrom." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 14. Panjang Mantra Angka
+----------------------------------------------------------------------
+
+Hitung banyak digit sebuah angka mantra dengan do-while (angka 0 tetap dihitung 1 digit).
+
+[CONTOH TAMPILAN]
+Angka mantra: 4096
+Mantra terdiri dari 4 digit
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long mantraAngka;
+    int panjangMantra = 0;
+    cout << "Angka mantra: ";
+    cin >> mantraAngka;
+    long long ekorMantra = mantraAngka < 0 ? -mantraAngka : mantraAngka;
+    do {
+        panjangMantra++;
+        ekorMantra /= 10;
+    } while (ekorMantra > 0);
+    cout << "Mantra terdiri dari " << panjangMantra << " digit" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 15. Angka Narsis Armstrong
+----------------------------------------------------------------------
+
+Angka Armstrong adalah angka yang sama dengan jumlah tiap digitnya dipangkatkan banyak digit (contoh 153 = 1³ + 5³ + 3³). Cek angka yang dimasukkan.
+
+[CONTOH TAMPILAN]
+Angka: 153
+Jumlah pangkat digit: 153
+153 adalah angka Armstrong!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int angkaNarsis, banyakDigitNarsis = 0, jumlahPangkat = 0;
+    cout << "Angka: ";
+    cin >> angkaNarsis;
+    int salinanNarsis = angkaNarsis;
+    while (salinanNarsis > 0) { banyakDigitNarsis++; salinanNarsis /= 10; }
+    salinanNarsis = angkaNarsis;
+    while (salinanNarsis > 0) {
+        int digitNarsis = salinanNarsis % 10, hasilPangkat = 1;
+        for (int kaliPangkat = 0; kaliPangkat < banyakDigitNarsis; kaliPangkat++) hasilPangkat *= digitNarsis;
+        jumlahPangkat += hasilPangkat;
+        salinanNarsis /= 10;
+    }
+    cout << "Jumlah pangkat digit: " << jumlahPangkat << endl;
+    if (jumlahPangkat == angkaNarsis) cout << angkaNarsis << " adalah angka Armstrong!" << endl;
+    else cout << angkaNarsis << " bukan angka Armstrong." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 16. Lonceng Dua Menara (KPK)
+----------------------------------------------------------------------
+
+Lonceng menara A berbunyi tiap a menit, menara B tiap b menit. Cari kapan keduanya berbunyi bersamaan pertama kali dengan menaikkan kelipatan satu per satu.
+
+[CONTOH TAMPILAN]
+Jeda lonceng A dan B (menit): 12 18
+Kedua lonceng berbunyi bersama pada menit ke-36
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int jedaLoncengA, jedaLoncengB;
+    cout << "Jeda lonceng A dan B (menit): ";
+    cin >> jedaLoncengA >> jedaLoncengB;
+    int menitBersama = jedaLoncengA > jedaLoncengB ? jedaLoncengA : jedaLoncengB;
+    while (menitBersama % jedaLoncengA != 0 || menitBersama % jedaLoncengB != 0) menitBersama++;
+    cout << "Kedua lonceng berbunyi bersama pada menit ke-" << menitBersama << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 17. Kode Biner Mercusuar
+----------------------------------------------------------------------
+
+Mercusuar mengirim angka dalam bentuk kedipan biner. Ubah desimal ke biner dengan while (tanpa string, bangun hasilnya sebagai angka).
+
+[CONTOH TAMPILAN]
+Angka desimal: 37
+37 dalam biner: 100101
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int angkaMercu;
+    long long kedipBiner = 0, posisiNilai = 1;
+    cout << "Angka desimal: ";
+    cin >> angkaMercu;
+    int sisaMercu = angkaMercu;
+    while (sisaMercu > 0) {
+        kedipBiner += (sisaMercu % 2) * posisiNilai;
+        posisiNilai *= 10;
+        sisaMercu /= 2;
+    }
+    cout << angkaMercu << " dalam biner: " << kedipBiner << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 18. Membaca Sandi Biner Robot
+----------------------------------------------------------------------
+
+Robot mengirim angka biner (hanya digit 0 dan 1). Ubah menjadi desimal.
+
+[CONTOH TAMPILAN]
+Sandi biner: 110101
+Nilai desimal: 53
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long sandiRobot;
+    int nilaiDesimalRobot = 0, bobotBit = 1;
+    cout << "Sandi biner: ";
+    cin >> sandiRobot;
+    while (sandiRobot > 0) {
+        nilaiDesimalRobot += (sandiRobot % 10) * bobotBit;
+        bobotBit *= 2;
+        sandiRobot /= 10;
+    }
+    cout << "Nilai desimal: " << nilaiDesimalRobot << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 19. Tangga Bintang Siku
+----------------------------------------------------------------------
+
+Buat tangga bintang siku-siku rata kiri setinggi n.
+
+[CONTOH TAMPILAN]
+Tinggi tangga: 5
+*
+
+*
+
+*
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int tinggiTanggaBintang;
+    cout << "Tinggi tangga: ";
+    cin >> tinggiTanggaBintang;
+    for (int anakTangga = 1; anakTangga <= tinggiTanggaBintang; anakTangga++) {
+        for (int bintangTangga = 1; bintangTangga <= anakTangga; bintangTangga++) cout << "*";
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 20. Segitiga Angka Murid TK
+----------------------------------------------------------------------
+
+Guru TK mengajarkan berhitung dengan pola 1, 12, 123, ... sampai n baris.
+
+[CONTOH TAMPILAN]
+Banyak baris: 5
+1
+12
+123
+1234
+12345
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int barisTK;
+    cout << "Banyak baris: ";
+    cin >> barisTK;
+    for (int barisKe = 1; barisKe <= barisTK; barisKe++) {
+        for (int angkaTK = 1; angkaTK <= barisKe; angkaTK++) cout << angkaTK;
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 21. Piramida Terbalik Gurun Pasir
+----------------------------------------------------------------------
+
+Buat piramida bintang terbalik setinggi n.
+
+[CONTOH TAMPILAN]
+Tinggi piramida: 4
+*
+ *
+  *
+   *
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int tinggiPiramidaGurun;
+    cout << "Tinggi piramida: ";
+    cin >> tinggiPiramidaGurun;
+    for (int lapisGurun = tinggiPiramidaGurun; lapisGurun >= 1; lapisGurun--) {
+        for (int pasirKosong = 0; pasirKosong < tinggiPiramidaGurun - lapisGurun; pasirKosong++) cout << " ";
+        for (int batuPiramida = 0; batuPiramida < 2 * lapisGurun - 1; batuPiramida++) cout << "*";
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 22. Permata Belah Ketupat
+----------------------------------------------------------------------
+
+Buat permata berbentuk belah ketupat dengan setengah tinggi n.
+
+[CONTOH TAMPILAN]
+Setengah tinggi permata: 3
+  *
+ *
+*
+ *
+  *
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int separuhPermata;
+    cout << "Setengah tinggi permata: ";
+    cin >> separuhPermata;
+    for (int barisPermata = 1; barisPermata <= separuhPermata; barisPermata++) {
+        for (int celah = 0; celah < separuhPermata - barisPermata; celah++) cout << " ";
+        for (int kilau = 0; kilau < 2 * barisPermata - 1; kilau++) cout << "*";
+        cout << endl;
+    }
+    for (int barisPermata = separuhPermata - 1; barisPermata >= 1; barisPermata--) {
+        for (int celah = 0; celah < separuhPermata - barisPermata; celah++) cout << " ";
+        for (int kilau = 0; kilau < 2 * barisPermata - 1; kilau++) cout << "*";
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 23. Papan Catur Kayu
+----------------------------------------------------------------------
+
+Tukang kayu membuat papan catur ukuran n × n. Kotak gelap digambar #, kotak terang digambar . secara selang-seling.
+
+[CONTOH TAMPILAN]
+Ukuran papan: 5
+#.#.#
+.#.#.
+#.#.#
+.#.#.
+#.#.#
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int ukuranPapanCatur;
+    cout << "Ukuran papan: ";
+    cin >> ukuranPapanCatur;
+    for (int barisPapan = 0; barisPapan < ukuranPapanCatur; barisPapan++) {
+        for (int kolomPapan = 0; kolomPapan < ukuranPapanCatur; kolomPapan++) {
+            if ((barisPapan + kolomPapan) % 2 == 0) cout << "#";
+            else cout << ".";
+        }
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 24. Segitiga Floyd Pustakawan
+----------------------------------------------------------------------
+
+Pustakawan menomori buku dalam pola segitiga Floyd: baris 1 berisi 1 angka, baris 2 berisi 2 angka, dst, angka terus bertambah.
+
+[CONTOH TAMPILAN]
+Banyak baris rak: 4
+1 
+2 3 
+4 5 6 
+7 8 9 10 
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int barisRakFloyd, nomorBukuFloyd = 1;
+    cout << "Banyak baris rak: ";
+    cin >> barisRakFloyd;
+    for (int rakKe = 1; rakKe <= barisRakFloyd; rakKe++) {
+        for (int bukuDiRak = 1; bukuDiRak <= rakKe; bukuDiRak++) {
+            cout << nomorBukuFloyd << " ";
+            nomorBukuFloyd++;
+        }
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 25. Tabungan Haji Pak Haris
+----------------------------------------------------------------------
+
+Saldo awal tumbuh dengan bunga persen per tahun (majemuk). Hitung berapa tahun sampai saldo mencapai target, dan tampilkan saldo tiap tahun.
+
+[CONTOH TAMPILAN]
+Saldo awal, bunga (%), target: 20000000 8 30000000
+Tahun 1: Rp21600000
+Tahun 2: Rp23328000
+Tahun 3: Rp25194240
+Tahun 4: Rp27209779
+Tahun 5: Rp29386561
+Tahun 6: Rp31737486
+Target tercapai setelah 6 tahun
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    double saldoHaris, persenHaris, targetHaris;
+    int tahunHaris = 0;
+    cout << "Saldo awal, bunga (%), target: ";
+    cin >> saldoHaris >> persenHaris >> targetHaris;
+    while (saldoHaris < targetHaris) {
+        saldoHaris += saldoHaris * persenHaris / 100;
+        tahunHaris++;
+        cout << "Tahun " << tahunHaris << ": Rp" << (long long)saldoHaris << endl;
+    }
+    cout << "Target tercapai setelah " << tahunHaris << " tahun" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 26. Kotak Amal Masjid (Sentinel)
+----------------------------------------------------------------------
+
+Bendahara memasukkan nominal sumbangan satu per satu. Input 0 menandakan selesai. Tampilkan total, jumlah penyumbang, dan rata-rata sumbangan.
+
+[CONTOH TAMPILAN]
+Masukkan sumbangan (0 untuk selesai)
+Sumbangan: Rp50000
+Sumbangan: Rp20000
+Sumbangan: Rp100000
+Sumbangan: Rp35000
+Sumbangan: Rp0
+Total sumbangan : Rp205000
+Penyumbang      : 4 orang
+Rata-rata       : Rp51250
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long sumbanganMasuk, totalKotakAmal = 0;
+    int jumlahPenyumbang = 0;
+    cout << "Masukkan sumbangan (0 untuk selesai)" << endl;
+    while (true) {
+        cout << "Sumbangan: Rp";
+        cin >> sumbanganMasuk;
+        if (sumbanganMasuk == 0) break;
+        totalKotakAmal += sumbanganMasuk;
+        jumlahPenyumbang++;
+    }
+    cout << "Total sumbangan : Rp" << totalKotakAmal << endl;
+    cout << "Penyumbang      : " << jumlahPenyumbang << " orang" << endl;
+    if (jumlahPenyumbang > 0) cout << "Rata-rata       : Rp" << totalKotakAmal / jumlahPenyumbang << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 27. Kunci Gembok Tiga Kesempatan
+----------------------------------------------------------------------
+
+Gembok berkode 2580. Pengguna punya 3 kesempatan. Gunakan do-while. Jika gagal 3 kali, gembok terkunci permanen.
+
+[CONTOH TAMPILAN]
+Masukkan kode gembok: 1111
+Salah! Sisa kesempatan: 2
+Masukkan kode gembok: 2222
+Salah! Sisa kesempatan: 1
+Masukkan kode gembok: 2580
+Gembok terbuka pada percobaan ke-3
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    const int kodeGembok = 2580;
+    int kodeDicoba, percobaanGembok = 0;
+    bool gembokTerbuka = false;
+    do {
+        cout << "Masukkan kode gembok: ";
+        cin >> kodeDicoba;
+        percobaanGembok++;
+        if (kodeDicoba == kodeGembok) gembokTerbuka = true;
+        else cout << "Salah! Sisa kesempatan: " << 3 - percobaanGembok << endl;
+    } while (!gembokTerbuka && percobaanGembok < 3);
+    if (gembokTerbuka) cout << "Gembok terbuka pada percobaan ke-" << percobaanGembok << endl;
+    else cout << "Gembok terkunci permanen!" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 28. Mesin Kasir Kantin Kampus
+----------------------------------------------------------------------
+
+Buat menu berulang dengan do-while dan switch: 1 tambah barang (masukkan harga), 2 lihat total, 3 bayar dan keluar.
+
+[CONTOH TAMPILAN]
+[1] Tambah barang [2] Lihat total [3] Bayar: 1
+Harga barang: Rp12000
+[1] Tambah barang [2] Lihat total [3] Bayar: 1
+Harga barang: Rp8000
+[1] Tambah barang [2] Lihat total [3] Bayar: 2
+2 barang, total Rp20000
+[1] Tambah barang [2] Lihat total [3] Bayar: 3
+Silakan bayar Rp20000. Terima kasih!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int pilihanKasir;
+    long long hargaJajan, totalKantin = 0;
+    int itemKantin = 0;
+    do {
+        cout << "[1] Tambah barang [2] Lihat total [3] Bayar: ";
+        cin >> pilihanKasir;
+        switch (pilihanKasir) {
+            case 1:
+                cout << "Harga barang: Rp";
+                cin >> hargaJajan;
+                totalKantin += hargaJajan;
+                itemKantin++;
+                break;
+            case 2:
+                cout << itemKantin << " barang, total Rp" << totalKantin << endl;
+                break;
+            case 3:
+                cout << "Silakan bayar Rp" << totalKantin << ". Terima kasih!" << endl;
+                break;
+            default:
+                cout << "Pilihan tidak ada." << endl;
+        }
+    } while (pilihanKasir != 3);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 29. Juri Lomba Panjat Pinang
+----------------------------------------------------------------------
+
+Masukkan waktu (detik) n peserta panjat pinang satu per satu tanpa array. Cari waktu tercepat dan terlambat beserta nomor pesertanya.
+
+[CONTOH TAMPILAN]
+Jumlah peserta: 4
+Waktu peserta 1 (detik): 95
+Waktu peserta 2 (detik): 72
+Waktu peserta 3 (detik): 130
+Waktu peserta 4 (detik): 88
+Tercepat: peserta 2 (72 detik)
+Terlama : peserta 3 (130 detik)
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int pesertaPinang, waktuPeserta, waktuTercepat = 0, waktuTerlama = 0, juaraPinang = 0, buncitPinang = 0;
+    cout << "Jumlah peserta: ";
+    cin >> pesertaPinang;
+    for (int nomorPeserta = 1; nomorPeserta <= pesertaPinang; nomorPeserta++) {
+        cout << "Waktu peserta " << nomorPeserta << " (detik): ";
+        cin >> waktuPeserta;
+        if (nomorPeserta == 1 || waktuPeserta < waktuTercepat) { waktuTercepat = waktuPeserta; juaraPinang = nomorPeserta; }
+        if (nomorPeserta == 1 || waktuPeserta > waktuTerlama) { waktuTerlama = waktuPeserta; buncitPinang = nomorPeserta; }
+    }
+    cout << "Tercepat: peserta " << juaraPinang << " (" << waktuTercepat << " detik)" << endl;
+    cout << "Terlama : peserta " << buncitPinang << " (" << waktuTerlama << " detik)" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 30. Sensus Ganjil Genap Warga
+----------------------------------------------------------------------
+
+Petugas sensus memasukkan n nomor rumah. Hitung berapa yang ganjil dan berapa yang genap.
+
+[CONTOH TAMPILAN]
+Banyak data: 6
+Nomor-nomor rumah: 12 7 33 40 18 5
+Ganjil: 3, Genap: 3
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int dataSensus, nomorSensus, rumahGanjil = 0, rumahGenap = 0;
+    cout << "Banyak data: ";
+    cin >> dataSensus;
+    cout << "Nomor-nomor rumah: ";
+    for (int urutSensus = 0; urutSensus < dataSensus; urutSensus++) {
+        cin >> nomorSensus;
+        if (nomorSensus % 2 == 0) rumahGenap++;
+        else rumahGanjil++;
+    }
+    cout << "Ganjil: " << rumahGanjil << ", Genap: " << rumahGenap << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 31. Perjalanan Ajaib Collatz
+----------------------------------------------------------------------
+
+Sebuah angka berkelana: jika genap dibagi 2, jika ganjil dikali 3 tambah 1, berhenti saat mencapai 1. Tampilkan jejaknya dan jumlah langkah.
+
+[CONTOH TAMPILAN]
+Angka awal: 6
+Jejak: 6 -> 3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1
+Sampai di 1 setelah 8 langkah
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long pengelanaAngka;
+    int langkahKelana = 0;
+    cout << "Angka awal: ";
+    cin >> pengelanaAngka;
+    cout << "Jejak: " << pengelanaAngka;
+    while (pengelanaAngka > 1) {
+        if (pengelanaAngka % 2 == 0) pengelanaAngka /= 2;
+        else pengelanaAngka = pengelanaAngka * 3 + 1;
+        cout << " -> " << pengelanaAngka;
+        langkahKelana++;
+    }
+    cout << endl << "Sampai di 1 setelah " << langkahKelana << " langkah" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 32. Lompatan Katak Kelipatan
+----------------------------------------------------------------------
+
+Katak melompat sejauh k meter setiap lompatan. Tampilkan semua titik pendaratan sampai tidak melebihi batas kolam.
+
+[CONTOH TAMPILAN]
+Jarak lompatan dan panjang kolam: 7 50
+Katak mendarat di: 7 14 21 28 35 42 49
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int jauhLompatan, ujungKolam;
+    cout << "Jarak lompatan dan panjang kolam: ";
+    cin >> jauhLompatan >> ujungKolam;
+    cout << "Katak mendarat di:";
+    for (int titikDarat = jauhLompatan; titikDarat <= ujungKolam; titikDarat += jauhLompatan) cout << " " << titikDarat;
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 33. Pembagi Rata Harta Warisan
+----------------------------------------------------------------------
+
+Tampilkan semua cara membagi n koin warisan secara rata (semua faktor dari n) dan berapa banyak caranya.
+
+[CONTOH TAMPILAN]
+Jumlah koin warisan: 36
+1 ahli waris -> masing-masing 36 koin
+2 ahli waris -> masing-masing 18 koin
+3 ahli waris -> masing-masing 12 koin
+4 ahli waris -> masing-masing 9 koin
+6 ahli waris -> masing-masing 6 koin
+9 ahli waris -> masing-masing 4 koin
+12 ahli waris -> masing-masing 3 koin
+18 ahli waris -> masing-masing 2 koin
+36 ahli waris -> masing-masing 1 koin
+Ada 9 cara membagi rata
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int koinWarisan, caraBagi = 0;
+    cout << "Jumlah koin warisan: ";
+    cin >> koinWarisan;
+    for (int ahliWaris = 1; ahliWaris <= koinWarisan; ahliWaris++) {
+        if (koinWarisan % ahliWaris == 0) {
+            cout << ahliWaris << " ahli waris -> masing-masing " << koinWarisan / ahliWaris << " koin" << endl;
+            caraBagi++;
+        }
+    }
+    cout << "Ada " << caraBagi << " cara membagi rata" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 34. Akar Digital Batu Nisan
+----------------------------------------------------------------------
+
+Jumlahkan digit-digit angka berulang kali sampai tersisa satu digit (akar digital). Tampilkan setiap tahapnya.
+
+[CONTOH TAMPILAN]
+Angka di batu nisan: 98765
+-> 35
+-> 8
+Akar digital: 8
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long angkaNisan;
+    cout << "Angka di batu nisan: ";
+    cin >> angkaNisan;
+    while (angkaNisan >= 10) {
+        long long hasilPeras = 0;
+        while (angkaNisan > 0) {
+            hasilPeras += angkaNisan % 10;
+            angkaNisan /= 10;
+        }
+        angkaNisan = hasilPeras;
+        cout << "-> " << angkaNisan << endl;
+    }
+    cout << "Akar digital: " << angkaNisan << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 35. Bakteri Laboratorium Profesor
+----------------------------------------------------------------------
+
+Bakteri membelah diri menjadi dua setiap 20 menit. Hitung berapa menit sampai jumlah bakteri melebihi batas aman.
+
+[CONTOH TAMPILAN]
+Bakteri awal dan batas aman: 5 1000
+Menit 20: 10 bakteri
+Menit 40: 20 bakteri
+Menit 60: 40 bakteri
+Menit 80: 80 bakteri
+Menit 100: 160 bakteri
+Menit 120: 320 bakteri
+Menit 140: 640 bakteri
+Menit 160: 1280 bakteri
+Batas aman terlampaui setelah 160 menit!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long koloniBakteri, batasAman;
+    int menitLab = 0;
+    cout << "Bakteri awal dan batas aman: ";
+    cin >> koloniBakteri >> batasAman;
+    while (koloniBakteri <= batasAman) {
+        koloniBakteri *= 2;
+        menitLab += 20;
+        cout << "Menit " << menitLab << ": " << koloniBakteri << " bakteri" << endl;
+    }
+    cout << "Batas aman terlampaui setelah " << menitLab << " menit!" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 36. Bola Karet Memantul
+----------------------------------------------------------------------
+
+Bola dijatuhkan dari ketinggian h meter. Setiap memantul, tingginya tinggal 60%. Hitung berapa kali pantulan sampai tinggi pantulan di bawah 1 meter.
+
+[CONTOH TAMPILAN]
+Tinggi awal bola (m): 10
+Pantulan 1: 6 m
+Pantulan 2: 3.6 m
+Pantulan 3: 2.16 m
+Pantulan 4: 1.296 m
+Pantulan 5: 0.7776 m
+Bola memantul 5 kali sebelum di bawah 1 meter
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    double tinggiBola;
+    int jumlahPantulan = 0;
+    cout << "Tinggi awal bola (m): ";
+    cin >> tinggiBola;
+    while (tinggiBola >= 1) {
+        tinggiBola *= 0.6;
+        jumlahPantulan++;
+        cout << "Pantulan " << jumlahPantulan << ": " << tinggiBola << " m" << endl;
+    }
+    cout << "Bola memantul " << jumlahPantulan << " kali sebelum di bawah 1 meter" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 37. Ksatria Fibonacci vs Raksasa Batu (pola game Quest IV)
+----------------------------------------------------------------------
+
+Ksatria Fibonacci (HP 50) melawan Raksasa Batu (HP 100). Rentang input mulai 1–10 dan naik 10 tiap giliran. Jika angka termasuk bilangan Fibonacci (1, 2, 3, 5, 8, 13, 21, ...), ksatria menyerang dengan damage 20. Jika bukan, raksasa menyerang dengan damage = angka % 10. Cek Fibonacci dengan loop.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan bilangan dari 1-10: 8
+Bilangan Fibonacci! Ksatria menyerang dengan 20 damage!
+HP Raksasa Batu: 80
+
+Giliran 2:
+Masukkan bilangan dari 11-20: 14
+Bukan Fibonacci.. Raksasa Batu menyerang dengan 4 damage!
+HP Ksatria Fibonacci: 46
+
+Giliran 3:
+Masukkan bilangan dari 21-30: 21
+Bilangan Fibonacci! Ksatria menyerang dengan 20 damage!
+HP Raksasa Batu: 60
+
+Giliran 4:
+Masukkan bilangan dari 31-40: 34
+Bilangan Fibonacci! Ksatria menyerang dengan 20 damage!
+HP Raksasa Batu: 40
+
+Giliran 5:
+Masukkan bilangan dari 41-50: 45
+Bukan Fibonacci.. Raksasa Batu menyerang dengan 5 damage!
+HP Ksatria Fibonacci: 41
+
+Giliran 6:
+Masukkan bilangan dari 51-60: 55
+Bilangan Fibonacci! Ksatria menyerang dengan 20 damage!
+HP Raksasa Batu: 20
+
+Giliran 7:
+Masukkan bilangan dari 61-70: 66
+Bukan Fibonacci.. Raksasa Batu menyerang dengan 6 damage!
+HP Ksatria Fibonacci: 35
+
+Giliran 8:
+Masukkan bilangan dari 71-80: 77
+Bukan Fibonacci.. Raksasa Batu menyerang dengan 7 damage!
+HP Ksatria Fibonacci: 28
+
+Giliran 9:
+Masukkan bilangan dari 81-90: 89
+Bilangan Fibonacci! Ksatria menyerang dengan 20 damage!
+HP Raksasa Batu: 0
+
+Raksasa Batu runtuh! Ksatria Fibonacci menang!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int hpKsatriaFibo = 50, hpRaksasaBatu = 100;
+    int giliranFibo = 1, rentangAwal = 1, rentangAkhir = 10;
+    while (hpKsatriaFibo > 0 && hpRaksasaBatu > 0) {
+        int angkaJurus;
+        cout << "\nGiliran " << giliranFibo << ":\n";
+        cout << "Masukkan bilangan dari " << rentangAwal << "-" << rentangAkhir << ": ";
+        cin >> angkaJurus;
+        if (angkaJurus < rentangAwal || angkaJurus > rentangAkhir) {
+            cout << "Di luar rentang, ulangi!\n";
+            continue;
+        }
+        int sukuLama = 1, sukuBaru = 1;
+        while (sukuBaru < angkaJurus) {
+            int sukuDepan = sukuLama + sukuBaru;
+            sukuLama = sukuBaru;
+            sukuBaru = sukuDepan;
+        }
+        if (sukuBaru == angkaJurus) {
+            hpRaksasaBatu -= 20;
+            if (hpRaksasaBatu < 0) hpRaksasaBatu = 0;
+            cout << "Bilangan Fibonacci! Ksatria menyerang dengan 20 damage!\n";
+            cout << "HP Raksasa Batu: " << hpRaksasaBatu << endl;
+        } else {
+            int hantamanBatu = angkaJurus % 10;
+            hpKsatriaFibo -= hantamanBatu;
+            if (hpKsatriaFibo < 0) hpKsatriaFibo = 0;
+            cout << "Bukan Fibonacci.. Raksasa Batu menyerang dengan " << hantamanBatu << " damage!\n";
+            cout << "HP Ksatria Fibonacci: " << hpKsatriaFibo << endl;
+        }
+        giliranFibo++;
+        rentangAwal += 10;
+        rentangAkhir += 10;
+    }
+    if (hpRaksasaBatu == 0) cout << "\nRaksasa Batu runtuh! Ksatria Fibonacci menang!\n";
+    else cout << "\nKsatria Fibonacci tumbang... Raksasa Batu menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 38. Pendekar Cermin vs Harimau Digit (pola game Quest IV)
+----------------------------------------------------------------------
+
+Pendekar Cermin (HP 40) melawan Harimau Digit (HP 60). Rentang input mulai 10–30 dan naik 20 tiap giliran. Jika angka palindrom (dicek dengan loop pembalik angka), pendekar menyerang dengan damage 20. Jika bukan, harimau menyerang dengan damage = jumlah digit angka itu.
+
+[CONTOH TAMPILAN]
+Ronde 1:
+Masukkan angka 10-30: 22
+22 palindrom! Pendekar Cermin menebas 20 damage!
+HP Harimau Digit: 40
+
+Ronde 2:
+Masukkan angka 30-50: 35
+35 bukan palindrom.. Harimau mencakar 8 damage!
+HP Pendekar Cermin: 32
+
+Ronde 3:
+Masukkan angka 50-70: 55
+55 palindrom! Pendekar Cermin menebas 20 damage!
+HP Harimau Digit: 20
+
+Ronde 4:
+Masukkan angka 70-90: 77
+77 palindrom! Pendekar Cermin menebas 20 damage!
+HP Harimau Digit: 0
+
+Harimau Digit kabur! Pendekar Cermin menang!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int hpPendekarCermin = 40, hpHarimauDigit = 60;
+    int ronde = 1, batasMulai = 10, batasSelesai = 30;
+    while (hpPendekarCermin > 0 && hpHarimauDigit > 0) {
+        int angkaCakar;
+        cout << "\nRonde " << ronde << ":\n";
+        cout << "Masukkan angka " << batasMulai << "-" << batasSelesai << ": ";
+        cin >> angkaCakar;
+        if (angkaCakar < batasMulai || angkaCakar > batasSelesai) {
+            cout << "Angka tidak sah, ulangi!\n";
+            continue;
+        }
+        int sisaCakar = angkaCakar, balikCakar = 0, totalDigitCakar = 0;
+        while (sisaCakar > 0) {
+            balikCakar = balikCakar * 10 + sisaCakar % 10;
+            totalDigitCakar += sisaCakar % 10;
+            sisaCakar /= 10;
+        }
+        if (balikCakar == angkaCakar) {
+            hpHarimauDigit -= 20;
+            if (hpHarimauDigit < 0) hpHarimauDigit = 0;
+            cout << angkaCakar << " palindrom! Pendekar Cermin menebas 20 damage!\n";
+            cout << "HP Harimau Digit: " << hpHarimauDigit << endl;
+        } else {
+            hpPendekarCermin -= totalDigitCakar;
+            if (hpPendekarCermin < 0) hpPendekarCermin = 0;
+            cout << angkaCakar << " bukan palindrom.. Harimau mencakar " << totalDigitCakar << " damage!\n";
+            cout << "HP Pendekar Cermin: " << hpPendekarCermin << endl;
+        }
+        ronde++;
+        batasMulai += 20;
+        batasSelesai += 20;
+    }
+    if (hpHarimauDigit == 0) cout << "\nHarimau Digit kabur! Pendekar Cermin menang!\n";
+    else cout << "\nPendekar Cermin kalah... Harimau Digit berjaya!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 39. Pemburu Faktor vs Iblis Sisa Bagi (pola game Quest IV)
+----------------------------------------------------------------------
+
+Pemburu Faktor (HP 45) melawan Iblis Sisa Bagi (HP 80). Rentang input mulai 1–12 dan naik 12 tiap giliran. Hitung banyak faktor angka dengan loop. Jika banyak faktornya lebih dari 3, pemburu menyerang dengan damage = banyak faktor × 2. Jika tidak, iblis menyerang dengan damage = angka % 10 + 1.
+
+[CONTOH TAMPILAN]
+Babak 1:
+Masukkan angka 1-12: 12
+12 punya 6 faktor
+Pemburu Faktor memanah dengan 12 damage!
+HP Iblis Sisa Bagi: 68
+
+Babak 2:
+Masukkan angka 13-24: 17
+17 punya 2 faktor
+Iblis Sisa Bagi mengutuk dengan 8 damage!
+HP Pemburu Faktor: 37
+
+Babak 3:
+Masukkan angka 25-36: 36
+36 punya 9 faktor
+Pemburu Faktor memanah dengan 18 damage!
+HP Iblis Sisa Bagi: 50
+
+Babak 4:
+Masukkan angka 37-48: 48
+48 punya 10 faktor
+Pemburu Faktor memanah dengan 20 damage!
+HP Iblis Sisa Bagi: 30
+
+Babak 5:
+Masukkan angka 49-60: 60
+60 punya 12 faktor
+Pemburu Faktor memanah dengan 24 damage!
+HP Iblis Sisa Bagi: 6
+
+Babak 6:
+Masukkan angka 61-72: 72
+72 punya 12 faktor
+Pemburu Faktor memanah dengan 24 damage!
+HP Iblis Sisa Bagi: 0
+
+Iblis Sisa Bagi lenyap! Pemburu Faktor menang!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int hpPemburu = 45, hpIblis = 80;
+    int babak = 1, pagarBawah = 1, pagarAtas = 12;
+    while (hpPemburu > 0 && hpIblis > 0) {
+        int angkaRitual;
+        cout << "\nBabak " << babak << ":\n";
+        cout << "Masukkan angka " << pagarBawah << "-" << pagarAtas << ": ";
+        cin >> angkaRitual;
+        if (angkaRitual < pagarBawah || angkaRitual > pagarAtas) {
+            cout << "Ritual gagal, angka di luar pagar!\n";
+            continue;
+        }
+        int banyakFaktorRitual = 0;
+        for (int pembagiRitual = 1; pembagiRitual <= angkaRitual; pembagiRitual++)
+            if (angkaRitual % pembagiRitual == 0) banyakFaktorRitual++;
+        cout << angkaRitual << " punya " << banyakFaktorRitual << " faktor\n";
+        if (banyakFaktorRitual > 3) {
+            int panahFaktor = banyakFaktorRitual * 2;
+            hpIblis -= panahFaktor;
+            if (hpIblis < 0) hpIblis = 0;
+            cout << "Pemburu Faktor memanah dengan " << panahFaktor << " damage!\n";
+            cout << "HP Iblis Sisa Bagi: " << hpIblis << endl;
+        } else {
+            int kutukanSisa = angkaRitual % 10 + 1;
+            hpPemburu -= kutukanSisa;
+            if (hpPemburu < 0) hpPemburu = 0;
+            cout << "Iblis Sisa Bagi mengutuk dengan " << kutukanSisa << " damage!\n";
+            cout << "HP Pemburu Faktor: " << hpPemburu << endl;
+        }
+        babak++;
+        pagarBawah += 12;
+        pagarAtas += 12;
+    }
+    if (hpIblis == 0) cout << "\nIblis Sisa Bagi lenyap! Pemburu Faktor menang!\n";
+    else cout << "\nPemburu Faktor tumbang... Iblis Sisa Bagi menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 40. ATM Koperasi Desa
+----------------------------------------------------------------------
+
+Buat ATM sederhana dengan do-while dan switch: 1 cek saldo, 2 setor, 3 tarik (tolak jika saldo kurang), 4 keluar. Saldo awal Rp500.000.
+
+[CONTOH TAMPILAN]
+1.Cek saldo 2.Setor 3.Tarik 4.Keluar
+Pilih: 2
+Nominal setor: Rp150000
+Setor berhasil.
+
+1.Cek saldo 2.Setor 3.Tarik 4.Keluar
+Pilih: 3
+Nominal tarik: Rp800000
+Saldo tidak cukup!
+
+1.Cek saldo 2.Setor 3.Tarik 4.Keluar
+Pilih: 3
+Nominal tarik: Rp200000
+Tarik berhasil.
+
+1.Cek saldo 2.Setor 3.Tarik 4.Keluar
+Pilih: 1
+Saldo: Rp450000
+
+1.Cek saldo 2.Setor 3.Tarik 4.Keluar
+Pilih: 4
+Terima kasih telah menggunakan ATM Koperasi.
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long saldoKoperasi = 500000, nominalTransaksi;
+    int menuKoperasi;
+    do {
+        cout << "\n1.Cek saldo 2.Setor 3.Tarik 4.Keluar\nPilih: ";
+        cin >> menuKoperasi;
+        switch (menuKoperasi) {
+            case 1: cout << "Saldo: Rp" << saldoKoperasi << endl; break;
+            case 2:
+                cout << "Nominal setor: Rp";
+                cin >> nominalTransaksi;
+                saldoKoperasi += nominalTransaksi;
+                cout << "Setor berhasil." << endl;
+                break;
+            case 3:
+                cout << "Nominal tarik: Rp";
+                cin >> nominalTransaksi;
+                if (nominalTransaksi > saldoKoperasi) cout << "Saldo tidak cukup!" << endl;
+                else { saldoKoperasi -= nominalTransaksi; cout << "Tarik berhasil." << endl; }
+                break;
+            case 4: cout << "Terima kasih telah menggunakan ATM Koperasi." << endl; break;
+            default: cout << "Menu tidak tersedia." << endl;
+        }
+    } while (menuKoperasi != 4);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 41. Tabel Suhu Stasiun Cuaca
+----------------------------------------------------------------------
+
+Stasiun cuaca mencetak tabel konversi Celsius ke Fahrenheit dari a sampai b dengan langkah tertentu.
+
+[CONTOH TAMPILAN]
+Celsius awal, akhir, langkah: 0 100 20
+Celsius	Fahrenheit
+0	32
+20	68
+40	104
+60	140
+80	176
+100	212
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int celsiusMulai, celsiusAkhir, langkahSuhu;
+    cout << "Celsius awal, akhir, langkah: ";
+    cin >> celsiusMulai >> celsiusAkhir >> langkahSuhu;
+    cout << "Celsius\tFahrenheit" << endl;
+    for (int derajatStasiun = celsiusMulai; derajatStasiun <= celsiusAkhir; derajatStasiun += langkahSuhu)
+        cout << derajatStasiun << "\t" << derajatStasiun * 9.0 / 5 + 32 << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 42. Kalkulator Pantang Menyerah
+----------------------------------------------------------------------
+
+Kalkulator menjumlahkan dua angka lalu bertanya apakah ingin menghitung lagi (y/t). Ulangi selama jawabannya y.
+
+[CONTOH TAMPILAN]
+Dua angka yang dijumlahkan: 4 9
+Hasil: 13
+Hitung lagi? (y/t): y
+Dua angka yang dijumlahkan: 15 27
+Hasil: 42
+Hitung lagi? (y/t): t
+Kalkulator dimatikan.
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    char lanjutHitung;
+    do {
+        double operandKiri, operandKanan;
+        cout << "Dua angka yang dijumlahkan: ";
+        cin >> operandKiri >> operandKanan;
+        cout << "Hasil: " << operandKiri + operandKanan << endl;
+        cout << "Hitung lagi? (y/t): ";
+        cin >> lanjutHitung;
+    } while (lanjutHitung == 'y' || lanjutHitung == 'Y');
+    cout << "Kalkulator dimatikan." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 43. Deret Selang-Seling Alkemis
+----------------------------------------------------------------------
+
+Alkemis menghitung 1 − 1/2 + 1/3 − 1/4 + ... sampai n suku.
+
+[CONTOH TAMPILAN]
+Banyak suku: 10
+Hasil deret: 0.645635
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int sukuRamuan;
+    double hasilRamuan = 0;
+    cout << "Banyak suku: ";
+    cin >> sukuRamuan;
+    for (int penyebut = 1; penyebut <= sukuRamuan; penyebut++) {
+        if (penyebut % 2 == 1) hasilRamuan += 1.0 / penyebut;
+        else hasilRamuan -= 1.0 / penyebut;
+    }
+    cout << "Hasil deret: " << hasilRamuan << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 44. Menebak Pi Ala Leibniz
+----------------------------------------------------------------------
+
+Pi bisa didekati dengan 4 × (1 − 1/3 + 1/5 − 1/7 + ...). Hitung pendekatan pi untuk n suku.
+
+[CONTOH TAMPILAN]
+Banyak suku: 1000
+Pendekatan pi: 3.14059
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int sukuLeibniz;
+    double jumlahLeibniz = 0;
+    int tandaLeibniz = 1;
+    cout << "Banyak suku: ";
+    cin >> sukuLeibniz;
+    for (int urutLeibniz = 0; urutLeibniz < sukuLeibniz; urutLeibniz++) {
+        jumlahLeibniz += tandaLeibniz * 1.0 / (2 * urutLeibniz + 1);
+        tandaLeibniz = -tandaLeibniz;
+    }
+    cout << "Pendekatan pi: " << 4 * jumlahLeibniz << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 45. Dua Dadu Penjudi Licik
+----------------------------------------------------------------------
+
+Tampilkan semua pasangan dua dadu (1–6) yang jumlahnya sama dengan angka target, dan berapa banyak pasangannya.
+
+[CONTOH TAMPILAN]
+Jumlah target: 8
+(2, 6)
+(3, 5)
+(4, 4)
+(5, 3)
+(6, 2)
+Ada 5 pasangan
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int targetDadu, pasanganDadu = 0;
+    cout << "Jumlah target: ";
+    cin >> targetDadu;
+    for (int daduMerah = 1; daduMerah <= 6; daduMerah++) {
+        for (int daduBiru = 1; daduBiru <= 6; daduBiru++) {
+            if (daduMerah + daduBiru == targetDadu) {
+                cout << "(" << daduMerah << ", " << daduBiru << ")" << endl;
+                pasanganDadu++;
+            }
+        }
+    }
+    cout << "Ada " << pasanganDadu << " pasangan" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 46. Tangga Huruf Prasasti
+----------------------------------------------------------------------
+
+Pahat pola huruf A, AB, ABC, ... sampai n baris (gunakan variabel char yang di-increment).
+
+[CONTOH TAMPILAN]
+Banyak baris: 5
+A
+AB
+ABC
+ABCD
+ABCDE
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int barisPrasasti;
+    cout << "Banyak baris: ";
+    cin >> barisPrasasti;
+    for (int pahatan = 1; pahatan <= barisPrasasti; pahatan++) {
+        for (char hurufPahat = 'A'; hurufPahat < 'A' + pahatan; hurufPahat++) cout << hurufPahat;
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 47. Jadwal Ronda Malam
+----------------------------------------------------------------------
+
+Petugas ronda berkeliling setiap 45 menit, mulai dari jam awal sampai jam akhir. Tampilkan jadwalnya dalam format HH:MM.
+
+[CONTOH TAMPILAN]
+Mulai ronda (jam menit): 21 0
+Selesai ronda (jam menit): 24 0
+Keliling ke-1: 21:00
+Keliling ke-2: 21:45
+Keliling ke-3: 22:30
+Keliling ke-4: 23:15
+Keliling ke-5: 00:00
+
+[JAWABAN]
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    int jamMulaiRonda, menitMulaiRonda, jamAkhirRonda, menitAkhirRonda;
+    cout << "Mulai ronda (jam menit): ";
+    cin >> jamMulaiRonda >> menitMulaiRonda;
+    cout << "Selesai ronda (jam menit): ";
+    cin >> jamAkhirRonda >> menitAkhirRonda;
+    int menitRondaSekarang = jamMulaiRonda * 60 + menitMulaiRonda;
+    int menitRondaSelesai = jamAkhirRonda * 60 + menitAkhirRonda;
+    int putaranRonda = 1;
+    cout << setfill('0');
+    while (menitRondaSekarang <= menitRondaSelesai) {
+        cout << "Keliling ke-" << putaranRonda << ": " << setw(2) << (menitRondaSekarang / 60) % 24 << ":" << setw(2) << menitRondaSekarang % 60 << endl;
+        menitRondaSekarang += 45;
+        putaranRonda++;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 48. Pinjaman Juragan Sapi
+----------------------------------------------------------------------
+
+Juragan meminjam uang dengan bunga 2% per bulan dari sisa utang, lalu mencicil jumlah tetap tiap bulan. Tampilkan sisa utang tiap bulan sampai lunas.
+
+[CONTOH TAMPILAN]
+Pinjaman dan cicilan per bulan: 5000000 1200000
+Bulan 1: sisa utang Rp3900000
+Bulan 2: sisa utang Rp2778000
+Bulan 3: sisa utang Rp1633560
+Bulan 4: sisa utang Rp466231
+Bulan 5: sisa utang Rp0
+Lunas dalam 5 bulan
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    double sisaUtangSapi, cicilanSapi;
+    int bulanCicil = 0;
+    cout << "Pinjaman dan cicilan per bulan: ";
+    cin >> sisaUtangSapi >> cicilanSapi;
+    while (sisaUtangSapi > 0) {
+        bulanCicil++;
+        sisaUtangSapi += sisaUtangSapi * 0.02;
+        sisaUtangSapi -= cicilanSapi;
+        if (sisaUtangSapi < 0) sisaUtangSapi = 0;
+        cout << "Bulan " << bulanCicil << ": sisa utang Rp" << (long long)sisaUtangSapi << endl;
+        if (bulanCicil >= 120) { cout << "Cicilan terlalu kecil, utang tidak akan lunas!" << endl; break; }
+    }
+    if (sisaUtangSapi == 0) cout << "Lunas dalam " << bulanCicil << " bulan" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 49. Lift Gedung Pencakar Langit
+----------------------------------------------------------------------
+
+Lift mulai dari lantai 1. Masukkan lantai tujuan berulang kali (0 untuk berhenti). Lantai di luar 1–30 ditolak. Hitung total lantai yang dilalui lift.
+
+[CONTOH TAMPILAN]
+Lantai tujuan (0 = selesai): 10
+Lift tiba di lantai 10
+Lantai tujuan (0 = selesai): 4
+Lift tiba di lantai 4
+Lantai tujuan (0 = selesai): 35
+Lantai tidak ada!
+Lantai tujuan (0 = selesai): 20
+Lift tiba di lantai 20
+Lantai tujuan (0 = selesai): 0
+Total lantai yang dilalui: 31
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int lantaiLift = 1, tujuanLift, totalLantaiDilalui = 0;
+    while (true) {
+        cout << "Lantai tujuan (0 = selesai): ";
+        cin >> tujuanLift;
+        if (tujuanLift == 0) break;
+        if (tujuanLift < 1 || tujuanLift > 30) {
+            cout << "Lantai tidak ada!" << endl;
+            continue;
+        }
+        int jarakLift = tujuanLift - lantaiLift;
+        if (jarakLift < 0) jarakLift = -jarakLift;
+        totalLantaiDilalui += jarakLift;
+        lantaiLift = tujuanLift;
+        cout << "Lift tiba di lantai " << lantaiLift << endl;
+    }
+    cout << "Total lantai yang dilalui: " << totalLantaiDilalui << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 50. Rapor Kelas Tanpa Array
+----------------------------------------------------------------------
+
+Masukkan nilai n siswa. Hitung rata-rata, jumlah yang lulus (≥ 75), dan jumlah yang remedial.
+
+[CONTOH TAMPILAN]
+Jumlah siswa: 5
+Nilai siswa: 80 65 90 74 88
+Rata-rata kelas : 79.4
+Lulus           : 3
+Remedial        : 2
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int siswaKelas, nilaiSiswa, siswaLulus = 0, siswaRemedial = 0;
+    double totalNilaiKelas = 0;
+    cout << "Jumlah siswa: ";
+    cin >> siswaKelas;
+    cout << "Nilai siswa: ";
+    for (int urutSiswa = 0; urutSiswa < siswaKelas; urutSiswa++) {
+        cin >> nilaiSiswa;
+        totalNilaiKelas += nilaiSiswa;
+        if (nilaiSiswa >= 75) siswaLulus++;
+        else siswaRemedial++;
+    }
+    cout << "Rata-rata kelas : " << totalNilaiKelas / siswaKelas << endl;
+    cout << "Lulus           : " << siswaLulus << endl;
+    cout << "Remedial        : " << siswaRemedial << endl;
+    return 0;
+}

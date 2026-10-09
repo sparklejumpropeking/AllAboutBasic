@@ -1,0 +1,2206 @@
+﻿======================================================================
+PAKET 8 — SORTING (50 SOAL CERITA)
+======================================================================
+
+Materi: bubble sort, selection sort, insertion sort, cocktail sort, shell sort, gnome sort, merge sort, quick sort, counting sort, std::sort dengan comparator, mengurutkan string dan struct (termasuk beberapa kunci sekaligus), serta penerapan sorting (median, peringkat, hapus duplikat, gabung array terurut, algoritma greedy). Ada juga soal game bergaya Quest IV yang memakai pengurutan.
+
+Cara latihan: baca soal dan contoh tampilan, ketik sendiri dulu, baru cocokkan dengan jawaban.
+
+----------------------------------------------------------------------
+Soal 1. Barisan Bibit Pohon (Bubble Sort Naik)
+----------------------------------------------------------------------
+
+Petani menanam bibit dari yang paling pendek. Urutkan tinggi bibit secara naik dengan bubble sort.
+
+[CONTOH TAMPILAN]
+Jumlah bibit: 6
+Tinggi bibit (cm): 34 12 45 7 23 19
+Urutan tanam: 7 12 19 23 34 45
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int tinggiBibit[100], jumlahBibit;
+    cout << "Jumlah bibit: ";
+    cin >> jumlahBibit;
+    cout << "Tinggi bibit (cm): ";
+    for (int i = 0; i < jumlahBibit; i++) cin >> tinggiBibit[i];
+    for (int putaran = 0; putaran < jumlahBibit - 1; putaran++) {
+        for (int j = 0; j < jumlahBibit - 1 - putaran; j++) {
+            if (tinggiBibit[j] > tinggiBibit[j + 1]) {
+                int tampungBibit = tinggiBibit[j];
+                tinggiBibit[j] = tinggiBibit[j + 1];
+                tinggiBibit[j + 1] = tampungBibit;
+            }
+        }
+    }
+    cout << "Urutan tanam:";
+    for (int i = 0; i < jumlahBibit; i++) cout << " " << tinggiBibit[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 2. Papan Skor Lomba Cerdas Cermat (Bubble Sort Turun)
+----------------------------------------------------------------------
+
+Urutkan skor regu dari yang tertinggi ke terendah dengan bubble sort.
+
+[CONTOH TAMPILAN]
+Jumlah regu: 5
+Skor regu: 70 95 60 85 90
+Papan skor: 95 90 85 70 60
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int skorRegu[100], jumlahRegu;
+    cout << "Jumlah regu: ";
+    cin >> jumlahRegu;
+    cout << "Skor regu: ";
+    for (int i = 0; i < jumlahRegu; i++) cin >> skorRegu[i];
+    for (int putaran = 0; putaran < jumlahRegu - 1; putaran++)
+        for (int j = 0; j < jumlahRegu - 1 - putaran; j++)
+            if (skorRegu[j] < skorRegu[j + 1]) {
+                int tampungSkor = skorRegu[j];
+                skorRegu[j] = skorRegu[j + 1];
+                skorRegu[j + 1] = tampungSkor;
+            }
+    cout << "Papan skor:";
+    for (int i = 0; i < jumlahRegu; i++) cout << " " << skorRegu[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 3. Rekaman Gelembung Naik ke Permukaan
+----------------------------------------------------------------------
+
+Tampilkan isi array setelah setiap putaran bubble sort supaya terlihat bagaimana angka terbesar "menggelembung" ke ujung kanan.
+
+[CONTOH TAMPILAN]
+Jumlah data: 5
+Data: 5 1 4 2 8
+Putaran 1: 1 4 2 5 8
+Putaran 2: 1 2 4 5 8
+Putaran 3: 1 2 4 5 8
+Putaran 4: 1 2 4 5 8
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int gelembungAir[100], jumlahGelembung;
+    cout << "Jumlah data: ";
+    cin >> jumlahGelembung;
+    cout << "Data: ";
+    for (int i = 0; i < jumlahGelembung; i++) cin >> gelembungAir[i];
+    for (int putaran = 0; putaran < jumlahGelembung - 1; putaran++) {
+        for (int j = 0; j < jumlahGelembung - 1 - putaran; j++) {
+            if (gelembungAir[j] > gelembungAir[j + 1]) {
+                int t = gelembungAir[j];
+                gelembungAir[j] = gelembungAir[j + 1];
+                gelembungAir[j + 1] = t;
+            }
+        }
+        cout << "Putaran " << putaran + 1 << ":";
+        for (int i = 0; i < jumlahGelembung; i++) cout << " " << gelembungAir[i];
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 4. Petugas Arsip yang Malas (Bubble Sort dengan Flag)
+----------------------------------------------------------------------
+
+Petugas arsip berhenti mengurutkan begitu satu putaran penuh tidak ada pertukaran. Hitung jumlah putaran dan jumlah pertukaran yang terjadi.
+
+[CONTOH TAMPILAN]
+Jumlah arsip: 6
+Nomor arsip: 2 3 1 4 5 6
+Arsip urut: 1 2 3 4 5 6
+Putaran: 3, pertukaran: 2
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int nomorArsip[100], jumlahArsip, totalTukarArsip = 0, putaranDipakai = 0;
+    cout << "Jumlah arsip: ";
+    cin >> jumlahArsip;
+    cout << "Nomor arsip: ";
+    for (int i = 0; i < jumlahArsip; i++) cin >> nomorArsip[i];
+    for (int putaran = 0; putaran < jumlahArsip - 1; putaran++) {
+        bool adaPertukaran = false;
+        putaranDipakai++;
+        for (int j = 0; j < jumlahArsip - 1 - putaran; j++) {
+            if (nomorArsip[j] > nomorArsip[j + 1]) {
+                int t = nomorArsip[j];
+                nomorArsip[j] = nomorArsip[j + 1];
+                nomorArsip[j + 1] = t;
+                totalTukarArsip++;
+                adaPertukaran = true;
+            }
+        }
+        if (!adaPertukaran) break;
+    }
+    cout << "Arsip urut:";
+    for (int i = 0; i < jumlahArsip; i++) cout << " " << nomorArsip[i];
+    cout << endl << "Putaran: " << putaranDipakai << ", pertukaran: " << totalTukarArsip << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 5. Memilih Karung Teringan (Selection Sort)
+----------------------------------------------------------------------
+
+Kuli pelabuhan selalu mencari karung teringan dari sisa tumpukan, lalu menaruhnya di depan. Urutkan dengan selection sort dan tampilkan array setelah tiap langkah.
+
+[CONTOH TAMPILAN]
+Jumlah karung: 5
+Berat karung: 64 25 12 22 11
+Langkah 1: 11 25 12 22 64
+Langkah 2: 11 12 25 22 64
+Langkah 3: 11 12 22 25 64
+Langkah 4: 11 12 22 25 64
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int beratKarung[100], jumlahKarung;
+    cout << "Jumlah karung: ";
+    cin >> jumlahKarung;
+    cout << "Berat karung: ";
+    for (int i = 0; i < jumlahKarung; i++) cin >> beratKarung[i];
+    for (int i = 0; i < jumlahKarung - 1; i++) {
+        int posRingan = i;
+        for (int j = i + 1; j < jumlahKarung; j++) if (beratKarung[j] < beratKarung[posRingan]) posRingan = j;
+        int t = beratKarung[i];
+        beratKarung[i] = beratKarung[posRingan];
+        beratKarung[posRingan] = t;
+        cout << "Langkah " << i + 1 << ":";
+        for (int k = 0; k < jumlahKarung; k++) cout << " " << beratKarung[k];
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 6. Peringkat Saldo Nasabah (Selection Sort Turun)
+----------------------------------------------------------------------
+
+Urutkan saldo nasabah dari terbesar dengan selection sort. Pertukaran hanya dilakukan jika posisi terbesar berbeda dari posisi sekarang; hitung berapa kali menukar.
+
+[CONTOH TAMPILAN]
+Jumlah nasabah: 6
+Saldo (ribu): 500 1200 300 1200 800 100
+Urutan saldo: 1200 1200 800 500 300 100
+Jumlah pertukaran: 3
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long saldoNasabah[100];
+    int jumlahNasabah, tukarSaldo = 0;
+    cout << "Jumlah nasabah: ";
+    cin >> jumlahNasabah;
+    cout << "Saldo (ribu): ";
+    for (int i = 0; i < jumlahNasabah; i++) cin >> saldoNasabah[i];
+    for (int i = 0; i < jumlahNasabah - 1; i++) {
+        int posKaya = i;
+        for (int j = i + 1; j < jumlahNasabah; j++) if (saldoNasabah[j] > saldoNasabah[posKaya]) posKaya = j;
+        if (posKaya != i) {
+            long long t = saldoNasabah[i];
+            saldoNasabah[i] = saldoNasabah[posKaya];
+            saldoNasabah[posKaya] = t;
+            tukarSaldo++;
+        }
+    }
+    cout << "Urutan saldo:";
+    for (int i = 0; i < jumlahNasabah; i++) cout << " " << saldoNasabah[i];
+    cout << endl << "Jumlah pertukaran: " << tukarSaldo << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 7. Menyusun Kartu di Tangan (Insertion Sort)
+----------------------------------------------------------------------
+
+Pemain kartu menyisipkan setiap kartu baru ke posisi yang tepat di tangannya. Urutkan dengan insertion sort dan tampilkan kartu di tangan setelah tiap sisipan.
+
+[CONTOH TAMPILAN]
+Jumlah kartu: 5
+Nilai kartu: 7 3 9 1 5
+Sisip 3: 3 7
+Sisip 9: 3 7 9
+Sisip 1: 1 3 7 9
+Sisip 5: 1 3 5 7 9
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int kartuTangan[100], jumlahKartuTangan;
+    cout << "Jumlah kartu: ";
+    cin >> jumlahKartuTangan;
+    cout << "Nilai kartu: ";
+    for (int i = 0; i < jumlahKartuTangan; i++) cin >> kartuTangan[i];
+    for (int i = 1; i < jumlahKartuTangan; i++) {
+        int kartuDiambil = kartuTangan[i], j = i - 1;
+        while (j >= 0 && kartuTangan[j] > kartuDiambil) {
+            kartuTangan[j + 1] = kartuTangan[j];
+            j--;
+        }
+        kartuTangan[j + 1] = kartuDiambil;
+        cout << "Sisip " << kartuDiambil << ":";
+        for (int k = 0; k <= i; k++) cout << " " << kartuTangan[k];
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 8. Rekor Lompat Jauh (Insertion Sort Turun, Desimal)
+----------------------------------------------------------------------
+
+Urutkan jarak lompatan atlet (bilangan desimal) dari yang terjauh dengan insertion sort.
+
+[CONTOH TAMPILAN]
+Jumlah atlet: 5
+Jarak lompatan (m): 6.45 7.12 5.98 7.30 6.80
+Peringkat lompatan:
+1. 7.3 m
+2. 7.12 m
+3. 6.8 m
+4. 6.45 m
+5. 5.98 m
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    double jarakLompat[100];
+    int atletLompat;
+    cout << "Jumlah atlet: ";
+    cin >> atletLompat;
+    cout << "Jarak lompatan (m): ";
+    for (int i = 0; i < atletLompat; i++) cin >> jarakLompat[i];
+    for (int i = 1; i < atletLompat; i++) {
+        double lompatanSisip = jarakLompat[i];
+        int j = i - 1;
+        while (j >= 0 && jarakLompat[j] < lompatanSisip) {
+            jarakLompat[j + 1] = jarakLompat[j];
+            j--;
+        }
+        jarakLompat[j + 1] = lompatanSisip;
+    }
+    cout << "Peringkat lompatan:" << endl;
+    for (int i = 0; i < atletLompat; i++) cout << i + 1 << ". " << jarakLompat[i] << " m" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 9. Membelah Tumpukan Rapor (Merge Sort)
+----------------------------------------------------------------------
+
+Tumpukan rapor dibelah dua terus-menerus sampai tinggal satu, lalu digabung kembali secara urut. Terapkan merge sort rekursif.
+
+[CONTOH TAMPILAN]
+Jumlah rapor: 8
+Nilai rapor: 38 27 43 3 9 82 10 55
+Setelah merge sort: 3 9 10 27 38 43 55 82
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+void gabungTumpukan(int rapor[], int kiri, int tengah, int kanan) {
+    int sementara[100], a = kiri, b = tengah + 1, k = 0;
+    while (a <= tengah && b <= kanan) {
+        if (rapor[a] <= rapor[b]) sementara[k++] = rapor[a++];
+        else sementara[k++] = rapor[b++];
+    }
+    while (a <= tengah) sementara[k++] = rapor[a++];
+    while (b <= kanan) sementara[k++] = rapor[b++];
+    for (int i = 0; i < k; i++) rapor[kiri + i] = sementara[i];
+}
+
+void belahTumpukan(int rapor[], int kiri, int kanan) {
+    if (kiri >= kanan) return;
+    int tengah = (kiri + kanan) / 2;
+    belahTumpukan(rapor, kiri, tengah);
+    belahTumpukan(rapor, tengah + 1, kanan);
+    gabungTumpukan(rapor, kiri, tengah, kanan);
+}
+
+int main() {
+    int nilaiRaporTumpuk[100], jumlahRapor;
+    cout << "Jumlah rapor: ";
+    cin >> jumlahRapor;
+    cout << "Nilai rapor: ";
+    for (int i = 0; i < jumlahRapor; i++) cin >> nilaiRaporTumpuk[i];
+    belahTumpukan(nilaiRaporTumpuk, 0, jumlahRapor - 1);
+    cout << "Setelah merge sort:";
+    for (int i = 0; i < jumlahRapor; i++) cout << " " << nilaiRaporTumpuk[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 10. Kapten Pemilih Pivot (Quick Sort)
+----------------------------------------------------------------------
+
+Kapten memilih satu pemain sebagai patokan (pivot, elemen terakhir); yang lebih kecil ke kiri, yang lebih besar ke kanan, lalu ulangi pada tiap bagian. Terapkan quick sort.
+
+[CONTOH TAMPILAN]
+Jumlah pemain: 7
+Kekuatan pemain: 10 80 30 90 40 50 70
+Setelah quick sort: 10 30 40 50 70 80 90
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int pisahPivot(int barisan[], int awal, int akhir) {
+    int pivotKapten = barisan[akhir], batas = awal - 1;
+    for (int j = awal; j < akhir; j++) {
+        if (barisan[j] < pivotKapten) {
+            batas++;
+            int t = barisan[batas]; barisan[batas] = barisan[j]; barisan[j] = t;
+        }
+    }
+    int t = barisan[batas + 1]; barisan[batas + 1] = barisan[akhir]; barisan[akhir] = t;
+    return batas + 1;
+}
+
+void urutCepat(int barisan[], int awal, int akhir) {
+    if (awal < akhir) {
+        int posPivot = pisahPivot(barisan, awal, akhir);
+        urutCepat(barisan, awal, posPivot - 1);
+        urutCepat(barisan, posPivot + 1, akhir);
+    }
+}
+
+int main() {
+    int kekuatanPemain[100], jumlahPemainKapten;
+    cout << "Jumlah pemain: ";
+    cin >> jumlahPemainKapten;
+    cout << "Kekuatan pemain: ";
+    for (int i = 0; i < jumlahPemainKapten; i++) cin >> kekuatanPemain[i];
+    urutCepat(kekuatanPemain, 0, jumlahPemainKapten - 1);
+    cout << "Setelah quick sort:";
+    for (int i = 0; i < jumlahPemainKapten; i++) cout << " " << kekuatanPemain[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 11. Sensus Umur Cepat (Counting Sort)
+----------------------------------------------------------------------
+
+Umur warga berkisar 0–100. Daripada membandingkan, hitung berapa warga untuk tiap umur lalu tuliskan kembali secara urut (counting sort).
+
+[CONTOH TAMPILAN]
+Jumlah warga: 10
+Umur: 34 5 67 34 12 5 89 5 45 12
+Umur terurut: 5 5 5 12 12 34 34 45 67 89
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int umurSensus[100], jumlahDataSensus, hitungUmurSensus[101] = {0};
+    cout << "Jumlah warga: ";
+    cin >> jumlahDataSensus;
+    cout << "Umur: ";
+    for (int i = 0; i < jumlahDataSensus; i++) {
+        cin >> umurSensus[i];
+        hitungUmurSensus[umurSensus[i]]++;
+    }
+    int posTulis = 0;
+    for (int u = 0; u <= 100; u++)
+        for (int c = 0; c < hitungUmurSensus[u]; c++) umurSensus[posTulis++] = u;
+    cout << "Umur terurut:";
+    for (int i = 0; i < jumlahDataSensus; i++) cout << " " << umurSensus[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 12. Mesin Pengurut Pabrik (std::sort)
+----------------------------------------------------------------------
+
+Gunakan fungsi sort dari library algorithm: sekali urut naik, sekali urut turun dengan comparator buatan sendiri.
+
+[CONTOH TAMPILAN]
+Jumlah produk: 6
+Kode produk: 42 7 19 88 3 56
+Urut naik : 3 7 19 42 56 88
+Urut turun: 88 56 42 19 7 3
+
+[JAWABAN]
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+bool lebihBesarDulu(int a, int b) {
+    return a > b;
+}
+
+int main() {
+    int produkPabrik[100], jumlahProduk;
+    cout << "Jumlah produk: ";
+    cin >> jumlahProduk;
+    cout << "Kode produk: ";
+    for (int i = 0; i < jumlahProduk; i++) cin >> produkPabrik[i];
+    sort(produkPabrik, produkPabrik + jumlahProduk);
+    cout << "Urut naik :";
+    for (int i = 0; i < jumlahProduk; i++) cout << " " << produkPabrik[i];
+    cout << endl;
+    sort(produkPabrik, produkPabrik + jumlahProduk, lebihBesarDulu);
+    cout << "Urut turun:";
+    for (int i = 0; i < jumlahProduk; i++) cout << " " << produkPabrik[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 13. Daftar Absen Sesuai Abjad
+----------------------------------------------------------------------
+
+Urutkan nama-nama murid sesuai abjad memakai bubble sort pada array string (string bisa dibandingkan langsung dengan > ).
+
+[CONTOH TAMPILAN]
+Jumlah murid: 5
+Nama murid: Rudi Ani Gilang Bayu Dewi
+1. Ani
+2. Bayu
+3. Dewi
+4. Gilang
+5. Rudi
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string namaAbsen[50];
+    int muridAbsen;
+    cout << "Jumlah murid: ";
+    cin >> muridAbsen;
+    cout << "Nama murid: ";
+    for (int i = 0; i < muridAbsen; i++) cin >> namaAbsen[i];
+    for (int p = 0; p < muridAbsen - 1; p++)
+        for (int j = 0; j < muridAbsen - 1 - p; j++)
+            if (namaAbsen[j] > namaAbsen[j + 1]) {
+                string t = namaAbsen[j];
+                namaAbsen[j] = namaAbsen[j + 1];
+                namaAbsen[j + 1] = t;
+            }
+    for (int i = 0; i < muridAbsen; i++) cout << i + 1 << ". " << namaAbsen[i] << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 14. Kata Pendek Lebih Dulu
+----------------------------------------------------------------------
+
+Urutkan kata-kata berdasarkan panjangnya (pendek dulu). Jika panjangnya sama, urutkan sesuai abjad.
+
+[CONTOH TAMPILAN]
+Jumlah kata: 6
+Kata-kata: nanas apel jeruk kiwi mangga duku
+Urutan: apel duku kiwi jeruk nanas mangga
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string buahPasar[50];
+    int jumlahBuah;
+    cout << "Jumlah kata: ";
+    cin >> jumlahBuah;
+    cout << "Kata-kata: ";
+    for (int i = 0; i < jumlahBuah; i++) cin >> buahPasar[i];
+    for (int p = 0; p < jumlahBuah - 1; p++) {
+        for (int j = 0; j < jumlahBuah - 1 - p; j++) {
+            bool perluTukar = buahPasar[j].length() > buahPasar[j + 1].length() ||
+                              (buahPasar[j].length() == buahPasar[j + 1].length() && buahPasar[j] > buahPasar[j + 1]);
+            if (perluTukar) {
+                string t = buahPasar[j];
+                buahPasar[j] = buahPasar[j + 1];
+                buahPasar[j + 1] = t;
+            }
+        }
+    }
+    cout << "Urutan:";
+    for (int i = 0; i < jumlahBuah; i++) cout << " " << buahPasar[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 15. Kunci Anagram Penjaga Gudang Kata
+----------------------------------------------------------------------
+
+Urutkan huruf-huruf dalam dua kata (sorting karakter dalam string). Jika hasil urutnya sama, kedua kata adalah anagram.
+
+[CONTOH TAMPILAN]
+Dua kata: listen silent
+Kunci listen: eilnst
+Kunci silent: eilnst
+Anagram!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+string urutHuruf(string kataMentah) {
+    for (int i = 1; i < (int)kataMentah.length(); i++) {
+        char h = kataMentah[i];
+        int j = i - 1;
+        while (j >= 0 && kataMentah[j] > h) {
+            kataMentah[j + 1] = kataMentah[j];
+            j--;
+        }
+        kataMentah[j + 1] = h;
+    }
+    return kataMentah;
+}
+
+int main() {
+    string kataGudangA, kataGudangB;
+    cout << "Dua kata: ";
+    cin >> kataGudangA >> kataGudangB;
+    string kunciA = urutHuruf(kataGudangA), kunciB = urutHuruf(kataGudangB);
+    cout << "Kunci " << kataGudangA << ": " << kunciA << endl;
+    cout << "Kunci " << kataGudangB << ": " << kunciB << endl;
+    if (kunciA == kunciB) cout << "Anagram!" << endl;
+    else cout << "Bukan anagram." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 16. Wisudawan Terbaik (Sort Struct)
+----------------------------------------------------------------------
+
+Urutkan data mahasiswa (struct: nama, IPK) berdasarkan IPK tertinggi. Tampilkan peringkat wisuda.
+
+[CONTOH TAMPILAN]
+Jumlah wisudawan: 5
+Data 1 (nama ipk): Andra 3.45
+Data 2 (nama ipk): Bella 3.91
+Data 3 (nama ipk): Cahyo 3.12
+Data 4 (nama ipk): Dinda 3.78
+Data 5 (nama ipk): Eko 3.60
+Peringkat 1: Bella (3.91)
+Peringkat 2: Dinda (3.78)
+Peringkat 3: Eko (3.6)
+Peringkat 4: Andra (3.45)
+Peringkat 5: Cahyo (3.12)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Wisudawan {
+    string nama;
+    double ipk;
+};
+
+int main() {
+    Wisudawan barisWisuda[50];
+    int jumlahWisudawan;
+    cout << "Jumlah wisudawan: ";
+    cin >> jumlahWisudawan;
+    for (int i = 0; i < jumlahWisudawan; i++) {
+        cout << "Data " << i + 1 << " (nama ipk): ";
+        cin >> barisWisuda[i].nama >> barisWisuda[i].ipk;
+    }
+    for (int p = 0; p < jumlahWisudawan - 1; p++)
+        for (int j = 0; j < jumlahWisudawan - 1 - p; j++)
+            if (barisWisuda[j].ipk < barisWisuda[j + 1].ipk) {
+                Wisudawan t = barisWisuda[j];
+                barisWisuda[j] = barisWisuda[j + 1];
+                barisWisuda[j + 1] = t;
+            }
+    for (int i = 0; i < jumlahWisudawan; i++) cout << "Peringkat " << i + 1 << ": " << barisWisuda[i].nama << " (" << barisWisuda[i].ipk << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 17. Klasemen Liga Antar Kampung (Banyak Kunci)
+----------------------------------------------------------------------
+
+Urutkan tim (struct: nama, poin, selisih gol) berdasarkan poin tertinggi; jika poin sama, selisih gol tertinggi; jika masih sama, nama sesuai abjad.
+
+[CONTOH TAMPILAN]
+Jumlah tim: 5
+Tim 1 (nama poin selisih): Garuda 10 4
+Tim 2 (nama poin selisih): Elang 12 2
+Tim 3 (nama poin selisih): Banteng 10 6
+Tim 4 (nama poin selisih): Rajawali 10 4
+Tim 5 (nama poin selisih): Macan 7 -1
+No	Tim	Poin	SG
+1	Elang	12	2
+2	Banteng	10	6
+3	Garuda	10	4
+4	Rajawali	10	4
+5	Macan	7	-1
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct TimLiga {
+    string nama;
+    int poin;
+    int selisihGol;
+};
+
+bool timLebihAtas(TimLiga a, TimLiga b) {
+    if (a.poin != b.poin) return a.poin > b.poin;
+    if (a.selisihGol != b.selisihGol) return a.selisihGol > b.selisihGol;
+    return a.nama < b.nama;
+}
+
+int main() {
+    TimLiga ligaAntarKampung[20];
+    int jumlahTimLiga;
+    cout << "Jumlah tim: ";
+    cin >> jumlahTimLiga;
+    for (int i = 0; i < jumlahTimLiga; i++) {
+        cout << "Tim " << i + 1 << " (nama poin selisih): ";
+        cin >> ligaAntarKampung[i].nama >> ligaAntarKampung[i].poin >> ligaAntarKampung[i].selisihGol;
+    }
+    for (int i = 0; i < jumlahTimLiga - 1; i++) {
+        int posAtas = i;
+        for (int j = i + 1; j < jumlahTimLiga; j++) if (timLebihAtas(ligaAntarKampung[j], ligaAntarKampung[posAtas])) posAtas = j;
+        TimLiga t = ligaAntarKampung[i]; ligaAntarKampung[i] = ligaAntarKampung[posAtas]; ligaAntarKampung[posAtas] = t;
+    }
+    cout << "No\tTim\tPoin\tSG" << endl;
+    for (int i = 0; i < jumlahTimLiga; i++)
+        cout << i + 1 << "\t" << ligaAntarKampung[i].nama << "\t" << ligaAntarKampung[i].poin << "\t" << ligaAntarKampung[i].selisihGol << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 18. Buku Alamat Diurutkan Nama
+----------------------------------------------------------------------
+
+Urutkan kontak (struct: nama, kota) berdasarkan nama dengan insertion sort, lalu tampilkan.
+
+[CONTOH TAMPILAN]
+Jumlah kontak: 4
+Kontak 1 (nama kota): Wulan Solo
+Kontak 2 (nama kota): Agus Medan
+Kontak 3 (nama kota): Lina Bogor
+Kontak 4 (nama kota): Dimas Malang
+Agus - Medan
+Dimas - Malang
+Lina - Bogor
+Wulan - Solo
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct KontakAlamat {
+    string nama;
+    string kota;
+};
+
+int main() {
+    KontakAlamat bukuAlamat[50];
+    int jumlahAlamat;
+    cout << "Jumlah kontak: ";
+    cin >> jumlahAlamat;
+    for (int i = 0; i < jumlahAlamat; i++) {
+        cout << "Kontak " << i + 1 << " (nama kota): ";
+        cin >> bukuAlamat[i].nama >> bukuAlamat[i].kota;
+    }
+    for (int i = 1; i < jumlahAlamat; i++) {
+        KontakAlamat kontakSisip = bukuAlamat[i];
+        int j = i - 1;
+        while (j >= 0 && bukuAlamat[j].nama > kontakSisip.nama) {
+            bukuAlamat[j + 1] = bukuAlamat[j];
+            j--;
+        }
+        bukuAlamat[j + 1] = kontakSisip;
+    }
+    for (int i = 0; i < jumlahAlamat; i++) cout << bukuAlamat[i].nama << " - " << bukuAlamat[i].kota << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 19. Rak Termurah Toko Kelontong
+----------------------------------------------------------------------
+
+Urutkan barang (struct: nama, harga, stok) dari harga termurah. Jika harganya sama, barang dengan stok lebih banyak ditaruh lebih dulu.
+
+[CONTOH TAMPILAN]
+Jumlah barang: 5
+Barang 1 (nama harga stok): Sabun 4000 20
+Barang 2 (nama harga stok): Odol 9000 15
+Barang 3 (nama harga stok): Garam 4000 35
+Barang 4 (nama harga stok): Kecap 12000 8
+Barang 5 (nama harga stok): Teh 9000 40
+Garam Rp4000 (stok 35)
+Sabun Rp4000 (stok 20)
+Teh Rp9000 (stok 40)
+Odol Rp9000 (stok 15)
+Kecap Rp12000 (stok 8)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct BarangKelontong {
+    string nama;
+    int harga;
+    int stok;
+};
+
+int main() {
+    BarangKelontong rakKelontong[50];
+    int ragamKelontong;
+    cout << "Jumlah barang: ";
+    cin >> ragamKelontong;
+    for (int i = 0; i < ragamKelontong; i++) {
+        cout << "Barang " << i + 1 << " (nama harga stok): ";
+        cin >> rakKelontong[i].nama >> rakKelontong[i].harga >> rakKelontong[i].stok;
+    }
+    for (int p = 0; p < ragamKelontong - 1; p++) {
+        for (int j = 0; j < ragamKelontong - 1 - p; j++) {
+            BarangKelontong a = rakKelontong[j], b = rakKelontong[j + 1];
+            if (a.harga > b.harga || (a.harga == b.harga && a.stok < b.stok)) {
+                rakKelontong[j] = b;
+                rakKelontong[j + 1] = a;
+            }
+        }
+    }
+    for (int i = 0; i < ragamKelontong; i++)
+        cout << rakKelontong[i].nama << " Rp" << rakKelontong[i].harga << " (stok " << rakKelontong[i].stok << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 20. Nilai Tengah Lomba Menyanyi (Median)
+----------------------------------------------------------------------
+
+Juri ingin nilai tengah (median). Urutkan nilai; jika jumlah data ganjil ambil yang tengah, jika genap ambil rata-rata dua nilai tengah.
+
+[CONTOH TAMPILAN]
+Jumlah nilai: 6
+Nilai: 78 92 65 88 70 81
+Terurut: 65 70 78 81 88 92
+Median: 79.5
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    double nilaiNyanyi[100];
+    int jumlahJuri;
+    cout << "Jumlah nilai: ";
+    cin >> jumlahJuri;
+    cout << "Nilai: ";
+    for (int i = 0; i < jumlahJuri; i++) cin >> nilaiNyanyi[i];
+    for (int i = 1; i < jumlahJuri; i++) {
+        double x = nilaiNyanyi[i];
+        int j = i - 1;
+        while (j >= 0 && nilaiNyanyi[j] > x) { nilaiNyanyi[j + 1] = nilaiNyanyi[j]; j--; }
+        nilaiNyanyi[j + 1] = x;
+    }
+    cout << "Terurut:";
+    for (int i = 0; i < jumlahJuri; i++) cout << " " << nilaiNyanyi[i];
+    cout << endl;
+    double medianNyanyi;
+    if (jumlahJuri % 2 == 1) medianNyanyi = nilaiNyanyi[jumlahJuri / 2];
+    else medianNyanyi = (nilaiNyanyi[jumlahJuri / 2 - 1] + nilaiNyanyi[jumlahJuri / 2]) / 2;
+    cout << "Median: " << medianNyanyi << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 21. Peringkat Bersama Lomba Tumpeng
+----------------------------------------------------------------------
+
+Urutkan nilai dari tertinggi. Peserta dengan nilai sama mendapat peringkat yang sama, dan peringkat berikutnya melompat (misal 1, 2, 2, 4).
+
+[CONTOH TAMPILAN]
+Jumlah peserta: 6
+Nilai: 85 92 85 78 92 70
+Peringkat 1: 92
+Peringkat 1: 92
+Peringkat 3: 85
+Peringkat 3: 85
+Peringkat 5: 78
+Peringkat 6: 70
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int nilaiTumpeng[100], pesertaTumpeng;
+    cout << "Jumlah peserta: ";
+    cin >> pesertaTumpeng;
+    cout << "Nilai: ";
+    for (int i = 0; i < pesertaTumpeng; i++) cin >> nilaiTumpeng[i];
+    for (int p = 0; p < pesertaTumpeng - 1; p++)
+        for (int j = 0; j < pesertaTumpeng - 1 - p; j++)
+            if (nilaiTumpeng[j] < nilaiTumpeng[j + 1]) { int t = nilaiTumpeng[j]; nilaiTumpeng[j] = nilaiTumpeng[j + 1]; nilaiTumpeng[j + 1] = t; }
+    int peringkatTumpeng = 1;
+    for (int i = 0; i < pesertaTumpeng; i++) {
+        if (i > 0 && nilaiTumpeng[i] != nilaiTumpeng[i - 1]) peringkatTumpeng = i + 1;
+        cout << "Peringkat " << peringkatTumpeng << ": " << nilaiTumpeng[i] << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 22. Prangko Koleksi Tanpa Kembar
+----------------------------------------------------------------------
+
+Urutkan nomor prangko, lalu buang yang kembar dengan membandingkan elemen bersebelahan.
+
+[CONTOH TAMPILAN]
+Jumlah prangko: 10
+Nomor prangko: 45 12 45 7 12 99 7 7 30 12
+Koleksi unik (5): 7 12 30 45 99
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int prangko[100], jumlahPrangko;
+    cout << "Jumlah prangko: ";
+    cin >> jumlahPrangko;
+    cout << "Nomor prangko: ";
+    for (int i = 0; i < jumlahPrangko; i++) cin >> prangko[i];
+    for (int i = 0; i < jumlahPrangko - 1; i++) {
+        int m = i;
+        for (int j = i + 1; j < jumlahPrangko; j++) if (prangko[j] < prangko[m]) m = j;
+        int t = prangko[i]; prangko[i] = prangko[m]; prangko[m] = t;
+    }
+    int prangkoUnik = 0;
+    for (int i = 0; i < jumlahPrangko; i++)
+        if (i == 0 || prangko[i] != prangko[i - 1]) prangko[prangkoUnik++] = prangko[i];
+    cout << "Koleksi unik (" << prangkoUnik << "):";
+    for (int i = 0; i < prangkoUnik; i++) cout << " " << prangko[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 23. Menggabung Dua Antrean Urut
+----------------------------------------------------------------------
+
+Dua loket punya antrean nomor yang sudah urut. Gabungkan menjadi satu antrean urut tanpa mengurutkan ulang (teknik merge dua penunjuk).
+
+[CONTOH TAMPILAN]
+Jumlah antrean loket 1: 4
+Nomor (urut): 2 9 15 21
+Jumlah antrean loket 2: 5
+Nomor (urut): 1 4 9 18 30
+Antrean gabungan: 1 2 4 9 9 15 18 21 30
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int loketKiri[50], loketKanan[50], antreanGabung[100], isiKiri, isiKanan;
+    cout << "Jumlah antrean loket 1: ";
+    cin >> isiKiri;
+    cout << "Nomor (urut): ";
+    for (int i = 0; i < isiKiri; i++) cin >> loketKiri[i];
+    cout << "Jumlah antrean loket 2: ";
+    cin >> isiKanan;
+    cout << "Nomor (urut): ";
+    for (int i = 0; i < isiKanan; i++) cin >> loketKanan[i];
+    int a = 0, b = 0, g = 0;
+    while (a < isiKiri && b < isiKanan) {
+        if (loketKiri[a] <= loketKanan[b]) antreanGabung[g++] = loketKiri[a++];
+        else antreanGabung[g++] = loketKanan[b++];
+    }
+    while (a < isiKiri) antreanGabung[g++] = loketKiri[a++];
+    while (b < isiKanan) antreanGabung[g++] = loketKanan[b++];
+    cout << "Antrean gabungan:";
+    for (int i = 0; i < g; i++) cout << " " << antreanGabung[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 24. Inspektur Rak Buku
+----------------------------------------------------------------------
+
+Periksa apakah nomor buku di rak sudah urut naik. Jika belum, tunjukkan posisi pertama yang salah urut.
+
+[CONTOH TAMPILAN]
+Jumlah buku: 7
+Nomor buku: 3 8 12 12 10 15 20
+Belum urut: buku ke-5 (10) lebih kecil dari sebelumnya (12)
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int rakInspeksi[100], jumlahBukuRak;
+    cout << "Jumlah buku: ";
+    cin >> jumlahBukuRak;
+    cout << "Nomor buku: ";
+    for (int i = 0; i < jumlahBukuRak; i++) cin >> rakInspeksi[i];
+    int posSalah = -1;
+    for (int i = 1; i < jumlahBukuRak; i++) {
+        if (rakInspeksi[i] < rakInspeksi[i - 1]) { posSalah = i; break; }
+    }
+    if (posSalah == -1) cout << "Rak sudah urut, inspeksi lulus!" << endl;
+    else cout << "Belum urut: buku ke-" << posSalah + 1 << " (" << rakInspeksi[posSalah] << ") lebih kecil dari sebelumnya (" << rakInspeksi[posSalah - 1] << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 25. Barisan Upacara Genap Dulu
+----------------------------------------------------------------------
+
+Murid bernomor genap berbaris di depan, ganjil di belakang. Di dalam kelompok masing-masing, nomor harus urut naik.
+
+[CONTOH TAMPILAN]
+Jumlah murid: 8
+Nomor murid: 7 2 9 4 1 8 6 3
+Barisan upacara: 2 4 6 8 1 3 7 9
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+bool genapDulu(int a, int b) {
+    bool aGenap = a % 2 == 0, bGenap = b % 2 == 0;
+    if (aGenap != bGenap) return aGenap;
+    return a < b;
+}
+
+int main() {
+    int barisUpacara[100], jumlahPeserta;
+    cout << "Jumlah murid: ";
+    cin >> jumlahPeserta;
+    cout << "Nomor murid: ";
+    for (int i = 0; i < jumlahPeserta; i++) cin >> barisUpacara[i];
+    for (int p = 0; p < jumlahPeserta - 1; p++)
+        for (int j = 0; j < jumlahPeserta - 1 - p; j++)
+            if (genapDulu(barisUpacara[j + 1], barisUpacara[j])) { int t = barisUpacara[j]; barisUpacara[j] = barisUpacara[j + 1]; barisUpacara[j + 1] = t; }
+    cout << "Barisan upacara:";
+    for (int i = 0; i < jumlahPeserta; i++) cout << " " << barisUpacara[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 26. Batu Sakti Berdasarkan Jumlah Digit
+----------------------------------------------------------------------
+
+Urutkan nomor batu sakti berdasarkan jumlah digitnya (kecil dulu). Jika jumlah digitnya sama, nomor lebih kecil di depan.
+
+[CONTOH TAMPILAN]
+Jumlah batu: 6
+Nomor batu: 91 25 400 13 72 108
+13 (jumlah digit 4)
+400 (jumlah digit 4)
+25 (jumlah digit 7)
+72 (jumlah digit 9)
+108 (jumlah digit 9)
+91 (jumlah digit 10)
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int jumlahDigitBatu(int n) {
+    int s = 0;
+    while (n > 0) { s += n % 10; n /= 10; }
+    return s;
+}
+
+int main() {
+    int batuSakti[100], jumlahBatuSakti;
+    cout << "Jumlah batu: ";
+    cin >> jumlahBatuSakti;
+    cout << "Nomor batu: ";
+    for (int i = 0; i < jumlahBatuSakti; i++) cin >> batuSakti[i];
+    for (int i = 1; i < jumlahBatuSakti; i++) {
+        int x = batuSakti[i], j = i - 1;
+        while (j >= 0 && (jumlahDigitBatu(batuSakti[j]) > jumlahDigitBatu(x) ||
+               (jumlahDigitBatu(batuSakti[j]) == jumlahDigitBatu(x) && batuSakti[j] > x))) {
+            batuSakti[j + 1] = batuSakti[j];
+            j--;
+        }
+        batuSakti[j + 1] = x;
+    }
+    for (int i = 0; i < jumlahBatuSakti; i++) cout << batuSakti[i] << " (jumlah digit " << jumlahDigitBatu(batuSakti[i]) << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 27. Penyelam Terdekat ke Permukaan
+----------------------------------------------------------------------
+
+Posisi penyelam dicatat relatif terhadap permukaan laut (negatif = di bawah, positif = di atas). Urutkan dari yang paling dekat ke permukaan (nilai mutlak terkecil).
+
+[CONTOH TAMPILAN]
+Jumlah penyelam: 6
+Posisi (m): -12 5 -3 8 -20 1
+Dari terdekat ke permukaan: 1 -3 5 8 -12 -20
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int mutlakSelam(int n) { return n < 0 ? -n : n; }
+
+int main() {
+    int posisiSelam[100], jumlahPenyelam;
+    cout << "Jumlah penyelam: ";
+    cin >> jumlahPenyelam;
+    cout << "Posisi (m): ";
+    for (int i = 0; i < jumlahPenyelam; i++) cin >> posisiSelam[i];
+    for (int i = 0; i < jumlahPenyelam - 1; i++) {
+        int m = i;
+        for (int j = i + 1; j < jumlahPenyelam; j++) if (mutlakSelam(posisiSelam[j]) < mutlakSelam(posisiSelam[m])) m = j;
+        int t = posisiSelam[i]; posisiSelam[i] = posisiSelam[m]; posisiSelam[m] = t;
+    }
+    cout << "Dari terdekat ke permukaan:";
+    for (int i = 0; i < jumlahPenyelam; i++) cout << " " << posisiSelam[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 28. Rapikan Setiap Baris Rak Gudang (Sort Matriks per Baris)
+----------------------------------------------------------------------
+
+Gudang punya beberapa rak (baris) berisi kotak bernomor. Urutkan isi setiap baris secara terpisah.
+
+[CONTOH TAMPILAN]
+Baris dan kolom rak: 3 4
+Rak 1: 9 2 7 4
+Rak 2: 5 8 1 3
+Rak 3: 6 6 2 9
+Setelah dirapikan:
+2 4 7 9 
+1 3 5 8 
+2 6 6 9 
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int rakGudangMatriks[10][10], barisRak, kolomRak;
+    cout << "Baris dan kolom rak: ";
+    cin >> barisRak >> kolomRak;
+    for (int b = 0; b < barisRak; b++) {
+        cout << "Rak " << b + 1 << ": ";
+        for (int k = 0; k < kolomRak; k++) cin >> rakGudangMatriks[b][k];
+    }
+    for (int b = 0; b < barisRak; b++)
+        for (int p = 0; p < kolomRak - 1; p++)
+            for (int k = 0; k < kolomRak - 1 - p; k++)
+                if (rakGudangMatriks[b][k] > rakGudangMatriks[b][k + 1]) {
+                    int t = rakGudangMatriks[b][k];
+                    rakGudangMatriks[b][k] = rakGudangMatriks[b][k + 1];
+                    rakGudangMatriks[b][k + 1] = t;
+                }
+    cout << "Setelah dirapikan:" << endl;
+    for (int b = 0; b < barisRak; b++) {
+        for (int k = 0; k < kolomRak; k++) cout << rakGudangMatriks[b][k] << " ";
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 29. Peringkat Kelompok Tani (Urutkan Baris Matriks)
+----------------------------------------------------------------------
+
+Setiap baris matriks berisi hasil panen satu kelompok tani selama 3 bulan. Urutkan kelompok (seluruh baris ikut pindah) berdasarkan total panen terbesar.
+
+[CONTOH TAMPILAN]
+Jumlah kelompok: 4
+Kelompok 1 (3 bulan): 10 20 30
+Kelompok 2 (3 bulan): 50 5 5
+Kelompok 3 (3 bulan): 15 15 15
+Kelompok 4 (3 bulan): 40 30 20
+Kelompok 4: total 90
+Kelompok 1: total 60
+Kelompok 2: total 60
+Kelompok 3: total 45
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int panenKelompok[10][3], jumlahKelompok, nomorKelompok[10];
+    cout << "Jumlah kelompok: ";
+    cin >> jumlahKelompok;
+    for (int k = 0; k < jumlahKelompok; k++) {
+        cout << "Kelompok " << k + 1 << " (3 bulan): ";
+        for (int b = 0; b < 3; b++) cin >> panenKelompok[k][b];
+        nomorKelompok[k] = k + 1;
+    }
+    for (int p = 0; p < jumlahKelompok - 1; p++) {
+        for (int k = 0; k < jumlahKelompok - 1 - p; k++) {
+            int totalA = panenKelompok[k][0] + panenKelompok[k][1] + panenKelompok[k][2];
+            int totalB = panenKelompok[k + 1][0] + panenKelompok[k + 1][1] + panenKelompok[k + 1][2];
+            if (totalA < totalB) {
+                for (int b = 0; b < 3; b++) { int t = panenKelompok[k][b]; panenKelompok[k][b] = panenKelompok[k + 1][b]; panenKelompok[k + 1][b] = t; }
+                int t = nomorKelompok[k]; nomorKelompok[k] = nomorKelompok[k + 1]; nomorKelompok[k + 1] = t;
+            }
+        }
+    }
+    for (int k = 0; k < jumlahKelompok; k++)
+        cout << "Kelompok " << nomorKelompok[k] << ": total " << panenKelompok[k][0] + panenKelompok[k][1] + panenKelompok[k][2] << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 30. Tiga Ikan Terkecil Dilepas
+----------------------------------------------------------------------
+
+Nelayan melepas k ikan terkecil kembali ke laut. Cukup jalankan selection sort sebanyak k langkah saja (tidak perlu mengurutkan seluruh array).
+
+[CONTOH TAMPILAN]
+Jumlah ikan: 8
+Panjang ikan (cm): 45 12 78 5 33 9 60 21
+Berapa ikan terkecil yang dilepas: 3
+Ikan yang dilepas: 5 9 12
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int panjangIkan[100], jumlahIkan, ikanDilepas;
+    cout << "Jumlah ikan: ";
+    cin >> jumlahIkan;
+    cout << "Panjang ikan (cm): ";
+    for (int i = 0; i < jumlahIkan; i++) cin >> panjangIkan[i];
+    cout << "Berapa ikan terkecil yang dilepas: ";
+    cin >> ikanDilepas;
+    for (int i = 0; i < ikanDilepas && i < jumlahIkan; i++) {
+        int m = i;
+        for (int j = i + 1; j < jumlahIkan; j++) if (panjangIkan[j] < panjangIkan[m]) m = j;
+        int t = panjangIkan[i]; panjangIkan[i] = panjangIkan[m]; panjangIkan[m] = t;
+    }
+    cout << "Ikan yang dilepas:";
+    for (int i = 0; i < ikanDilepas && i < jumlahIkan; i++) cout << " " << panjangIkan[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 31. Jeda Terpanjang Jadwal Kereta
+----------------------------------------------------------------------
+
+Jam keberangkatan kereta (dalam menit sejak tengah malam) dicatat acak. Urutkan, lalu cari jeda terpanjang antara dua keberangkatan berurutan.
+
+[CONTOH TAMPILAN]
+Jumlah keberangkatan: 6
+Menit keberangkatan: 480 300 720 540 360 1020
+Jeda terpanjang 300 menit, antara menit 720 dan 1020
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int jadwalKereta[100], jumlahJadwalKereta;
+    cout << "Jumlah keberangkatan: ";
+    cin >> jumlahJadwalKereta;
+    cout << "Menit keberangkatan: ";
+    for (int i = 0; i < jumlahJadwalKereta; i++) cin >> jadwalKereta[i];
+    for (int i = 1; i < jumlahJadwalKereta; i++) {
+        int x = jadwalKereta[i], j = i - 1;
+        while (j >= 0 && jadwalKereta[j] > x) { jadwalKereta[j + 1] = jadwalKereta[j]; j--; }
+        jadwalKereta[j + 1] = x;
+    }
+    int jedaTerpanjang = 0, posJeda = 0;
+    for (int i = 1; i < jumlahJadwalKereta; i++) {
+        if (jadwalKereta[i] - jadwalKereta[i - 1] > jedaTerpanjang) {
+            jedaTerpanjang = jadwalKereta[i] - jadwalKereta[i - 1];
+            posJeda = i;
+        }
+    }
+    cout << "Jeda terpanjang " << jedaTerpanjang << " menit, antara menit " << jadwalKereta[posJeda - 1] << " dan " << jadwalKereta[posJeda] << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 32. Pasangan Kembar Tinggi Penari
+----------------------------------------------------------------------
+
+Pelatih tari mencari dua penari dengan selisih tinggi paling kecil untuk dijadikan pasangan. Urutkan dulu, lalu cukup cek pasangan yang bersebelahan.
+
+[CONTOH TAMPILAN]
+Jumlah penari: 6
+Tinggi penari: 165 158 172 160 169 150
+Pasangan terbaik: 158 dan 160 (selisih 2 cm)
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int tinggiPenari[100], jumlahPenari;
+    cout << "Jumlah penari: ";
+    cin >> jumlahPenari;
+    cout << "Tinggi penari: ";
+    for (int i = 0; i < jumlahPenari; i++) cin >> tinggiPenari[i];
+    for (int p = 0; p < jumlahPenari - 1; p++)
+        for (int j = 0; j < jumlahPenari - 1 - p; j++)
+            if (tinggiPenari[j] > tinggiPenari[j + 1]) { int t = tinggiPenari[j]; tinggiPenari[j] = tinggiPenari[j + 1]; tinggiPenari[j + 1] = t; }
+    int selisihTerkecil = tinggiPenari[1] - tinggiPenari[0], posPasangan = 1;
+    for (int i = 2; i < jumlahPenari; i++)
+        if (tinggiPenari[i] - tinggiPenari[i - 1] < selisihTerkecil) { selisihTerkecil = tinggiPenari[i] - tinggiPenari[i - 1]; posPasangan = i; }
+    cout << "Pasangan terbaik: " << tinggiPenari[posPasangan - 1] << " dan " << tinggiPenari[posPasangan] << " (selisih " << selisihTerkecil << " cm)" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 33. Jadwal Pentas Seni Sekolah
+----------------------------------------------------------------------
+
+Buat struct Acara (nama, jam, menit). Urutkan acara pentas seni berdasarkan waktu mulai.
+
+[CONTOH TAMPILAN]
+Jumlah acara: 4
+Acara 1 (nama jam menit): Tari_Saman 10 30
+Acara 2 (nama jam menit): Paduan_Suara 8 15
+Acara 3 (nama jam menit): Drama 13 0
+Acara 4 (nama jam menit): Angklung 10 5
+08:15 Paduan_Suara
+10:05 Angklung
+10:30 Tari_Saman
+13:00 Drama
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+struct AcaraPentas {
+    string nama;
+    int jam, menit;
+};
+
+int main() {
+    AcaraPentas susunanAcara[30];
+    int jumlahAcaraPentas;
+    cout << "Jumlah acara: ";
+    cin >> jumlahAcaraPentas;
+    for (int i = 0; i < jumlahAcaraPentas; i++) {
+        cout << "Acara " << i + 1 << " (nama jam menit): ";
+        cin >> susunanAcara[i].nama >> susunanAcara[i].jam >> susunanAcara[i].menit;
+    }
+    for (int i = 1; i < jumlahAcaraPentas; i++) {
+        AcaraPentas x = susunanAcara[i];
+        int j = i - 1;
+        while (j >= 0 && susunanAcara[j].jam * 60 + susunanAcara[j].menit > x.jam * 60 + x.menit) {
+            susunanAcara[j + 1] = susunanAcara[j];
+            j--;
+        }
+        susunanAcara[j + 1] = x;
+    }
+    cout << setfill('0');
+    for (int i = 0; i < jumlahAcaraPentas; i++)
+        cout << setw(2) << susunanAcara[i].jam << ":" << setw(2) << susunanAcara[i].menit << " " << susunanAcara[i].nama << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 34. Triase IGD Rumah Sakit (Sort Stabil)
+----------------------------------------------------------------------
+
+Pasien IGD diurutkan berdasarkan tingkat darurat (1 = paling darurat). Pasien dengan tingkat sama tetap sesuai urutan kedatangan. Gunakan insertion sort karena bersifat stabil.
+
+[CONTOH TAMPILAN]
+Jumlah pasien: 6
+Pasien 1 (nama tingkat): Ahmad 3
+Pasien 2 (nama tingkat): Bunga 1
+Pasien 3 (nama tingkat): Citra 2
+Pasien 4 (nama tingkat): Doni 1
+Pasien 5 (nama tingkat): Evi 3
+Pasien 6 (nama tingkat): Feri 2
+Urutan penanganan:
+1. Bunga (tingkat 1)
+2. Doni (tingkat 1)
+3. Citra (tingkat 2)
+4. Feri (tingkat 2)
+5. Ahmad (tingkat 3)
+6. Evi (tingkat 3)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct PasienIGD {
+    string nama;
+    int tingkatDarurat;
+};
+
+int main() {
+    PasienIGD antreanIGD[50];
+    int pasienMasuk;
+    cout << "Jumlah pasien: ";
+    cin >> pasienMasuk;
+    for (int i = 0; i < pasienMasuk; i++) {
+        cout << "Pasien " << i + 1 << " (nama tingkat): ";
+        cin >> antreanIGD[i].nama >> antreanIGD[i].tingkatDarurat;
+    }
+    for (int i = 1; i < pasienMasuk; i++) {
+        PasienIGD x = antreanIGD[i];
+        int j = i - 1;
+        while (j >= 0 && antreanIGD[j].tingkatDarurat > x.tingkatDarurat) {
+            antreanIGD[j + 1] = antreanIGD[j];
+            j--;
+        }
+        antreanIGD[j + 1] = x;
+    }
+    cout << "Urutan penanganan:" << endl;
+    for (int i = 0; i < pasienMasuk; i++) cout << i + 1 << ". " << antreanIGD[i].nama << " (tingkat " << antreanIGD[i].tingkatDarurat << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 35. Arsip Surat Berdasarkan Tanggal
+----------------------------------------------------------------------
+
+Buat struct Tanggal. Urutkan surat-surat dari tanggal paling lama ke paling baru (bandingkan tahun, lalu bulan, lalu hari).
+
+[CONTOH TAMPILAN]
+Jumlah surat: 4
+Tanggal surat 1 (h b t): 15 8 2024
+Tanggal surat 2 (h b t): 3 1 2025
+Tanggal surat 3 (h b t): 28 2 2024
+Tanggal surat 4 (h b t): 15 8 2023
+15-8-2023
+28-2-2024
+15-8-2024
+3-1-2025
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+struct TanggalSurat {
+    int hari, bulan, tahun;
+};
+
+bool lebihLama(TanggalSurat a, TanggalSurat b) {
+    if (a.tahun != b.tahun) return a.tahun < b.tahun;
+    if (a.bulan != b.bulan) return a.bulan < b.bulan;
+    return a.hari < b.hari;
+}
+
+int main() {
+    TanggalSurat arsipSurat[50];
+    int jumlahSurat;
+    cout << "Jumlah surat: ";
+    cin >> jumlahSurat;
+    for (int i = 0; i < jumlahSurat; i++) {
+        cout << "Tanggal surat " << i + 1 << " (h b t): ";
+        cin >> arsipSurat[i].hari >> arsipSurat[i].bulan >> arsipSurat[i].tahun;
+    }
+    for (int i = 0; i < jumlahSurat - 1; i++) {
+        int m = i;
+        for (int j = i + 1; j < jumlahSurat; j++) if (lebihLama(arsipSurat[j], arsipSurat[m])) m = j;
+        TanggalSurat t = arsipSurat[i]; arsipSurat[i] = arsipSurat[m]; arsipSurat[m] = t;
+    }
+    for (int i = 0; i < jumlahSurat; i++) cout << arsipSurat[i].hari << "-" << arsipSurat[i].bulan << "-" << arsipSurat[i].tahun << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 36. Ransel Pedagang Rempah (Greedy Pecahan)
+----------------------------------------------------------------------
+
+Pedagang membawa ransel berkapasitas tertentu (kg). Setiap rempah punya berat dan nilai, dan boleh dibawa sebagian. Urutkan rempah berdasarkan nilai per kg terbesar, lalu isi ransel dari yang paling berharga.
+
+[CONTOH TAMPILAN]
+Jumlah jenis rempah: 3
+Rempah 1 (nama berat nilai): Pala 10 600
+Rempah 2 (nama berat nilai): Lada 20 1000
+Rempah 3 (nama berat nilai): Cengkeh 30 1200
+Kapasitas ransel (kg): 50
+Bawa Pala 10 kg
+Bawa Lada 20 kg
+Bawa Cengkeh 20 kg
+Total nilai dibawa: 2400
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Rempah {
+    string nama;
+    double berat;
+    double nilai;
+};
+
+int main() {
+    Rempah gudangRempah[20];
+    int jenisRempah;
+    double kapasitasRansel, nilaiDibawa = 0;
+    cout << "Jumlah jenis rempah: ";
+    cin >> jenisRempah;
+    for (int i = 0; i < jenisRempah; i++) {
+        cout << "Rempah " << i + 1 << " (nama berat nilai): ";
+        cin >> gudangRempah[i].nama >> gudangRempah[i].berat >> gudangRempah[i].nilai;
+    }
+    cout << "Kapasitas ransel (kg): ";
+    cin >> kapasitasRansel;
+    for (int p = 0; p < jenisRempah - 1; p++)
+        for (int j = 0; j < jenisRempah - 1 - p; j++)
+            if (gudangRempah[j].nilai / gudangRempah[j].berat < gudangRempah[j + 1].nilai / gudangRempah[j + 1].berat) {
+                Rempah t = gudangRempah[j]; gudangRempah[j] = gudangRempah[j + 1]; gudangRempah[j + 1] = t;
+            }
+    for (int i = 0; i < jenisRempah && kapasitasRansel > 0; i++) {
+        double diambil = gudangRempah[i].berat < kapasitasRansel ? gudangRempah[i].berat : kapasitasRansel;
+        nilaiDibawa += diambil * gudangRempah[i].nilai / gudangRempah[i].berat;
+        kapasitasRansel -= diambil;
+        cout << "Bawa " << gudangRempah[i].nama << " " << diambil << " kg" << endl;
+    }
+    cout << "Total nilai dibawa: " << nilaiDibawa << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 37. Tukang Jahit Paling Efisien (Pekerjaan Tersingkat Dulu)
+----------------------------------------------------------------------
+
+Penjahit punya beberapa pesanan dengan lama pengerjaan berbeda. Untuk meminimalkan rata-rata waktu tunggu pelanggan, kerjakan pesanan tersingkat dulu. Urutkan lalu hitung waktu tunggu tiap pesanan dan rata-ratanya.
+
+[CONTOH TAMPILAN]
+Jumlah pesanan: 4
+Lama pengerjaan (jam): 6 2 8 3
+Pesanan 2 jam: menunggu 0 jam
+Pesanan 3 jam: menunggu 2 jam
+Pesanan 6 jam: menunggu 5 jam
+Pesanan 8 jam: menunggu 11 jam
+Rata-rata waktu tunggu: 4.5 jam
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int lamaJahit[100], jumlahPesananJahit;
+    cout << "Jumlah pesanan: ";
+    cin >> jumlahPesananJahit;
+    cout << "Lama pengerjaan (jam): ";
+    for (int i = 0; i < jumlahPesananJahit; i++) cin >> lamaJahit[i];
+    for (int i = 1; i < jumlahPesananJahit; i++) {
+        int x = lamaJahit[i], j = i - 1;
+        while (j >= 0 && lamaJahit[j] > x) { lamaJahit[j + 1] = lamaJahit[j]; j--; }
+        lamaJahit[j + 1] = x;
+    }
+    int waktuBerjalan = 0, totalTunggu = 0;
+    for (int i = 0; i < jumlahPesananJahit; i++) {
+        cout << "Pesanan " << lamaJahit[i] << " jam: menunggu " << waktuBerjalan << " jam" << endl;
+        totalTunggu += waktuBerjalan;
+        waktuBerjalan += lamaJahit[i];
+    }
+    cout << "Rata-rata waktu tunggu: " << (double)totalTunggu / jumlahPesananJahit << " jam" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 38. Perahu Penyeberangan Sungai (Dua Penunjuk)
+----------------------------------------------------------------------
+
+Setiap perahu memuat maksimal 2 orang dengan batas berat tertentu. Urutkan berat penumpang, lalu pasangkan yang paling ringan dengan yang paling berat jika muat. Hitung jumlah perahu minimal.
+
+[CONTOH TAMPILAN]
+Jumlah penumpang: 6
+Berat penumpang: 70 50 80 50 40 90
+Batas berat perahu: 120
+Perahu 1: 90
+Perahu 2: 80 + 40
+Perahu 3: 70 + 50
+Perahu 4: 50
+Perahu minimal: 4
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int beratPenumpang[100], jumlahPenumpang, batasPerahu;
+    cout << "Jumlah penumpang: ";
+    cin >> jumlahPenumpang;
+    cout << "Berat penumpang: ";
+    for (int i = 0; i < jumlahPenumpang; i++) cin >> beratPenumpang[i];
+    cout << "Batas berat perahu: ";
+    cin >> batasPerahu;
+    for (int p = 0; p < jumlahPenumpang - 1; p++)
+        for (int j = 0; j < jumlahPenumpang - 1 - p; j++)
+            if (beratPenumpang[j] > beratPenumpang[j + 1]) { int t = beratPenumpang[j]; beratPenumpang[j] = beratPenumpang[j + 1]; beratPenumpang[j + 1] = t; }
+    int ringan = 0, berat = jumlahPenumpang - 1, perahuDipakai = 0;
+    while (ringan <= berat) {
+        perahuDipakai++;
+        if (ringan != berat && beratPenumpang[ringan] + beratPenumpang[berat] <= batasPerahu) {
+            cout << "Perahu " << perahuDipakai << ": " << beratPenumpang[berat] << " + " << beratPenumpang[ringan] << endl;
+            ringan++;
+        } else {
+            cout << "Perahu " << perahuDipakai << ": " << beratPenumpang[berat] << endl;
+        }
+        berat--;
+    }
+    cout << "Perahu minimal: " << perahuDipakai << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 39. Kamus Mini dari Satu Kalimat
+----------------------------------------------------------------------
+
+Pecah kalimat menjadi kata-kata, ubah ke huruf kecil, urutkan sesuai abjad, lalu tampilkan sebagai daftar kamus.
+
+[CONTOH TAMPILAN]
+Kalimat: Indonesia Tanah Air Beta pusaka abadi nan jaya
+1. abadi
+2. air
+3. beta
+4. indonesia
+5. jaya
+6. nan
+7. pusaka
+8. tanah
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string kalimatKamus, kataKamus[50], kataTemp = "";
+    int jumlahEntri = 0;
+    cout << "Kalimat: ";
+    getline(cin, kalimatKamus);
+    kalimatKamus += " ";
+    for (int i = 0; i < (int)kalimatKamus.length(); i++) {
+        if (kalimatKamus[i] != ' ') kataTemp += (char)tolower(kalimatKamus[i]);
+        else if (kataTemp != "") { kataKamus[jumlahEntri++] = kataTemp; kataTemp = ""; }
+    }
+    for (int i = 1; i < jumlahEntri; i++) {
+        string x = kataKamus[i];
+        int j = i - 1;
+        while (j >= 0 && kataKamus[j] > x) { kataKamus[j + 1] = kataKamus[j]; j--; }
+        kataKamus[j + 1] = x;
+    }
+    for (int i = 0; i < jumlahEntri; i++) cout << i + 1 << ". " << kataKamus[i] << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 40. Huruf Paling Sering di Surat Cinta
+----------------------------------------------------------------------
+
+Hitung frekuensi tiap huruf, lalu urutkan huruf-huruf tersebut dari yang paling sering muncul (jika sama, sesuai abjad). Tampilkan 5 teratas.
+
+[CONTOH TAMPILAN]
+Isi surat: aku ingin mencintaimu dengan sederhana
+Lima huruf tersering:
+n: 7 kali
+a: 5 kali
+e: 4 kali
+i: 4 kali
+d: 2 kali
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string suratCinta;
+    int frekuensiCinta[26] = {0};
+    char hurufCinta[26];
+    cout << "Isi surat: ";
+    getline(cin, suratCinta);
+    for (int i = 0; i < (int)suratCinta.length(); i++)
+        if (isalpha(suratCinta[i])) frekuensiCinta[tolower(suratCinta[i]) - 'a']++;
+    for (int h = 0; h < 26; h++) hurufCinta[h] = 'a' + h;
+    for (int p = 0; p < 25; p++) {
+        for (int j = 0; j < 25 - p; j++) {
+            int fa = frekuensiCinta[hurufCinta[j] - 'a'], fb = frekuensiCinta[hurufCinta[j + 1] - 'a'];
+            if (fa < fb || (fa == fb && hurufCinta[j] > hurufCinta[j + 1])) {
+                char t = hurufCinta[j]; hurufCinta[j] = hurufCinta[j + 1]; hurufCinta[j + 1] = t;
+            }
+        }
+    }
+    cout << "Lima huruf tersering:" << endl;
+    for (int i = 0; i < 5; i++) cout << hurufCinta[i] << ": " << frekuensiCinta[hurufCinta[i] - 'a'] << " kali" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 41. Pengocok Bolak-Balik (Cocktail Shaker Sort)
+----------------------------------------------------------------------
+
+Bartender mengocok ke kanan lalu ke kiri. Cocktail sort adalah bubble sort dua arah: satu putaran ke kanan mendorong yang terbesar ke ujung, lalu ke kiri mendorong yang terkecil ke depan.
+
+[CONTOH TAMPILAN]
+Jumlah data: 7
+Data: 5 1 4 2 8 0 2
+Hasil cocktail sort: 0 1 2 2 4 5 8
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int gelasKocok[100], jumlahGelas;
+    cout << "Jumlah data: ";
+    cin >> jumlahGelas;
+    cout << "Data: ";
+    for (int i = 0; i < jumlahGelas; i++) cin >> gelasKocok[i];
+    int ujungAwal = 0, ujungAkhir = jumlahGelas - 1;
+    bool masihTukar = true;
+    while (masihTukar) {
+        masihTukar = false;
+        for (int i = ujungAwal; i < ujungAkhir; i++)
+            if (gelasKocok[i] > gelasKocok[i + 1]) { int t = gelasKocok[i]; gelasKocok[i] = gelasKocok[i + 1]; gelasKocok[i + 1] = t; masihTukar = true; }
+        ujungAkhir--;
+        for (int i = ujungAkhir; i > ujungAwal; i--)
+            if (gelasKocok[i] < gelasKocok[i - 1]) { int t = gelasKocok[i]; gelasKocok[i] = gelasKocok[i - 1]; gelasKocok[i - 1] = t; masihTukar = true; }
+        ujungAwal++;
+    }
+    cout << "Hasil cocktail sort:";
+    for (int i = 0; i < jumlahGelas; i++) cout << " " << gelasKocok[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 42. Lompatan Bertahap Shell Sort
+----------------------------------------------------------------------
+
+Shell sort mengurutkan elemen yang berjarak gap tertentu dulu (gap = n/2, n/4, ..., 1), baru sisipan biasa. Tampilkan array setelah setiap gap.
+
+[CONTOH TAMPILAN]
+Jumlah data: 8
+Data: 23 12 1 8 34 54 2 3
+Gap 4: 23 12 1 3 34 54 2 8
+Gap 2: 1 3 2 8 23 12 34 54
+Gap 1: 1 2 3 8 12 23 34 54
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int dataShell[100], jumlahShell;
+    cout << "Jumlah data: ";
+    cin >> jumlahShell;
+    cout << "Data: ";
+    for (int i = 0; i < jumlahShell; i++) cin >> dataShell[i];
+    for (int gap = jumlahShell / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < jumlahShell; i++) {
+            int x = dataShell[i], j = i;
+            while (j >= gap && dataShell[j - gap] > x) {
+                dataShell[j] = dataShell[j - gap];
+                j -= gap;
+            }
+            dataShell[j] = x;
+        }
+        cout << "Gap " << gap << ":";
+        for (int i = 0; i < jumlahShell; i++) cout << " " << dataShell[i];
+        cout << endl;
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 43. Kurcaci Penyusun Pot (Gnome Sort)
+----------------------------------------------------------------------
+
+Kurcaci kebun berjalan maju jika dua pot berurutan sudah benar, dan menukar lalu mundur satu langkah jika salah. Terapkan gnome sort dan hitung langkahnya.
+
+[CONTOH TAMPILAN]
+Jumlah pot: 6
+Nomor pot: 34 2 10 -9 7 1
+Pot tersusun: -9 1 2 7 10 34
+Langkah kurcaci: 28
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int potKebun[100], jumlahPot, langkahKurcaci = 0;
+    cout << "Jumlah pot: ";
+    cin >> jumlahPot;
+    cout << "Nomor pot: ";
+    for (int i = 0; i < jumlahPot; i++) cin >> potKebun[i];
+    int posisiKurcaci = 0;
+    while (posisiKurcaci < jumlahPot) {
+        langkahKurcaci++;
+        if (posisiKurcaci == 0 || potKebun[posisiKurcaci - 1] <= potKebun[posisiKurcaci]) {
+            posisiKurcaci++;
+        } else {
+            int t = potKebun[posisiKurcaci];
+            potKebun[posisiKurcaci] = potKebun[posisiKurcaci - 1];
+            potKebun[posisiKurcaci - 1] = t;
+            posisiKurcaci--;
+        }
+    }
+    cout << "Pot tersusun:";
+    for (int i = 0; i < jumlahPot; i++) cout << " " << potKebun[i];
+    cout << endl << "Langkah kurcaci: " << langkahKurcaci << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 44. Lomba Dua Petugas Pengurut
+----------------------------------------------------------------------
+
+Salin data yang sama ke dua array. Urutkan satu dengan bubble sort dan satu dengan selection sort, lalu bandingkan jumlah perbandingan dan jumlah pertukaran keduanya.
+
+[CONTOH TAMPILAN]
+Jumlah data: 6
+Data: 6 5 4 3 2 1
+Bubble sort   : 15 perbandingan, 15 pertukaran
+Selection sort: 15 perbandingan, 3 pertukaran
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int dataBubble[100], dataSeleksi[100], jumlahDataLomba;
+    cout << "Jumlah data: ";
+    cin >> jumlahDataLomba;
+    cout << "Data: ";
+    for (int i = 0; i < jumlahDataLomba; i++) {
+        cin >> dataBubble[i];
+        dataSeleksi[i] = dataBubble[i];
+    }
+    int bandingBubble = 0, tukarBubble = 0, bandingSeleksi = 0, tukarSeleksi = 0;
+    for (int p = 0; p < jumlahDataLomba - 1; p++)
+        for (int j = 0; j < jumlahDataLomba - 1 - p; j++) {
+            bandingBubble++;
+            if (dataBubble[j] > dataBubble[j + 1]) { int t = dataBubble[j]; dataBubble[j] = dataBubble[j + 1]; dataBubble[j + 1] = t; tukarBubble++; }
+        }
+    for (int i = 0; i < jumlahDataLomba - 1; i++) {
+        int m = i;
+        for (int j = i + 1; j < jumlahDataLomba; j++) { bandingSeleksi++; if (dataSeleksi[j] < dataSeleksi[m]) m = j; }
+        if (m != i) { int t = dataSeleksi[i]; dataSeleksi[i] = dataSeleksi[m]; dataSeleksi[m] = t; tukarSeleksi++; }
+    }
+    cout << "Bubble sort   : " << bandingBubble << " perbandingan, " << tukarBubble << " pertukaran" << endl;
+    cout << "Selection sort: " << bandingSeleksi << " perbandingan, " << tukarSeleksi << " pertukaran" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 45. Papan Juara Lomba Balap Karung (Array Paralel)
+----------------------------------------------------------------------
+
+Nama dan waktu peserta disimpan di dua array terpisah. Saat mengurutkan waktu (tercepat dulu), nama juga harus ikut ditukar agar tetap berpasangan.
+
+[CONTOH TAMPILAN]
+Jumlah peserta: 5
+Peserta 1 (nama detik): Asep 45
+Peserta 2 (nama detik): Budi 38
+Peserta 3 (nama detik): Cecep 52
+Peserta 4 (nama detik): Dadang 38
+Peserta 5 (nama detik): Euis 41
+1. Budi - 38 detik
+2. Dadang - 38 detik
+3. Euis - 41 detik
+4. Asep - 45 detik
+5. Cecep - 52 detik
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string namaBalap[50];
+    int waktuBalap[50], pesertaBalap;
+    cout << "Jumlah peserta: ";
+    cin >> pesertaBalap;
+    for (int i = 0; i < pesertaBalap; i++) {
+        cout << "Peserta " << i + 1 << " (nama detik): ";
+        cin >> namaBalap[i] >> waktuBalap[i];
+    }
+    for (int p = 0; p < pesertaBalap - 1; p++)
+        for (int j = 0; j < pesertaBalap - 1 - p; j++)
+            if (waktuBalap[j] > waktuBalap[j + 1]) {
+                int tw = waktuBalap[j]; waktuBalap[j] = waktuBalap[j + 1]; waktuBalap[j + 1] = tw;
+                string tn = namaBalap[j]; namaBalap[j] = namaBalap[j + 1]; namaBalap[j + 1] = tn;
+            }
+    for (int i = 0; i < pesertaBalap; i++) cout << i + 1 << ". " << namaBalap[i] << " - " << waktuBalap[i] << " detik" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 46. Papan Rekor Arkade (Sisip ke Array Terurut)
+----------------------------------------------------------------------
+
+Papan rekor menyimpan 5 skor tertinggi yang sudah urut turun. Setiap ada skor baru, sisipkan ke posisi yang tepat; skor terendah tergeser keluar jika papan penuh. Masukkan skor baru sampai 0.
+
+[CONTOH TAMPILAN]
+5 skor awal (urut turun): 900 750 600 450 300
+Skor baru (0 selesai): 700
+Skor 700 masuk di peringkat 3
+Skor baru (0 selesai): 200
+Skor 200 belum masuk papan rekor.
+Skor baru (0 selesai): 950
+Skor 950 masuk di peringkat 1
+Skor baru (0 selesai): 0
+Papan rekor akhir: 950 900 750 700 600
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int papanRekor[5];
+    cout << "5 skor awal (urut turun): ";
+    for (int i = 0; i < 5; i++) cin >> papanRekor[i];
+    int skorMasuk;
+    cout << "Skor baru (0 selesai): ";
+    cin >> skorMasuk;
+    while (skorMasuk != 0) {
+        if (skorMasuk <= papanRekor[4]) {
+            cout << "Skor " << skorMasuk << " belum masuk papan rekor." << endl;
+        } else {
+            int pos = 4;
+            while (pos > 0 && papanRekor[pos - 1] < skorMasuk) {
+                papanRekor[pos] = papanRekor[pos - 1];
+                pos--;
+            }
+            papanRekor[pos] = skorMasuk;
+            cout << "Skor " << skorMasuk << " masuk di peringkat " << pos + 1 << endl;
+        }
+        cout << "Skor baru (0 selesai): ";
+        cin >> skorMasuk;
+    }
+    cout << "Papan rekor akhir:";
+    for (int i = 0; i < 5; i++) cout << " " << papanRekor[i];
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 47. Tabib Median vs Hantu Rentang (pola game Quest IV)
+----------------------------------------------------------------------
+
+Tabib Median (HP 40) melawan Hantu Rentang (HP 60). Setiap giliran user memasukkan 3 angka dalam rentang tertentu (mulai 1–10, naik 10 tiap giliran). Urutkan ketiga angka. Jika angka tengah (median) prima, tabib menyerang dengan damage = median % 10 + 10. Jika tidak, hantu menyerang dengan damage = angka terbesar − angka terkecil.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan 3 angka 1-10: 3 5 9
+Setelah diurutkan: 3 5 9
+Median 5 prima! Tabib menyerang 15 damage!
+HP Hantu Rentang: 45
+
+Giliran 2:
+Masukkan 3 angka 11-20: 12 15 20
+Setelah diurutkan: 12 15 20
+Median 15 bukan prima.. Hantu menyerang 8 damage!
+HP Tabib Median: 32
+
+Giliran 3:
+Masukkan 3 angka 21-30: 21 29 23
+Setelah diurutkan: 21 23 29
+Median 23 prima! Tabib menyerang 13 damage!
+HP Hantu Rentang: 32
+
+Giliran 4:
+Masukkan 3 angka 31-40: 31 33 37
+Setelah diurutkan: 31 33 37
+Median 33 bukan prima.. Hantu menyerang 6 damage!
+HP Tabib Median: 26
+
+Giliran 5:
+Masukkan 3 angka 41-50: 41 43 49
+Setelah diurutkan: 41 43 49
+Median 43 prima! Tabib menyerang 13 damage!
+HP Hantu Rentang: 19
+
+Giliran 6:
+Masukkan 3 angka 51-60: 52 59 53
+Setelah diurutkan: 52 53 59
+Median 53 prima! Tabib menyerang 13 damage!
+HP Hantu Rentang: 6
+
+Giliran 7:
+Masukkan 3 angka 61-70: 61 68 67
+Setelah diurutkan: 61 67 68
+Median 67 prima! Tabib menyerang 17 damage!
+HP Hantu Rentang: 0
+
+Hantu Rentang lenyap! Tabib Median menang!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+bool primaMedian(int n) {
+    if (n < 2) return false;
+    for (int d = 2; d * d <= n; d++) if (n % d == 0) return false;
+    return true;
+}
+
+int main() {
+    int hpTabibMedian = 40, hpHantuRentang = 60;
+    int giliranMedian = 1, rentangBawahM = 1, rentangAtasM = 10;
+    while (hpTabibMedian > 0 && hpHantuRentang > 0) {
+        int tigaAngka[3];
+        cout << "\nGiliran " << giliranMedian << ":\n";
+        cout << "Masukkan 3 angka " << rentangBawahM << "-" << rentangAtasM << ": ";
+        bool sahSemua = true;
+        for (int i = 0; i < 3; i++) {
+            cin >> tigaAngka[i];
+            if (tigaAngka[i] < rentangBawahM || tigaAngka[i] > rentangAtasM) sahSemua = false;
+        }
+        if (!sahSemua) {
+            cout << "Ada angka di luar rentang, ulangi!\n";
+            continue;
+        }
+        for (int p = 0; p < 2; p++)
+            for (int j = 0; j < 2 - p; j++)
+                if (tigaAngka[j] > tigaAngka[j + 1]) { int t = tigaAngka[j]; tigaAngka[j] = tigaAngka[j + 1]; tigaAngka[j + 1] = t; }
+        cout << "Setelah diurutkan: " << tigaAngka[0] << " " << tigaAngka[1] << " " << tigaAngka[2] << endl;
+        if (primaMedian(tigaAngka[1])) {
+            int ramuanMedian = tigaAngka[1] % 10 + 10;
+            hpHantuRentang -= ramuanMedian;
+            if (hpHantuRentang < 0) hpHantuRentang = 0;
+            cout << "Median " << tigaAngka[1] << " prima! Tabib menyerang " << ramuanMedian << " damage!\n";
+            cout << "HP Hantu Rentang: " << hpHantuRentang << endl;
+        } else {
+            int sabetanRentang = tigaAngka[2] - tigaAngka[0];
+            hpTabibMedian -= sabetanRentang;
+            if (hpTabibMedian < 0) hpTabibMedian = 0;
+            cout << "Median " << tigaAngka[1] << " bukan prima.. Hantu menyerang " << sabetanRentang << " damage!\n";
+            cout << "HP Tabib Median: " << hpTabibMedian << endl;
+        }
+        giliranMedian++;
+        rentangBawahM += 10;
+        rentangAtasM += 10;
+    }
+    if (hpHantuRentang == 0) cout << "\nHantu Rentang lenyap! Tabib Median menang!\n";
+    else cout << "\nTabib Median tumbang... Hantu Rentang menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 48. Ksatria Urutan vs Penyihir Kacau (pola game Quest IV)
+----------------------------------------------------------------------
+
+Ksatria Urutan (HP 40) melawan Penyihir Kacau (HP 60). Setiap giliran user memasukkan bilangan 4 digit dari rentang tertentu (mulai 1000–1999, naik 1000 tiap giliran). Jika digit-digitnya sudah urut naik dari kiri ke kanan (seperti 1239), ksatria menyerang dengan damage 20. Jika belum, penyihir menyerang dengan damage = jumlah pertukaran yang dibutuhkan bubble sort untuk mengurutkan digit-digit tersebut × 2.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan bilangan 1000-1999: 1357
+Digit sudah urut! Ksatria menebas 20 damage!
+HP Penyihir Kacau: 40
+
+Giliran 2:
+Masukkan bilangan 2000-2999: 2431
+Butuh 4 pertukaran.. Penyihir menyerang 8 damage!
+HP Ksatria Urutan: 32
+
+Giliran 3:
+Masukkan bilangan 3000-3999: 3489
+Digit sudah urut! Ksatria menebas 20 damage!
+HP Penyihir Kacau: 20
+
+Giliran 4:
+Masukkan bilangan 4000-4999: 4321
+Butuh 6 pertukaran.. Penyihir menyerang 12 damage!
+HP Ksatria Urutan: 20
+
+Giliran 5:
+Masukkan bilangan 5000-5999: 5678
+Digit sudah urut! Ksatria menebas 20 damage!
+HP Penyihir Kacau: 0
+
+Penyihir Kacau terurai! Ksatria Urutan menang!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int hpKsatriaUrut = 40, hpPenyihirKacau = 60;
+    int giliranUrut = 1, batasBawahU = 1000, batasAtasU = 1999;
+    while (hpKsatriaUrut > 0 && hpPenyihirKacau > 0) {
+        int angkaMantra;
+        cout << "\nGiliran " << giliranUrut << ":\n";
+        cout << "Masukkan bilangan " << batasBawahU << "-" << batasAtasU << ": ";
+        cin >> angkaMantra;
+        if (angkaMantra < batasBawahU || angkaMantra > batasAtasU) {
+            cout << "Di luar rentang, ulangi!\n";
+            continue;
+        }
+        int digitMantra[4], salinMantra = angkaMantra;
+        for (int i = 3; i >= 0; i--) { digitMantra[i] = salinMantra % 10; salinMantra /= 10; }
+        int tukarMantra = 0;
+        for (int p = 0; p < 3; p++)
+            for (int j = 0; j < 3 - p; j++)
+                if (digitMantra[j] > digitMantra[j + 1]) { int t = digitMantra[j]; digitMantra[j] = digitMantra[j + 1]; digitMantra[j + 1] = t; tukarMantra++; }
+        if (tukarMantra == 0) {
+            hpPenyihirKacau -= 20;
+            if (hpPenyihirKacau < 0) hpPenyihirKacau = 0;
+            cout << "Digit sudah urut! Ksatria menebas 20 damage!\n";
+            cout << "HP Penyihir Kacau: " << hpPenyihirKacau << endl;
+        } else {
+            int kutukanKacau = tukarMantra * 2;
+            hpKsatriaUrut -= kutukanKacau;
+            if (hpKsatriaUrut < 0) hpKsatriaUrut = 0;
+            cout << "Butuh " << tukarMantra << " pertukaran.. Penyihir menyerang " << kutukanKacau << " damage!\n";
+            cout << "HP Ksatria Urutan: " << hpKsatriaUrut << endl;
+        }
+        giliranUrut++;
+        batasBawahU += 1000;
+        batasAtasU += 1000;
+    }
+    if (hpPenyihirKacau == 0) cout << "\nPenyihir Kacau terurai! Ksatria Urutan menang!\n";
+    else cout << "\nKsatria Urutan kalah... Penyihir Kacau menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 49. Tiga Teratas dan Tiga Terbawah Kelas
+----------------------------------------------------------------------
+
+Buat struct Siswa (nama, nilai). Urutkan nilai dari tertinggi dengan selection sort, lalu tampilkan 3 siswa teratas (mendapat hadiah) dan 3 terbawah (mendapat bimbingan).
+
+[CONTOH TAMPILAN]
+Jumlah siswa: 7
+Siswa 1 (nama nilai): Ayu 88
+Siswa 2 (nama nilai): Bagus 72
+Siswa 3 (nama nilai): Citra 95
+Siswa 4 (nama nilai): Damar 60
+Siswa 5 (nama nilai): Elsa 81
+Siswa 6 (nama nilai): Fikri 55
+Siswa 7 (nama nilai): Gita 90
+Penerima hadiah:
+- Citra (95)
+- Gita (90)
+- Ayu (88)
+Perlu bimbingan:
+- Fikri (55)
+- Damar (60)
+- Bagus (72)
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct SiswaKelas {
+    string nama;
+    int nilai;
+};
+
+int main() {
+    SiswaKelas kelasDelapan[50];
+    int jumlahSiswaDelapan;
+    cout << "Jumlah siswa: ";
+    cin >> jumlahSiswaDelapan;
+    for (int i = 0; i < jumlahSiswaDelapan; i++) {
+        cout << "Siswa " << i + 1 << " (nama nilai): ";
+        cin >> kelasDelapan[i].nama >> kelasDelapan[i].nilai;
+    }
+    for (int i = 0; i < jumlahSiswaDelapan - 1; i++) {
+        int m = i;
+        for (int j = i + 1; j < jumlahSiswaDelapan; j++) if (kelasDelapan[j].nilai > kelasDelapan[m].nilai) m = j;
+        SiswaKelas t = kelasDelapan[i]; kelasDelapan[i] = kelasDelapan[m]; kelasDelapan[m] = t;
+    }
+    cout << "Penerima hadiah:" << endl;
+    for (int i = 0; i < 3 && i < jumlahSiswaDelapan; i++) cout << "- " << kelasDelapan[i].nama << " (" << kelasDelapan[i].nilai << ")" << endl;
+    cout << "Perlu bimbingan:" << endl;
+    for (int i = jumlahSiswaDelapan - 1; i >= jumlahSiswaDelapan - 3 && i >= 0; i--) cout << "- " << kelasDelapan[i].nama << " (" << kelasDelapan[i].nilai << ")" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 50. Membagi Tim Seimbang Pola Ular
+----------------------------------------------------------------------
+
+Pelatih membagi pemain ke k tim seimbang: urutkan kemampuan dari terbesar, lalu bagikan dengan pola ular (tim 1, 2, ..., k, lalu k, ..., 2, 1, dan seterusnya). Tampilkan anggota dan total kemampuan tiap tim.
+
+[CONTOH TAMPILAN]
+Jumlah pemain: 8
+Kemampuan pemain: 90 85 80 75 70 65 60 55
+Jumlah tim: 2
+Tim 1: 90 75 70 55 (total 290)
+Tim 2: 85 80 65 60 (total 290)
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int kemampuanPemain[100], jumlahPemainUlar, jumlahTimUlar;
+    cout << "Jumlah pemain: ";
+    cin >> jumlahPemainUlar;
+    cout << "Kemampuan pemain: ";
+    for (int i = 0; i < jumlahPemainUlar; i++) cin >> kemampuanPemain[i];
+    cout << "Jumlah tim: ";
+    cin >> jumlahTimUlar;
+    for (int p = 0; p < jumlahPemainUlar - 1; p++)
+        for (int j = 0; j < jumlahPemainUlar - 1 - p; j++)
+            if (kemampuanPemain[j] < kemampuanPemain[j + 1]) { int t = kemampuanPemain[j]; kemampuanPemain[j] = kemampuanPemain[j + 1]; kemampuanPemain[j + 1] = t; }
+    int anggotaTim[10][50], isiTim[10] = {0}, totalTim[10] = {0};
+    for (int i = 0; i < jumlahPemainUlar; i++) {
+        int putaranUlar = i / jumlahTimUlar, posisiUlar = i % jumlahTimUlar;
+        int timTujuan = (putaranUlar % 2 == 0) ? posisiUlar : jumlahTimUlar - 1 - posisiUlar;
+        anggotaTim[timTujuan][isiTim[timTujuan]++] = kemampuanPemain[i];
+        totalTim[timTujuan] += kemampuanPemain[i];
+    }
+    for (int t = 0; t < jumlahTimUlar; t++) {
+        cout << "Tim " << t + 1 << ":";
+        for (int a = 0; a < isiTim[t]; a++) cout << " " << anggotaTim[t][a];
+        cout << " (total " << totalTim[t] << ")" << endl;
+    }
+    return 0;
+}

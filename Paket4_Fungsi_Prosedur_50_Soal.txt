@@ -1,0 +1,1857 @@
+﻿======================================================================
+PAKET 4 — FUNGSI & PROSEDUR (50 SOAL CERITA)
+======================================================================
+
+Materi: fungsi dengan nilai balik (return), prosedur (void), parameter by value dan by reference (&), parameter default, overloading, prototipe fungsi, variabel global/lokal/static, dan rekursi. Ada juga beberapa soal game bergaya Quest IV yang dipecah ke dalam fungsi.
+
+Cara latihan: baca soal dan contoh tampilan, ketik sendiri dulu, baru cocokkan dengan jawaban.
+
+----------------------------------------------------------------------
+Soal 1. Tukang Karpet Istana
+----------------------------------------------------------------------
+
+Buat fungsi yang mengembalikan luas persegi panjang. Gunakan untuk menghitung luas karpet dan harga karpet (Rp75.000 per m²).
+
+[CONTOH TAMPILAN]
+Panjang dan lebar karpet (m): 5 4
+Luas karpet: 20 m2
+Harga karpet: Rp1500000
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+double luasKarpet(double panjangKarpet, double lebarKarpet) {
+    return panjangKarpet * lebarKarpet;
+}
+
+int main() {
+    double ukuranP, ukuranL;
+    cout << "Panjang dan lebar karpet (m): ";
+    cin >> ukuranP >> ukuranL;
+    double hasilLuasKarpet = luasKarpet(ukuranP, ukuranL);
+    cout << "Luas karpet: " << hasilLuasKarpet << " m2" << endl;
+    cout << "Harga karpet: Rp" << (long long)(hasilLuasKarpet * 75000) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 2. Prosedur Sapaan Penjaga Gerbang
+----------------------------------------------------------------------
+
+Buat prosedur (void) yang menerima nama tamu dan jam kedatangan, lalu menampilkan sapaan pagi/siang/malam yang sesuai.
+
+[CONTOH TAMPILAN]
+Nama tamu dan jam datang: Arjuna 19
+Selamat malam, Arjuna! Gerbang segera ditutup.
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+void sapaTamu(string namaTamuGerbang, int jamTiba) {
+    if (jamTiba < 11) cout << "Selamat pagi, " << namaTamuGerbang << "!" << endl;
+    else if (jamTiba < 18) cout << "Selamat siang, " << namaTamuGerbang << "!" << endl;
+    else cout << "Selamat malam, " << namaTamuGerbang << "! Gerbang segera ditutup." << endl;
+}
+
+int main() {
+    string tamuDatang;
+    int jamDatangTamu;
+    cout << "Nama tamu dan jam datang: ";
+    cin >> tamuDatang >> jamDatangTamu;
+    sapaTamu(tamuDatang, jamDatangTamu);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 3. Adu Kekuatan Dua Banteng
+----------------------------------------------------------------------
+
+Buat fungsi yang mengembalikan nilai terbesar dari dua bilangan. Gunakan untuk menentukan banteng terkuat.
+
+[CONTOH TAMPILAN]
+Kekuatan banteng hitam dan cokelat: 870 915
+Kekuatan tertinggi: 915
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int lebihKuat(int tenagaSatu, int tenagaDua) {
+    if (tenagaSatu > tenagaDua) return tenagaSatu;
+    return tenagaDua;
+}
+
+int main() {
+    int bantengHitam, bantengCokelat;
+    cout << "Kekuatan banteng hitam dan cokelat: ";
+    cin >> bantengHitam >> bantengCokelat;
+    cout << "Kekuatan tertinggi: " << lebihKuat(bantengHitam, bantengCokelat) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 4. Juara Tiga Gulat Sumo
+----------------------------------------------------------------------
+
+Buat fungsi maks dua angka, lalu buat fungsi maks tiga angka yang memanggil fungsi maks dua angka.
+
+[CONTOH TAMPILAN]
+Berat tiga pesumo (kg): 152 167 149
+Pesumo terberat: 167 kg
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int beratTerbesar(int sumoA, int sumoB) {
+    return sumoA > sumoB ? sumoA : sumoB;
+}
+
+int juaraTigaSumo(int sumoA, int sumoB, int sumoC) {
+    return beratTerbesar(beratTerbesar(sumoA, sumoB), sumoC);
+}
+
+int main() {
+    int pesumoSatu, pesumoDua, pesumoTiga;
+    cout << "Berat tiga pesumo (kg): ";
+    cin >> pesumoSatu >> pesumoDua >> pesumoTiga;
+    cout << "Pesumo terberat: " << juaraTigaSumo(pesumoSatu, pesumoDua, pesumoTiga) << " kg" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 5. Kunci Pintu Genap
+----------------------------------------------------------------------
+
+Buat fungsi bool yang mengembalikan true jika bilangan genap. Pintu terbuka hanya untuk kode genap.
+
+[CONTOH TAMPILAN]
+Kode pintu: 2027
+Kode ganjil, pintu tetap terkunci.
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+bool kodeGenap(int kodePintu) {
+    return kodePintu % 2 == 0;
+}
+
+int main() {
+    int kodeTamuPintu;
+    cout << "Kode pintu: ";
+    cin >> kodeTamuPintu;
+    if (kodeGenap(kodeTamuPintu)) cout << "Kode genap, pintu terbuka!" << endl;
+    else cout << "Kode ganjil, pintu tetap terkunci." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 6. Susunan Barisan Pasukan (Faktorial Iteratif)
+----------------------------------------------------------------------
+
+Buat fungsi faktorial dengan perulangan untuk menghitung berapa banyak cara menyusun n prajurit dalam satu barisan.
+
+[CONTOH TAMPILAN]
+Jumlah prajurit: 6
+Banyak cara menyusun barisan: 720
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long caraBaris(int jumlahPrajuritBaris) {
+    long long kemungkinanBaris = 1;
+    for (int pengaliBaris = 2; pengaliBaris <= jumlahPrajuritBaris; pengaliBaris++) kemungkinanBaris *= pengaliBaris;
+    return kemungkinanBaris;
+}
+
+int main() {
+    int prajuritApel;
+    cout << "Jumlah prajurit: ";
+    cin >> prajuritApel;
+    cout << "Banyak cara menyusun barisan: " << caraBaris(prajuritApel) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 7. Mantra Berlipat Rekursif (Faktorial Rekursif)
+----------------------------------------------------------------------
+
+Hitung faktorial n dengan fungsi rekursif: n! = n × (n−1)!, dan 0! = 1.
+
+[CONTOH TAMPILAN]
+Tingkat mantra: 10
+10! = 3628800
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long mantraLipat(int tingkatLipat) {
+    if (tingkatLipat <= 1) return 1;
+    return tingkatLipat * mantraLipat(tingkatLipat - 1);
+}
+
+int main() {
+    int levelMantraLipat;
+    cout << "Tingkat mantra: ";
+    cin >> levelMantraLipat;
+    cout << levelMantraLipat << "! = " << mantraLipat(levelMantraLipat) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 8. Kelinci Rekursif Pak Tani
+----------------------------------------------------------------------
+
+Buat fungsi Fibonacci rekursif (suku 1 dan 2 bernilai 1). Tampilkan suku ke-1 sampai ke-n.
+
+[CONTOH TAMPILAN]
+Banyak bulan: 10
+Populasi: 1 1 2 3 5 8 13 21 34 55
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int kelinciBulan(int bulanTani) {
+    if (bulanTani <= 2) return 1;
+    return kelinciBulan(bulanTani - 1) + kelinciBulan(bulanTani - 2);
+}
+
+int main() {
+    int lamaTernakTani;
+    cout << "Banyak bulan: ";
+    cin >> lamaTernakTani;
+    cout << "Populasi:";
+    for (int bulanCek = 1; bulanCek <= lamaTernakTani; bulanCek++) cout << " " << kelinciBulan(bulanCek);
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 9. Pangkat Rekursif Sang Alkemis
+----------------------------------------------------------------------
+
+Hitung a pangkat b dengan rekursi: a^b = a × a^(b−1), dan a^0 = 1.
+
+[CONTOH TAMPILAN]
+Bilangan dan pangkat: 2 10
+2^10 = 1024
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long pangkatAlkemis(int bahanDasar, int tingkatRamuan) {
+    if (tingkatRamuan == 0) return 1;
+    return bahanDasar * pangkatAlkemis(bahanDasar, tingkatRamuan - 1);
+}
+
+int main() {
+    int dasarRamuan, eksponenRamuan;
+    cout << "Bilangan dan pangkat: ";
+    cin >> dasarRamuan >> eksponenRamuan;
+    cout << dasarRamuan << "^" << eksponenRamuan << " = " << pangkatAlkemis(dasarRamuan, eksponenRamuan) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 10. Bagi Rata Hasil Panen (FPB Rekursif)
+----------------------------------------------------------------------
+
+Hitung FPB dua jumlah panen dengan algoritma Euclid versi rekursif: fpb(a, b) = fpb(b, a % b), berhenti saat b = 0.
+
+[CONTOH TAMPILAN]
+Karung jagung dan padi: 84 126
+Maksimal keluarga penerima: 42
+Tiap keluarga: 2 jagung, 3 padi
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int fpbPanen(int panenJagung, int panenPadi) {
+    if (panenPadi == 0) return panenJagung;
+    return fpbPanen(panenPadi, panenJagung % panenPadi);
+}
+
+int main() {
+    int karungJagung, karungPadi;
+    cout << "Karung jagung dan padi: ";
+    cin >> karungJagung >> karungPadi;
+    int keluargaPenerima = fpbPanen(karungJagung, karungPadi);
+    cout << "Maksimal keluarga penerima: " << keluargaPenerima << endl;
+    cout << "Tiap keluarga: " << karungJagung / keluargaPenerima << " jagung, " << karungPadi / keluargaPenerima << " padi" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 11. Jadwal Kapal Bertemu di Pelabuhan (KPK)
+----------------------------------------------------------------------
+
+Kapal A singgah tiap a hari, kapal B tiap b hari. Buat fungsi FPB dan fungsi KPK yang memanggil FPB: KPK = a / FPB × b.
+
+[CONTOH TAMPILAN]
+Siklus singgah kapal A dan B (hari): 6 15
+Kedua kapal bertemu lagi setelah 30 hari
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int fpbPelabuhan(int siklusA, int siklusB) {
+    while (siklusB != 0) {
+        int sisaSiklus = siklusA % siklusB;
+        siklusA = siklusB;
+        siklusB = sisaSiklus;
+    }
+    return siklusA;
+}
+
+int kpkPelabuhan(int siklusA, int siklusB) {
+    return siklusA / fpbPelabuhan(siklusA, siklusB) * siklusB;
+}
+
+int main() {
+    int jadwalKapalA, jadwalKapalB;
+    cout << "Siklus singgah kapal A dan B (hari): ";
+    cin >> jadwalKapalA >> jadwalKapalB;
+    cout << "Kedua kapal bertemu lagi setelah " << kpkPelabuhan(jadwalKapalA, jadwalKapalB) << " hari" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 12. Peta Bintang Prima di Rentang Langit
+----------------------------------------------------------------------
+
+Buat fungsi bool cek prima dan prosedur yang menampilkan semua bilangan prima di antara a dan b.
+
+[CONTOH TAMPILAN]
+Rentang langit (awal akhir): 20 60
+Bintang prima: 23 29 31 37 41 43 47 53 59
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+bool bintangPrima(int cahayaBintang) {
+    if (cahayaBintang < 2) return false;
+    for (int teropong = 2; teropong * teropong <= cahayaBintang; teropong++)
+        if (cahayaBintang % teropong == 0) return false;
+    return true;
+}
+
+void petaBintang(int langitAwal, int langitAkhir) {
+    cout << "Bintang prima:";
+    for (int titikLangit = langitAwal; titikLangit <= langitAkhir; titikLangit++)
+        if (bintangPrima(titikLangit)) cout << " " << titikLangit;
+    cout << endl;
+}
+
+int main() {
+    int batasAwalLangit, batasAkhirLangit;
+    cout << "Rentang langit (awal akhir): ";
+    cin >> batasAwalLangit >> batasAkhirLangit;
+    petaBintang(batasAwalLangit, batasAkhirLangit);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 13. Timbangan Digit Pedagang Emas
+----------------------------------------------------------------------
+
+Buat fungsi yang mengembalikan jumlah digit sebuah angka. Gunakan untuk menghitung "berat keberuntungan" nomor seri emas.
+
+[CONTOH TAMPILAN]
+Nomor seri emas: 7350291
+Berat keberuntungan: 27
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int beratDigitEmas(long long nomorSeriEmas) {
+    int totalBeratDigit = 0;
+    while (nomorSeriEmas > 0) {
+        totalBeratDigit += nomorSeriEmas % 10;
+        nomorSeriEmas /= 10;
+    }
+    return totalBeratDigit;
+}
+
+int main() {
+    long long seriEmasDicek;
+    cout << "Nomor seri emas: ";
+    cin >> seriEmasDicek;
+    cout << "Berat keberuntungan: " << beratDigitEmas(seriEmasDicek) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 14. Prasasti Bolak-Balik
+----------------------------------------------------------------------
+
+Buat fungsi pembalik angka dan fungsi bool palindrom yang memakai fungsi pembalik tersebut.
+
+[CONTOH TAMPILAN]
+Angka di prasasti: 45654
+Dibaca terbalik: 45654
+Prasasti simetris (palindrom)!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long balikPrasasti(long long ukiranAngka) {
+    long long ukiranTerbalik = 0;
+    while (ukiranAngka > 0) {
+        ukiranTerbalik = ukiranTerbalik * 10 + ukiranAngka % 10;
+        ukiranAngka /= 10;
+    }
+    return ukiranTerbalik;
+}
+
+bool prasastiSimetris(long long ukiranAngka) {
+    return ukiranAngka == balikPrasasti(ukiranAngka);
+}
+
+int main() {
+    long long angkaPrasasti;
+    cout << "Angka di prasasti: ";
+    cin >> angkaPrasasti;
+    cout << "Dibaca terbalik: " << balikPrasasti(angkaPrasasti) << endl;
+    if (prasastiSimetris(angkaPrasasti)) cout << "Prasasti simetris (palindrom)!" << endl;
+    else cout << "Prasasti tidak simetris." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 15. Tiga Termometer Laboratorium
+----------------------------------------------------------------------
+
+Buat tiga fungsi konversi dari Celsius: ke Fahrenheit, ke Reamur, dan ke Kelvin. Panggil ketiganya dari main.
+
+[CONTOH TAMPILAN]
+Suhu sampel (Celsius): 37
+Fahrenheit : 98.6
+Reamur     : 29.6
+Kelvin     : 310.15
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+double keFahrenheit(double derajatLab) { return derajatLab * 9 / 5 + 32; }
+double keReamur(double derajatLab) { return derajatLab * 4 / 5; }
+double keKelvin(double derajatLab) { return derajatLab + 273.15; }
+
+int main() {
+    double suhuSampel;
+    cout << "Suhu sampel (Celsius): ";
+    cin >> suhuSampel;
+    cout << "Fahrenheit : " << keFahrenheit(suhuSampel) << endl;
+    cout << "Reamur     : " << keReamur(suhuSampel) << endl;
+    cout << "Kelvin     : " << keKelvin(suhuSampel) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 16. Papan Pengumuman Berbingkai
+----------------------------------------------------------------------
+
+Buat prosedur garis(karakter, panjang) yang mencetak satu baris karakter. Gunakan untuk membingkai judul pengumuman.
+
+[CONTOH TAMPILAN]
+Karakter bingkai: *
+Isi pengumuman: PASAR MALAM DIBUKA
+
+* PASAR MALAM DIBUKA *
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+void garisHias(char hiasan, int panjangHiasan) {
+    for (int ruasHias = 0; ruasHias < panjangHiasan; ruasHias++) cout << hiasan;
+    cout << endl;
+}
+
+int main() {
+    char motifBingkai;
+    string isiPengumuman;
+    cout << "Karakter bingkai: ";
+    cin >> motifBingkai;
+    cin.ignore();
+    cout << "Isi pengumuman: ";
+    getline(cin, isiPengumuman);
+    int lebarPapan = isiPengumuman.length() + 4;
+    garisHias(motifBingkai, lebarPapan);
+    cout << motifBingkai << " " << isiPengumuman << " " << motifBingkai << endl;
+    garisHias(motifBingkai, lebarPapan);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 17. Tumpukan Jerami Segitiga
+----------------------------------------------------------------------
+
+Buat prosedur yang menggambar segitiga bintang setinggi n, lalu panggil prosedur itu dua kali dengan tinggi berbeda.
+
+[CONTOH TAMPILAN]
+Tinggi tumpukan kecil dan besar: 3 5
+Tumpukan kecil:
+*
+
+*
+Tumpukan besar:
+*
+
+*
+
+*
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+void tumpukJerami(int tinggiJerami) {
+    for (int lapisJerami = 1; lapisJerami <= tinggiJerami; lapisJerami++) {
+        for (int batangJerami = 1; batangJerami <= lapisJerami; batangJerami++) cout << "*";
+        cout << endl;
+    }
+}
+
+int main() {
+    int jeramiKecil, jeramiBesar;
+    cout << "Tinggi tumpukan kecil dan besar: ";
+    cin >> jeramiKecil >> jeramiBesar;
+    cout << "Tumpukan kecil:" << endl;
+    tumpukJerami(jeramiKecil);
+    cout << "Tumpukan besar:" << endl;
+    tumpukJerami(jeramiBesar);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 18. Tukar Kandang Dua Ayam Jago
+----------------------------------------------------------------------
+
+Buat prosedur tukar dengan parameter by reference. Tampilkan isi kandang sebelum dan sesudah ditukar.
+
+[CONTOH TAMPILAN]
+Nama ayam di kandang kiri dan kanan: Jalu Kinantan
+Sebelum: kiri=Jalu, kanan=Kinantan
+Sesudah: kiri=Kinantan, kanan=Jalu
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+void tukarKandang(string &kandangKiri, string &kandangKanan) {
+    string kandangSementara = kandangKiri;
+    kandangKiri = kandangKanan;
+    kandangKanan = kandangSementara;
+}
+
+int main() {
+    string jagoKiri, jagoKanan;
+    cout << "Nama ayam di kandang kiri dan kanan: ";
+    cin >> jagoKiri >> jagoKanan;
+    cout << "Sebelum: kiri=" << jagoKiri << ", kanan=" << jagoKanan << endl;
+    tukarKandang(jagoKiri, jagoKanan);
+    cout << "Sesudah: kiri=" << jagoKiri << ", kanan=" << jagoKanan << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 19. Kolam Bundar Dua Hasil Sekaligus
+----------------------------------------------------------------------
+
+Satu fungsi hanya bisa me-return satu nilai. Buat prosedur yang mengembalikan luas DAN keliling kolam bundar sekaligus lewat parameter by reference.
+
+[CONTOH TAMPILAN]
+Jari-jari kolam (m): 7
+Luas kolam    : 153.86 m2
+Keliling kolam: 43.96 m
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+void ukurKolamBundar(double jariKolamBundar, double &luasKeluar, double &kelilingKeluar) {
+    const double PI_KOLAM = 3.14;
+    luasKeluar = PI_KOLAM * jariKolamBundar * jariKolamBundar;
+    kelilingKeluar = 2 * PI_KOLAM * jariKolamBundar;
+}
+
+int main() {
+    double jariDiukur, luasDidapat, kelilingDidapat;
+    cout << "Jari-jari kolam (m): ";
+    cin >> jariDiukur;
+    ukurKolamBundar(jariDiukur, luasDidapat, kelilingDidapat);
+    cout << "Luas kolam    : " << luasDidapat << " m2" << endl;
+    cout << "Keliling kolam: " << kelilingDidapat << " m" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 20. Diskon Toko Kelontong (Parameter Default)
+----------------------------------------------------------------------
+
+Buat fungsi hargaAkhir(harga, persenDiskon = 10). Jika pembeli bukan member, gunakan diskon default 10%; jika member, diskon 25%.
+
+[CONTOH TAMPILAN]
+Total belanja: Rp120000
+Member? (Y/T): T
+Bayar (diskon default 10%): Rp108000
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+double hargaAkhirKelontong(double hargaBarangToko, double persenPotongToko = 10) {
+    return hargaBarangToko - hargaBarangToko * persenPotongToko / 100;
+}
+
+int main() {
+    double belanjaKelontong;
+    char punyaMember;
+    cout << "Total belanja: Rp";
+    cin >> belanjaKelontong;
+    cout << "Member? (Y/T): ";
+    cin >> punyaMember;
+    if (punyaMember == 'Y' || punyaMember == 'y')
+        cout << "Bayar (diskon 25%): Rp" << hargaAkhirKelontong(belanjaKelontong, 25) << endl;
+    else
+        cout << "Bayar (diskon default 10%): Rp" << hargaAkhirKelontong(belanjaKelontong) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 21. Arsitek Serba Bisa (Function Overloading)
+----------------------------------------------------------------------
+
+Buat tiga fungsi bernama sama hitungLuas: satu parameter int (persegi), satu parameter double (lingkaran), dan dua parameter (persegi panjang).
+
+[CONTOH TAMPILAN]
+Sisi taman persegi: 6
+Jari-jari air mancur: 3.5
+Panjang dan lebar aula: 8 5
+Luas taman      : 36
+Luas air mancur : 38.465
+Luas aula       : 40
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int hitungLuas(int sisiPersegiArsitek) { return sisiPersegiArsitek * sisiPersegiArsitek; }
+double hitungLuas(double jariLingkarArsitek) { return 3.14 * jariLingkarArsitek * jariLingkarArsitek; }
+int hitungLuas(int panjangArsitek, int lebarArsitek) { return panjangArsitek * lebarArsitek; }
+
+int main() {
+    int sisiTaman, panjangAula, lebarAula;
+    double jariAirMancur;
+    cout << "Sisi taman persegi: ";
+    cin >> sisiTaman;
+    cout << "Jari-jari air mancur: ";
+    cin >> jariAirMancur;
+    cout << "Panjang dan lebar aula: ";
+    cin >> panjangAula >> lebarAula;
+    cout << "Luas taman      : " << hitungLuas(sisiTaman) << endl;
+    cout << "Luas air mancur : " << hitungLuas(jariAirMancur) << endl;
+    cout << "Luas aula       : " << hitungLuas(panjangAula, lebarAula) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 22. Penilai Ujian Akademi
+----------------------------------------------------------------------
+
+Buat fungsi yang menerima nilai angka dan mengembalikan nilai huruf (char).
+
+[CONTOH TAMPILAN]
+Nilai ujian: 83
+Nilai huruf: B
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+char hurufAkademi(int skorUjianAkademi) {
+    if (skorUjianAkademi >= 85) return 'A';
+    if (skorUjianAkademi >= 70) return 'B';
+    if (skorUjianAkademi >= 55) return 'C';
+    if (skorUjianAkademi >= 40) return 'D';
+    return 'E';
+}
+
+int main() {
+    int nilaiTaruna;
+    cout << "Nilai ujian: ";
+    cin >> nilaiTaruna;
+    cout << "Nilai huruf: " << hurufAkademi(nilaiTaruna) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 23. Penjaga Input Rentang
+----------------------------------------------------------------------
+
+Buat fungsi bacaDalamRentang(bawah, atas) yang terus meminta input sampai angkanya berada di rentang, lalu mengembalikan angka tersebut. Gunakan untuk membaca umur (1–120) dan nilai (0–100).
+
+[CONTOH TAMPILAN]
+Umur (1-120): 150
+Harus di antara 1-120, ulangi: 25
+Nilai (0-100): -5
+Harus di antara 0-100, ulangi: 88
+Data tersimpan: umur 25, nilai 88
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int bacaDalamRentang(int pagarBawahInput, int pagarAtasInput) {
+    int angkaMasukan;
+    cin >> angkaMasukan;
+    while (angkaMasukan < pagarBawahInput || angkaMasukan > pagarAtasInput) {
+        cout << "Harus di antara " << pagarBawahInput << "-" << pagarAtasInput << ", ulangi: ";
+        cin >> angkaMasukan;
+    }
+    return angkaMasukan;
+}
+
+int main() {
+    cout << "Umur (1-120): ";
+    int umurPendaftar = bacaDalamRentang(1, 120);
+    cout << "Nilai (0-100): ";
+    int nilaiPendaftar = bacaDalamRentang(0, 100);
+    cout << "Data tersimpan: umur " << umurPendaftar << ", nilai " << nilaiPendaftar << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 24. Klinik Gizi Desa
+----------------------------------------------------------------------
+
+Buat fungsi hitungIMT dan fungsi kategoriIMT yang mengembalikan string kategori.
+
+[CONTOH TAMPILAN]
+Berat (kg) dan tinggi (m): 58 1.72
+IMT 19.6052 termasuk kategori normal
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+double hitungIMT(double massaWarga, double tinggiWarga) {
+    return massaWarga / (tinggiWarga * tinggiWarga);
+}
+
+string kategoriIMT(double nilaiIMT) {
+    if (nilaiIMT < 18.5) return "kurus";
+    if (nilaiIMT < 25) return "normal";
+    if (nilaiIMT < 30) return "gemuk";
+    return "obesitas";
+}
+
+int main() {
+    double bbWarga, tbWarga;
+    cout << "Berat (kg) dan tinggi (m): ";
+    cin >> bbWarga >> tbWarga;
+    double imtWarga = hitungIMT(bbWarga, tbWarga);
+    cout << "IMT " << imtWarga << " termasuk kategori " << kategoriIMT(imtWarga) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 25. Kurir Kilat dan Struknya
+----------------------------------------------------------------------
+
+Buat fungsi hitungOngkir(berat, jarak) dengan tarif Rp2000/kg + Rp500/km, dan prosedur cetakStruk yang menampilkan rincian.
+
+[CONTOH TAMPILAN]
+Nama penerima, berat (kg), jarak (km): Budi 3 12
+===== STRUK KURIR KILAT =====
+Penerima : Budi
+Berat    : 3 kg
+Jarak    : 12 km
+Ongkir   : Rp12000
+=============================
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int hitungOngkir(int beratKiriman, int jarakKiriman) {
+    return beratKiriman * 2000 + jarakKiriman * 500;
+}
+
+void cetakStruk(string penerimaKiriman, int beratKiriman, int jarakKiriman) {
+    cout << "===== STRUK KURIR KILAT =====" << endl;
+    cout << "Penerima : " << penerimaKiriman << endl;
+    cout << "Berat    : " << beratKiriman << " kg" << endl;
+    cout << "Jarak    : " << jarakKiriman << " km" << endl;
+    cout << "Ongkir   : Rp" << hitungOngkir(beratKiriman, jarakKiriman) << endl;
+    cout << "=============================" << endl;
+}
+
+int main() {
+    string namaPenerima;
+    int beratPaketKurir, jarakPaketKurir;
+    cout << "Nama penerima, berat (kg), jarak (km): ";
+    cin >> namaPenerima >> beratPaketKurir >> jarakPaketKurir;
+    cetakStruk(namaPenerima, beratPaketKurir, jarakPaketKurir);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 26. Buku Resep Bertanda (Prototipe Fungsi)
+----------------------------------------------------------------------
+
+Tulis prototipe fungsi di atas main dan definisinya di bawah main. Fungsi menghitung bahan untuk sejumlah porsi (1 porsi butuh 150 gram beras dan 2 butir telur).
+
+[CONTOH TAMPILAN]
+Jumlah porsi: 6
+Beras: 900 gram
+Telur: 12 butir
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int berasDibutuhkan(int porsiResep);
+int telurDibutuhkan(int porsiResep);
+
+int main() {
+    int porsiDimasak;
+    cout << "Jumlah porsi: ";
+    cin >> porsiDimasak;
+    cout << "Beras: " << berasDibutuhkan(porsiDimasak) << " gram" << endl;
+    cout << "Telur: " << telurDibutuhkan(porsiDimasak) << " butir" << endl;
+    return 0;
+}
+
+int berasDibutuhkan(int porsiResep) {
+    return porsiResep * 150;
+}
+
+int telurDibutuhkan(int porsiResep) {
+    return porsiResep * 2;
+}
+
+----------------------------------------------------------------------
+Soal 27. Buku Tamu Ajaib (Variabel Static)
+----------------------------------------------------------------------
+
+Buat prosedur catatTamu yang memakai variabel static untuk menghitung sudah berapa kali dipanggil. Panggil sebanyak jumlah tamu yang dimasukkan.
+
+[CONTOH TAMPILAN]
+Jumlah tamu: 3
+Nama: Rama
+Tamu ke-1: Rama
+Nama: Sinta
+Tamu ke-2: Sinta
+Nama: Laksmana
+Tamu ke-3: Laksmana
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+void catatTamu(string namaPengunjung) {
+    static int nomorUrutTamu = 0;
+    nomorUrutTamu++;
+    cout << "Tamu ke-" << nomorUrutTamu << ": " << namaPengunjung << endl;
+}
+
+int main() {
+    int jumlahPengunjung;
+    string namaMasuk;
+    cout << "Jumlah tamu: ";
+    cin >> jumlahPengunjung;
+    for (int tamuKe = 0; tamuKe < jumlahPengunjung; tamuKe++) {
+        cout << "Nama: ";
+        cin >> namaMasuk;
+        catatTamu(namaMasuk);
+    }
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 28. Kas Desa Bersama (Variabel Global)
+----------------------------------------------------------------------
+
+Simpan saldo kas desa di variabel global. Buat prosedur setorKas dan tarikKas yang mengubah saldo tersebut, serta fungsi bool yang menolak penarikan jika saldo kurang.
+
+[CONTOH TAMPILAN]
+Kas awal: Rp1000000
+Setoran warga: Rp500000
+Setor Rp500000 berhasil. Kas: Rp1500000
+Penarikan pertama: Rp200000
+Berhasil. Kas: Rp1300000
+Penarikan kedua: Rp900000
+Berhasil. Kas: Rp400000
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long kasDesa = 1000000;
+
+void setorKas(long long nominalSetorKas) {
+    kasDesa += nominalSetorKas;
+    cout << "Setor Rp" << nominalSetorKas << " berhasil. Kas: Rp" << kasDesa << endl;
+}
+
+bool tarikKas(long long nominalTarikKas) {
+    if (nominalTarikKas > kasDesa) return false;
+    kasDesa -= nominalTarikKas;
+    return true;
+}
+
+int main() {
+    long long setoranWarga, tarikanSatu, tarikanDua;
+    cout << "Kas awal: Rp" << kasDesa << endl;
+    cout << "Setoran warga: Rp";
+    cin >> setoranWarga;
+    setorKas(setoranWarga);
+    cout << "Penarikan pertama: Rp";
+    cin >> tarikanSatu;
+    if (tarikKas(tarikanSatu)) cout << "Berhasil. Kas: Rp" << kasDesa << endl;
+    else cout << "Kas tidak cukup!" << endl;
+    cout << "Penarikan kedua: Rp";
+    cin >> tarikanDua;
+    if (tarikKas(tarikanDua)) cout << "Berhasil. Kas: Rp" << kasDesa << endl;
+    else cout << "Kas tidak cukup!" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 29. Digit Rekursif Juru Kunci
+----------------------------------------------------------------------
+
+Hitung jumlah digit angka dengan fungsi rekursif: jumlahDigit(n) = n % 10 + jumlahDigit(n / 10), berhenti saat n = 0.
+
+[CONTOH TAMPILAN]
+Nomor gudang: 904731
+Jumlah digit: 24
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int digitJuruKunci(long long kunciAngka) {
+    if (kunciAngka == 0) return 0;
+    return kunciAngka % 10 + digitJuruKunci(kunciAngka / 10);
+}
+
+int main() {
+    long long nomorGudang;
+    cout << "Nomor gudang: ";
+    cin >> nomorGudang;
+    cout << "Jumlah digit: " << digitJuruKunci(nomorGudang) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 30. Hitung Mundur Rekursif Petasan
+----------------------------------------------------------------------
+
+Buat prosedur rekursif yang mencetak hitung mundur dari n sampai 1, lalu "DOR!".
+
+[CONTOH TAMPILAN]
+Panjang sumbu: 5
+5 4 3 2 1 DOR!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+void sumbuPetasan(int sisaSumbu) {
+    if (sisaSumbu == 0) {
+        cout << "DOR!" << endl;
+        return;
+    }
+    cout << sisaSumbu << " ";
+    sumbuPetasan(sisaSumbu - 1);
+}
+
+int main() {
+    int panjangSumbu;
+    cout << "Panjang sumbu: ";
+    cin >> panjangSumbu;
+    sumbuPetasan(panjangSumbu);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 31. Telegraf Biner Rekursif
+----------------------------------------------------------------------
+
+Buat prosedur rekursif yang mencetak bentuk biner dari angka desimal (cetak hasil n / 2 dulu, baru n % 2).
+
+[CONTOH TAMPILAN]
+Angka desimal: 45
+Ketukan biner: 101101
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+void ketukBiner(int sinyalTelegraf) {
+    if (sinyalTelegraf > 1) ketukBiner(sinyalTelegraf / 2);
+    cout << sinyalTelegraf % 2;
+}
+
+int main() {
+    int pesanTelegraf;
+    cout << "Angka desimal: ";
+    cin >> pesanTelegraf;
+    cout << "Ketukan biner: ";
+    ketukBiner(pesanTelegraf);
+    cout << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 32. Menara Hanoi Para Biksu
+----------------------------------------------------------------------
+
+Pindahkan n cakram dari tiang A ke tiang C memakai tiang B, dengan aturan cakram besar tidak boleh di atas cakram kecil. Tampilkan setiap langkah dan jumlah langkahnya (rekursif).
+
+[CONTOH TAMPILAN]
+Jumlah cakram: 3
+Langkah 1: cakram 1 dari A ke C
+Langkah 2: cakram 2 dari A ke B
+Langkah 3: cakram 1 dari C ke B
+Langkah 4: cakram 3 dari A ke C
+Langkah 5: cakram 1 dari B ke A
+Langkah 6: cakram 2 dari B ke C
+Langkah 7: cakram 1 dari A ke C
+Total langkah: 7
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int langkahBiksu = 0;
+
+void pindahCakram(int banyakCakram, char tiangAsal, char tiangBantu, char tiangTujuan) {
+    if (banyakCakram == 0) return;
+    pindahCakram(banyakCakram - 1, tiangAsal, tiangTujuan, tiangBantu);
+    langkahBiksu++;
+    cout << "Langkah " << langkahBiksu << ": cakram " << banyakCakram << " dari " << tiangAsal << " ke " << tiangTujuan << endl;
+    pindahCakram(banyakCakram - 1, tiangBantu, tiangAsal, tiangTujuan);
+}
+
+int main() {
+    int cakramBiksu;
+    cout << "Jumlah cakram: ";
+    cin >> cakramBiksu;
+    pindahCakram(cakramBiksu, 'A', 'B', 'C');
+    cout << "Total langkah: " << langkahBiksu << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 33. Memilih Regu Ekspedisi (Kombinasi)
+----------------------------------------------------------------------
+
+Dari n petualang dipilih r orang. Hitung banyak kombinasi C(n, r) = n! / (r! × (n−r)!) dengan memanggil fungsi faktorial.
+
+[CONTOH TAMPILAN]
+Jumlah petualang dan anggota regu: 10 3
+Banyak cara memilih regu: 120
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long faktorialEkspedisi(int angkaEkspedisi) {
+    long long hasilEkspedisi = 1;
+    for (int kali = 2; kali <= angkaEkspedisi; kali++) hasilEkspedisi *= kali;
+    return hasilEkspedisi;
+}
+
+long long kombinasiRegu(int totalPetualang, int dipilihRegu) {
+    return faktorialEkspedisi(totalPetualang) / (faktorialEkspedisi(dipilihRegu) * faktorialEkspedisi(totalPetualang - dipilihRegu));
+}
+
+int main() {
+    int petualangTersedia, anggotaRegu;
+    cout << "Jumlah petualang dan anggota regu: ";
+    cin >> petualangTersedia >> anggotaRegu;
+    cout << "Banyak cara memilih regu: " << kombinasiRegu(petualangTersedia, anggotaRegu) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 34. Jarak Dua Desa di Peta
+----------------------------------------------------------------------
+
+Buat fungsi yang menghitung jarak dua titik (x1, y1) dan (x2, y2) dengan rumus √((x2−x1)² + (y2−y1)²).
+
+[CONTOH TAMPILAN]
+Koordinat desa hulu (x y): 1 2
+Koordinat desa hilir (x y): 7 10
+Jarak kedua desa: 10 km
+
+[JAWABAN]
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double jarakDesa(double xDesaA, double yDesaA, double xDesaB, double yDesaB) {
+    double selisihX = xDesaB - xDesaA;
+    double selisihY = yDesaB - yDesaA;
+    return sqrt(selisihX * selisihX + selisihY * selisihY);
+}
+
+int main() {
+    double xHulu, yHulu, xHilir, yHilir;
+    cout << "Koordinat desa hulu (x y): ";
+    cin >> xHulu >> yHulu;
+    cout << "Koordinat desa hilir (x y): ";
+    cin >> xHilir >> yHilir;
+    cout << "Jarak kedua desa: " << jarakDesa(xHulu, yHulu, xHilir, yHilir) << " km" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 35. Kalender Kerajaan Lengkap
+----------------------------------------------------------------------
+
+Buat fungsi bool kabisat(tahun) dan fungsi hariDalamBulan(bulan, tahun) yang memanggil fungsi kabisat.
+
+[CONTOH TAMPILAN]
+Bulan dan tahun: 2 2100
+Kabisat? tidak
+Jumlah hari: 28
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+bool tahunKabisatKerajaan(int tahunKerajaan) {
+    return (tahunKerajaan % 4 == 0 && tahunKerajaan % 100 != 0) || tahunKerajaan % 400 == 0;
+}
+
+int hariDalamBulan(int bulanKerajaan, int tahunKerajaan) {
+    if (bulanKerajaan == 2) return tahunKabisatKerajaan(tahunKerajaan) ? 29 : 28;
+    if (bulanKerajaan == 4 || bulanKerajaan == 6 || bulanKerajaan == 9 || bulanKerajaan == 11) return 30;
+    return 31;
+}
+
+int main() {
+    int bulanDicari, tahunDicari;
+    cout << "Bulan dan tahun: ";
+    cin >> bulanDicari >> tahunDicari;
+    cout << "Kabisat? " << (tahunKabisatKerajaan(tahunDicari) ? "ya" : "tidak") << endl;
+    cout << "Jumlah hari: " << hariDalamBulan(bulanDicari, tahunDicari) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 36. Stopwatch Pelari Maraton
+----------------------------------------------------------------------
+
+Buat prosedur pecahWaktu(totalDetik, &jam, &menit, &detik) yang mengisi tiga variabel lewat referensi.
+
+[CONTOH TAMPILAN]
+Catatan waktu (detik): 9045
+Waktu pelari: 2 jam 30 menit 45 detik
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+void pecahWaktu(int detikMaraton, int &jamKeluar, int &menitKeluar, int &detikKeluar) {
+    jamKeluar = detikMaraton / 3600;
+    menitKeluar = detikMaraton % 3600 / 60;
+    detikKeluar = detikMaraton % 60;
+}
+
+int main() {
+    int catatanStopwatch, jamPelari, menitPelari, detikPelari;
+    cout << "Catatan waktu (detik): ";
+    cin >> catatanStopwatch;
+    pecahWaktu(catatanStopwatch, jamPelari, menitPelari, detikPelari);
+    cout << "Waktu pelari: " << jamPelari << " jam " << menitPelari << " menit " << detikPelari << " detik" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 37. Laboratorium Angka Istimewa
+----------------------------------------------------------------------
+
+Buat fungsi bool angkaSempurna dan angkaArmstrong. Buat menu: 1 cek sempurna, 2 cek Armstrong.
+
+[CONTOH TAMPILAN]
+1. Cek angka sempurna  2. Cek angka Armstrong
+Pilih: 2
+Angka: 370
+Angka Armstrong!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+bool angkaSempurna(int angkaLab) {
+    int totalFaktorLab = 0;
+    for (int pembagiLab = 1; pembagiLab < angkaLab; pembagiLab++)
+        if (angkaLab % pembagiLab == 0) totalFaktorLab += pembagiLab;
+    return angkaLab > 0 && totalFaktorLab == angkaLab;
+}
+
+bool angkaArmstrong(int angkaLab) {
+    int digitLab = 0, salinanLab = angkaLab, totalPangkatLab = 0;
+    while (salinanLab > 0) { digitLab++; salinanLab /= 10; }
+    salinanLab = angkaLab;
+    while (salinanLab > 0) {
+        int satuDigit = salinanLab % 10, pangkatDigit = 1;
+        for (int ulangPangkat = 0; ulangPangkat < digitLab; ulangPangkat++) pangkatDigit *= satuDigit;
+        totalPangkatLab += pangkatDigit;
+        salinanLab /= 10;
+    }
+    return totalPangkatLab == angkaLab;
+}
+
+int main() {
+    int pilihanLab, angkaUji;
+    cout << "1. Cek angka sempurna  2. Cek angka Armstrong" << endl << "Pilih: ";
+    cin >> pilihanLab;
+    cout << "Angka: ";
+    cin >> angkaUji;
+    if (pilihanLab == 1) cout << (angkaSempurna(angkaUji) ? "Angka sempurna!" : "Bukan angka sempurna.") << endl;
+    else if (pilihanLab == 2) cout << (angkaArmstrong(angkaUji) ? "Angka Armstrong!" : "Bukan angka Armstrong.") << endl;
+    else cout << "Pilihan tidak ada." << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 38. Ksatria Digit vs Golem Sisa (pola game Quest IV)
+----------------------------------------------------------------------
+
+Ksatria Digit (HP 40) melawan Golem Sisa (HP 70). Rentang input mulai 100–120 dan naik 20 tiap giliran. Buat fungsi jumlahDigit. Jika jumlah digit angka genap, ksatria menyerang dengan damage = jumlah digit × 2. Jika ganjil, golem menyerang dengan damage = angka % 7 + 2. Buat juga prosedur untuk menampilkan HP.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan angka 100-120: 118
+Jumlah digit 10 (genap)! Ksatria menebas 20 damage!
+HP Golem Sisa: 50
+
+Giliran 2:
+Masukkan angka 120-140: 124
+Jumlah digit 7 (ganjil).. Golem meninju 7 damage!
+HP Ksatria Digit: 33
+
+Giliran 3:
+Masukkan angka 140-160: 142
+Jumlah digit 7 (ganjil).. Golem meninju 4 damage!
+HP Ksatria Digit: 29
+
+Giliran 4:
+Masukkan angka 160-180: 163
+Jumlah digit 10 (genap)! Ksatria menebas 20 damage!
+HP Golem Sisa: 30
+
+Giliran 5:
+Masukkan angka 180-200: 181
+Jumlah digit 10 (genap)! Ksatria menebas 20 damage!
+HP Golem Sisa: 10
+
+Giliran 6:
+Masukkan angka 200-220: 211
+Jumlah digit 4 (genap)! Ksatria menebas 8 damage!
+HP Golem Sisa: 2
+
+Giliran 7:
+Masukkan angka 220-240: 228
+Jumlah digit 12 (genap)! Ksatria menebas 24 damage!
+HP Golem Sisa: 0
+
+Golem Sisa hancur! Ksatria Digit menang!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int jumlahDigitTempur(int angkaTempur) {
+    int totalDigitTempur = 0;
+    while (angkaTempur > 0) {
+        totalDigitTempur += angkaTempur % 10;
+        angkaTempur /= 10;
+    }
+    return totalDigitTempur;
+}
+
+void tampilHP(string pemilikHP, int nilaiHP) {
+    cout << "HP " << pemilikHP << ": " << nilaiHP << endl;
+}
+
+int main() {
+    int hpKsatriaDigit = 40, hpGolemSisa = 70;
+    int putaranTempur = 1, tepiKiri = 100, tepiKanan = 120;
+    while (hpKsatriaDigit > 0 && hpGolemSisa > 0) {
+        int angkaPedang;
+        cout << "\nGiliran " << putaranTempur << ":\n";
+        cout << "Masukkan angka " << tepiKiri << "-" << tepiKanan << ": ";
+        cin >> angkaPedang;
+        if (angkaPedang < tepiKiri || angkaPedang > tepiKanan) {
+            cout << "Di luar rentang, ulangi!\n";
+            continue;
+        }
+        int digitPedang = jumlahDigitTempur(angkaPedang);
+        if (digitPedang % 2 == 0) {
+            int tebasanDigit = digitPedang * 2;
+            hpGolemSisa -= tebasanDigit;
+            if (hpGolemSisa < 0) hpGolemSisa = 0;
+            cout << "Jumlah digit " << digitPedang << " (genap)! Ksatria menebas " << tebasanDigit << " damage!\n";
+            tampilHP("Golem Sisa", hpGolemSisa);
+        } else {
+            int tinjuGolem = angkaPedang % 7 + 2;
+            hpKsatriaDigit -= tinjuGolem;
+            if (hpKsatriaDigit < 0) hpKsatriaDigit = 0;
+            cout << "Jumlah digit " << digitPedang << " (ganjil).. Golem meninju " << tinjuGolem << " damage!\n";
+            tampilHP("Ksatria Digit", hpKsatriaDigit);
+        }
+        putaranTempur++;
+        tepiKiri += 20;
+        tepiKanan += 20;
+    }
+    if (hpGolemSisa == 0) cout << "\nGolem Sisa hancur! Ksatria Digit menang!\n";
+    else cout << "\nKsatria Digit gugur... Golem Sisa menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 39. Satria Biner vs Hantu Desimal (pola game Quest IV)
+----------------------------------------------------------------------
+
+Satria Biner (HP 35) melawan Hantu Desimal (HP 60). Rentang input mulai 1–10 dan naik 10 tiap giliran. Buat fungsi hitungBitSatu yang menghitung banyak angka 1 dalam bentuk biner. Jika banyak bit 1 ≥ 3, satria menyerang dengan damage = bit 1 × 5. Jika kurang, hantu menyerang dengan damage = angka % 6 + 2. Buat prosedur serang dengan parameter HP by reference.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan angka 1-10: 7
+7 punya 3 bit bernilai 1
+Satria Biner menyerang dengan 15 damage!
+HP Hantu Desimal: 45
+
+Giliran 2:
+Masukkan angka 11-20: 16
+16 punya 1 bit bernilai 1
+Hantu Desimal menyerang dengan 6 damage!
+HP Satria Biner: 29
+
+Giliran 3:
+Masukkan angka 21-30: 23
+23 punya 4 bit bernilai 1
+Satria Biner menyerang dengan 20 damage!
+HP Hantu Desimal: 25
+
+Giliran 4:
+Masukkan angka 31-40: 31
+31 punya 5 bit bernilai 1
+Satria Biner menyerang dengan 25 damage!
+HP Hantu Desimal: 0
+
+Hantu Desimal menghilang! Satria Biner menang!
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+int hitungBitSatu(int angkaSandi) {
+    int bitMenyala = 0;
+    while (angkaSandi > 0) {
+        bitMenyala += angkaSandi % 2;
+        angkaSandi /= 2;
+    }
+    return bitMenyala;
+}
+
+void serang(string namaPenyerang, string namaKorban, int &hpKorban, int besarSerangan) {
+    hpKorban -= besarSerangan;
+    if (hpKorban < 0) hpKorban = 0;
+    cout << namaPenyerang << " menyerang dengan " << besarSerangan << " damage!\n";
+    cout << "HP " << namaKorban << ": " << hpKorban << endl;
+}
+
+int main() {
+    int hpSatria = 35, hpHantu = 60;
+    int langkahDuel = 1, garisAwal = 1, garisAkhir = 10;
+    while (hpSatria > 0 && hpHantu > 0) {
+        int angkaGaib;
+        cout << "\nGiliran " << langkahDuel << ":\n";
+        cout << "Masukkan angka " << garisAwal << "-" << garisAkhir << ": ";
+        cin >> angkaGaib;
+        if (angkaGaib < garisAwal || angkaGaib > garisAkhir) {
+            cout << "Di luar rentang, ulangi!\n";
+            continue;
+        }
+        int bitGaib = hitungBitSatu(angkaGaib);
+        cout << angkaGaib << " punya " << bitGaib << " bit bernilai 1\n";
+        if (bitGaib >= 3) serang("Satria Biner", "Hantu Desimal", hpHantu, bitGaib * 5);
+        else serang("Hantu Desimal", "Satria Biner", hpSatria, angkaGaib % 6 + 2);
+        langkahDuel++;
+        garisAwal += 10;
+        garisAkhir += 10;
+    }
+    if (hpHantu == 0) cout << "\nHantu Desimal menghilang! Satria Biner menang!\n";
+    else cout << "\nSatria Biner tumbang... Hantu Desimal menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 40. Prajurit Kabisat vs Raksasa Abad (pola game Quest IV)
+----------------------------------------------------------------------
+
+Prajurit Kabisat (HP 40) melawan Raksasa Abad (HP 100). User memasukkan tahun; rentang mulai 2000–2010 dan naik 10 tiap giliran. Buat fungsi bool kabisat. Jika tahun kabisat, prajurit menyerang dengan damage 25. Jika bukan, raksasa menyerang dengan damage = tahun % 10 + 3.
+
+[CONTOH TAMPILAN]
+Giliran 1:
+Masukkan tahun 2000-2010: 2004
+2004 tahun kabisat! Prajurit menyerang 25 damage!
+HP Raksasa Abad: 75
+
+Giliran 2:
+Masukkan tahun 2010-2020: 2013
+2013 bukan kabisat.. Raksasa mengayun gada 6 damage!
+HP Prajurit Kabisat: 34
+
+Giliran 3:
+Masukkan tahun 2020-2030: 2020
+2020 tahun kabisat! Prajurit menyerang 25 damage!
+HP Raksasa Abad: 50
+
+Giliran 4:
+Masukkan tahun 2030-2040: 2032
+2032 tahun kabisat! Prajurit menyerang 25 damage!
+HP Raksasa Abad: 25
+
+Giliran 5:
+Masukkan tahun 2040-2050: 2041
+2041 bukan kabisat.. Raksasa mengayun gada 4 damage!
+HP Prajurit Kabisat: 30
+
+Giliran 6:
+Masukkan tahun 2050-2060: 2052
+2052 tahun kabisat! Prajurit menyerang 25 damage!
+HP Raksasa Abad: 0
+
+Raksasa Abad tumbang! Prajurit Kabisat menang!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+bool tahunKabisatPrajurit(int tahunPerang) {
+    return (tahunPerang % 4 == 0 && tahunPerang % 100 != 0) || tahunPerang % 400 == 0;
+}
+
+int main() {
+    int hpPrajurit = 40, hpRaksasaAbad = 100;
+    int giliranAbad = 1, tahunAwalRentang = 2000, tahunAkhirRentang = 2010;
+    while (hpPrajurit > 0 && hpRaksasaAbad > 0) {
+        int tahunPilihan;
+        cout << "\nGiliran " << giliranAbad << ":\n";
+        cout << "Masukkan tahun " << tahunAwalRentang << "-" << tahunAkhirRentang << ": ";
+        cin >> tahunPilihan;
+        if (tahunPilihan < tahunAwalRentang || tahunPilihan > tahunAkhirRentang) {
+            cout << "Tahun di luar rentang, ulangi!\n";
+            continue;
+        }
+        if (tahunKabisatPrajurit(tahunPilihan)) {
+            hpRaksasaAbad -= 25;
+            if (hpRaksasaAbad < 0) hpRaksasaAbad = 0;
+            cout << tahunPilihan << " tahun kabisat! Prajurit menyerang 25 damage!\n";
+            cout << "HP Raksasa Abad: " << hpRaksasaAbad << endl;
+        } else {
+            int gadaRaksasa = tahunPilihan % 10 + 3;
+            hpPrajurit -= gadaRaksasa;
+            if (hpPrajurit < 0) hpPrajurit = 0;
+            cout << tahunPilihan << " bukan kabisat.. Raksasa mengayun gada " << gadaRaksasa << " damage!\n";
+            cout << "HP Prajurit Kabisat: " << hpPrajurit << endl;
+        }
+        giliranAbad++;
+        tahunAwalRentang += 10;
+        tahunAkhirRentang += 10;
+    }
+    if (hpRaksasaAbad == 0) cout << "\nRaksasa Abad tumbang! Prajurit Kabisat menang!\n";
+    else cout << "\nPrajurit Kabisat gugur... Raksasa Abad menang!\n";
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 41. Rapor Murid Padepokan
+----------------------------------------------------------------------
+
+Buat fungsi rataTiga yang mengembalikan rata-rata tiga nilai dan prosedur cetakRapor yang menampilkan nama, rata-rata, dan keterangan lulus (≥ 70).
+
+[CONTOH TAMPILAN]
+Nama dan tiga nilai: Wulan 78 64 85
+Nama      : Wulan
+Rata-rata : 75.6667
+Status    : LULUS
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+double rataTiga(int nilaiJurus, int nilaiTeori, int nilaiSikap) {
+    return (nilaiJurus + nilaiTeori + nilaiSikap) / 3.0;
+}
+
+void cetakRapor(string muridPadepokan, double rerataPadepokan) {
+    cout << "Nama      : " << muridPadepokan << endl;
+    cout << "Rata-rata : " << rerataPadepokan << endl;
+    cout << "Status    : " << (rerataPadepokan >= 70 ? "LULUS" : "MENGULANG") << endl;
+}
+
+int main() {
+    string namaMuridSilat;
+    int jurusMurid, teoriMurid, sikapMurid;
+    cout << "Nama dan tiga nilai: ";
+    cin >> namaMuridSilat >> jurusMurid >> teoriMurid >> sikapMurid;
+    cetakRapor(namaMuridSilat, rataTiga(jurusMurid, teoriMurid, sikapMurid));
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 42. Burung Beo Penghitung Vokal
+----------------------------------------------------------------------
+
+Buat fungsi bool hurufVokal(char). Masukkan huruf satu per satu sampai karakter titik (.), lalu tampilkan berapa vokal yang masuk.
+
+[CONTOH TAMPILAN]
+Ketik huruf dipisah spasi, akhiri dengan titik: b e o p i n t a r .
+Dari 9 huruf, 4 adalah vokal
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+bool hurufVokal(char hurufBeoPintar) {
+    char hurufKecilBeo = hurufBeoPintar;
+    if (hurufKecilBeo >= 'A' && hurufKecilBeo <= 'Z') hurufKecilBeo += 32;
+    return hurufKecilBeo == 'a' || hurufKecilBeo == 'i' || hurufKecilBeo == 'u' || hurufKecilBeo == 'e' || hurufKecilBeo == 'o';
+}
+
+int main() {
+    char hurufDiucap;
+    int vokalDiucap = 0, totalDiucap = 0;
+    cout << "Ketik huruf dipisah spasi, akhiri dengan titik: ";
+    cin >> hurufDiucap;
+    while (hurufDiucap != '.') {
+        totalDiucap++;
+        if (hurufVokal(hurufDiucap)) vokalDiucap++;
+        cin >> hurufDiucap;
+    }
+    cout << "Dari " << totalDiucap << " huruf, " << vokalDiucap << " adalah vokal" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 43. Parkiran Pasar Induk
+----------------------------------------------------------------------
+
+Buat fungsi tarifParkir(jenis, jam): motor (M) Rp2000/jam maksimal Rp10.000, mobil (C) Rp5000/jam maksimal Rp30.000.
+
+[CONTOH TAMPILAN]
+Jenis kendaraan (M/C) dan lama parkir (jam): C 8
+Biaya parkir: Rp30000
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+int tarifParkir(char jenisKendaraanPasar, int jamParkirPasar) {
+    int biayaPasar;
+    if (jenisKendaraanPasar == 'M') {
+        biayaPasar = jamParkirPasar * 2000;
+        if (biayaPasar > 10000) biayaPasar = 10000;
+    } else {
+        biayaPasar = jamParkirPasar * 5000;
+        if (biayaPasar > 30000) biayaPasar = 30000;
+    }
+    return biayaPasar;
+}
+
+int main() {
+    char kendaraanMasuk;
+    int lamaParkirPasar;
+    cout << "Jenis kendaraan (M/C) dan lama parkir (jam): ";
+    cin >> kendaraanMasuk >> lamaParkirPasar;
+    cout << "Biaya parkir: Rp" << tarifParkir(kendaraanMasuk, lamaParkirPasar) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 44. Tabel Kurs Penukaran Uang
+----------------------------------------------------------------------
+
+Buat fungsi konversi(rupiah, kurs) dan prosedur tabelKurs yang mencetak hasil konversi untuk nominal 100.000 sampai 500.000 (kelipatan 100.000).
+
+[CONTOH TAMPILAN]
+Kurs 1 dolar (Rp): 16250
+Rp100000 = $6.15385
+Rp200000 = $12.3077
+Rp300000 = $18.4615
+Rp400000 = $24.6154
+Rp500000 = $30.7692
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+double konversiValas(double rupiahTukar, double kursTukar) {
+    return rupiahTukar / kursTukar;
+}
+
+void tabelKurs(double kursBerlaku) {
+    for (int nominalTukar = 100000; nominalTukar <= 500000; nominalTukar += 100000)
+        cout << "Rp" << nominalTukar << " = $" << konversiValas(nominalTukar, kursBerlaku) << endl;
+}
+
+int main() {
+    double kursHariIniValas;
+    cout << "Kurs 1 dolar (Rp): ";
+    cin >> kursHariIniValas;
+    tabelKurs(kursHariIniValas);
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 45. Pemungut Pajak Bertingkat
+----------------------------------------------------------------------
+
+Buat fungsi pajakTanah(nilaiTanah): ≤ Rp100 juta kena 0.5%, ≤ Rp500 juta kena 1%, di atasnya 2%.
+
+[CONTOH TAMPILAN]
+Nilai tanah: Rp350000000
+Pajak tanah: Rp3500000
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long pajakTanah(long long nilaiTanahWarga) {
+    if (nilaiTanahWarga <= 100000000) return nilaiTanahWarga * 5 / 1000;
+    if (nilaiTanahWarga <= 500000000) return nilaiTanahWarga / 100;
+    return nilaiTanahWarga * 2 / 100;
+}
+
+int main() {
+    long long hargaTanahWarga;
+    cout << "Nilai tanah: Rp";
+    cin >> hargaTanahWarga;
+    cout << "Pajak tanah: Rp" << pajakTanah(hargaTanahWarga) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 46. Deret Jumlah dan Rata-rata
+----------------------------------------------------------------------
+
+Buat fungsi jumlahDeret(n) yang mengembalikan 1 + 2 + ... + n, lalu fungsi rataDeret(n) yang memakai fungsi pertama.
+
+[CONTOH TAMPILAN]
+Nilai n: 100
+Jumlah 1 sampai 100 = 5050
+Rata-ratanya = 50.5
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long jumlahDeret(int ujungDeret) {
+    long long hasilDeret = 0;
+    for (int sukuDeret = 1; sukuDeret <= ujungDeret; sukuDeret++) hasilDeret += sukuDeret;
+    return hasilDeret;
+}
+
+double rataDeret(int ujungDeret) {
+    return (double)jumlahDeret(ujungDeret) / ujungDeret;
+}
+
+int main() {
+    int batasDeretKu;
+    cout << "Nilai n: ";
+    cin >> batasDeretKu;
+    cout << "Jumlah 1 sampai " << batasDeretKu << " = " << jumlahDeret(batasDeretKu) << endl;
+    cout << "Rata-ratanya = " << rataDeret(batasDeretKu) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 47. Upah Nelayan Musim Badai
+----------------------------------------------------------------------
+
+Buat fungsi upahNelayan(hariMelaut, upahHarian, hariBadai). Hari badai tetap dibayar setengah upah harian. Tampilkan total upah.
+
+[CONTOH TAMPILAN]
+Hari melaut, upah harian, hari badai: 22 150000 5
+Total upah bulan ini: Rp3675000
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+long long upahNelayan(int hariMelaut, long long upahPerHari, int hariBadai) {
+    return hariMelaut * upahPerHari + hariBadai * upahPerHari / 2;
+}
+
+int main() {
+    int hariLaut, hariAnginKencang;
+    long long upahPokokNelayan;
+    cout << "Hari melaut, upah harian, hari badai: ";
+    cin >> hariLaut >> upahPokokNelayan >> hariAnginKencang;
+    cout << "Total upah bulan ini: Rp" << upahNelayan(hariLaut, upahPokokNelayan, hariAnginKencang) << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 48. Kalkulator Empat Fungsi
+----------------------------------------------------------------------
+
+Buat fungsi tambah, kurang, kali, bagi secara terpisah, dan prosedur tampilMenu. Program berulang sampai user memilih 0.
+
+[CONTOH TAMPILAN]
+1.Tambah 2.Kurang 3.Kali 4.Bagi 0.Keluar
+Pilih: 3
+Dua angka: 6 7
+Hasil: 42
+
+1.Tambah 2.Kurang 3.Kali 4.Bagi 0.Keluar
+Pilih: 4
+Dua angka: 9 0
+Tidak bisa dibagi nol!
+
+1.Tambah 2.Kurang 3.Kali 4.Bagi 0.Keluar
+Pilih: 0
+Sampai jumpa!
+
+[JAWABAN]
+#include <iostream>
+using namespace std;
+
+double tambahAngka(double kiriHitung, double kananHitung) { return kiriHitung + kananHitung; }
+double kurangAngka(double kiriHitung, double kananHitung) { return kiriHitung - kananHitung; }
+double kaliAngka(double kiriHitung, double kananHitung) { return kiriHitung * kananHitung; }
+double bagiAngka(double kiriHitung, double kananHitung) { return kiriHitung / kananHitung; }
+
+void tampilMenu() {
+    cout << "\n1.Tambah 2.Kurang 3.Kali 4.Bagi 0.Keluar\nPilih: ";
+}
+
+int main() {
+    int menuHitung;
+    double angkaPertama, angkaKedua;
+    tampilMenu();
+    cin >> menuHitung;
+    while (menuHitung != 0) {
+        cout << "Dua angka: ";
+        cin >> angkaPertama >> angkaKedua;
+        if (menuHitung == 1) cout << "Hasil: " << tambahAngka(angkaPertama, angkaKedua) << endl;
+        else if (menuHitung == 2) cout << "Hasil: " << kurangAngka(angkaPertama, angkaKedua) << endl;
+        else if (menuHitung == 3) cout << "Hasil: " << kaliAngka(angkaPertama, angkaKedua) << endl;
+        else if (menuHitung == 4) {
+            if (angkaKedua == 0) cout << "Tidak bisa dibagi nol!" << endl;
+            else cout << "Hasil: " << bagiAngka(angkaPertama, angkaKedua) << endl;
+        } else cout << "Menu tidak ada." << endl;
+        tampilMenu();
+        cin >> menuHitung;
+    }
+    cout << "Sampai jumpa!" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 49. Pemeriksa Rangka Atap
+----------------------------------------------------------------------
+
+Buat fungsi bool bisaSegitiga(a, b, c) dan fungsi string jenisSegitiga(a, b, c) untuk memeriksa rangka atap.
+
+[CONTOH TAMPILAN]
+Panjang tiga balok rangka: 7 7 7
+Rangka atap berbentuk segitiga sama sisi
+
+[JAWABAN]
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool bisaSegitiga(int rangkaA, int rangkaB, int rangkaC) {
+    return rangkaA + rangkaB > rangkaC && rangkaA + rangkaC > rangkaB && rangkaB + rangkaC > rangkaA;
+}
+
+string jenisSegitiga(int rangkaA, int rangkaB, int rangkaC) {
+    if (rangkaA == rangkaB && rangkaB == rangkaC) return "sama sisi";
+    if (rangkaA == rangkaB || rangkaB == rangkaC || rangkaA == rangkaC) return "sama kaki";
+    return "sembarang";
+}
+
+int main() {
+    int balokSatu, balokDua, balokTiga;
+    cout << "Panjang tiga balok rangka: ";
+    cin >> balokSatu >> balokDua >> balokTiga;
+    if (bisaSegitiga(balokSatu, balokDua, balokTiga))
+        cout << "Rangka atap berbentuk segitiga " << jenisSegitiga(balokSatu, balokDua, balokTiga) << endl;
+    else
+        cout << "Balok tidak bisa membentuk segitiga!" << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------
+Soal 50. Jadwal Tiba Kereta Malam
+----------------------------------------------------------------------
+
+Buat fungsi waktuTempuh(jarak, kecepatan) yang mengembalikan menit perjalanan (dibulatkan ke bawah), dan prosedur cetakJam(menitTotal) yang mencetak jam tiba dalam format HH:MM (lewat tengah malam kembali ke 00).
+
+[CONTOH TAMPILAN]
+Jam berangkat (jam menit): 22 30
+Jarak (km) dan kecepatan (km/jam): 240 80
+Lama perjalanan: 180 menit
+Kereta tiba pukul 01:30
+
+[JAWABAN]
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int waktuTempuh(double jarakRel, double lajuKeretaMalam) {
+    return (int)(jarakRel / lajuKeretaMalam * 60);
+}
+
+void cetakJam(int menitSejakTengahMalam) {
+    menitSejakTengahMalam %= 24 * 60;
+    cout << setfill('0') << setw(2) << menitSejakTengahMalam / 60 << ":" << setw(2) << menitSejakTengahMalam % 60 << endl;
+}
+
+int main() {
+    int jamBerangkatKereta, menitBerangkatKereta;
+    double jarakTujuanKereta, kecepatanKereta;
+    cout << "Jam berangkat (jam menit): ";
+    cin >> jamBerangkatKereta >> menitBerangkatKereta;
+    cout << "Jarak (km) dan kecepatan (km/jam): ";
+    cin >> jarakTujuanKereta >> kecepatanKereta;
+    int menitPerjalanan = waktuTempuh(jarakTujuanKereta, kecepatanKereta);
+    cout << "Lama perjalanan: " << menitPerjalanan << " menit" << endl;
+    cout << "Kereta tiba pukul ";
+    cetakJam(jamBerangkatKereta * 60 + menitBerangkatKereta + menitPerjalanan);
+    return 0;
+}
